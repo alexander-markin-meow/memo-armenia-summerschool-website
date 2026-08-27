@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState, type CSSProperties, type FormEvent } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Shape } from '@/components/Shape';
+import { GrainLayer } from '@/components/GrainLayer';
 import { entries, isLocale, mediumLabel, text, ui, type Locale, type Medium } from '@/lib/content';
 import './pages.css';
 
@@ -141,4 +142,4 @@ function App() {
   return route.kind === 'collection' ? <Collection route={route} /> : route.kind === 'catalogue' ? <Catalogue route={route} /> : <Project route={route} />;
 }
 
-createRoot(document.getElementById('root')!).render(<StrictMode><a className="skip-link" href="#main">Skip to content</a><App /></StrictMode>);
+createRoot(document.getElementById('root')!).render(<StrictMode><GrainLayer /><a className="skip-link" href="#main">Skip to content</a><App /></StrictMode>);

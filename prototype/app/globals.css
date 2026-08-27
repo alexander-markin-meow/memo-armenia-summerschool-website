@@ -9,6 +9,8 @@
   --oxidized: #6b7971;
   --clay: #a65e45;
   --gold: #a98048;
+  --grain-strength: 0.11;
+  --grain-rate: 840ms;
 }
 
 * { box-sizing: border-box; }
@@ -16,17 +18,40 @@ html { background: var(--paper); color: var(--ink); }
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at 18% 24%, rgb(255 255 255 / 32%) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 77% 71%, rgb(52 42 31 / 7%) 0 1px, transparent 1.5px),
-    var(--paper);
-  background-size: 9px 9px, 13px 13px, auto;
+  background: var(--paper);
   font-family: "Noto Sans Armenian", "Noto Sans", system-ui, -apple-system, sans-serif;
 }
 a { color: inherit; }
 button { font: inherit; }
 .skip-link { position: fixed; left: 1rem; top: -4rem; z-index: 100; background: var(--ink); color: var(--paper); padding: .7rem 1rem; }
 .skip-link:focus { top: 1rem; }
+
+.background-grain {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.background-grain::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image: var(--grain-url);
+  background-size: 512px 512px;
+  filter: contrast(2.4) brightness(0.72);
+  mix-blend-mode: multiply;
+  opacity: var(--grain-strength);
+  animation: background-grain-shift var(--grain-rate) steps(1) infinite;
+  will-change: transform;
+}
+@keyframes background-grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-3%, 2%, 0); }
+  50% { transform: translate3d(2%, -3%, 0); }
+  75% { transform: translate3d(-2%, -2%, 0); }
+  100% { transform: translate3d(3%, 1%, 0); }
+}
 
 .collection-shell { min-height: 100dvh; overflow: hidden; position: relative; }
 .site-header {
@@ -206,4 +231,5 @@ button { font: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  .background-grain::before { animation: none !important; }
 }

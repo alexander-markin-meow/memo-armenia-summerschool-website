@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { GrainLayer } from '@/components/GrainLayer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <GrainLayer />
         <a className="skip-link" href="#main">Skip to content</a>
         {children}
       </body>
