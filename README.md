@@ -7,3 +7,7 @@ The site implementation is in [`prototype/`](prototype/). The scope and technica
 The prototype uses fictional sample content and should not be treated as an archive of real objects, people, dates, or projects.
 
 The primary site uses the full Vinext build. `prototype/github-pages/` contains a client-only, hash-routed build for deployment from a separate public GitHub Pages repository while keeping this source repository private. Run `npm run build:pages` inside `prototype/` to produce it.
+
+GitHub Pages preview: https://alexander-markin-meow.github.io/lori-found-museum-6f27/
+
+Public compiled-files repository: https://github.com/alexander-markin-meow/lori-found-museum-6f27
