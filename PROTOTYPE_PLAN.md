@@ -55,13 +55,13 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 ### Application stack
 
-- **Framework:** React 19 with TypeScript, built with Vite.
-- **Routing:** React Router with language-prefixed routes (`/en`, `/hy`, `/ru`). English is the default when no language is present.
+- **Framework:** React 19 with TypeScript using the Vinext/Next App Router starter for OpenAI Sites.
+- **Routing:** file-based, language-prefixed routes (`/en`, `/hy`, `/ru`). The unprefixed root shows English without an extra redirect.
 - **Styling:** one global design-token file plus component-scoped CSS Modules. No UI framework; the visual language is custom and the component count is small.
 - **Content:** typed local TypeScript data files, one record per object/project pair. No database, CMS, user accounts, or server runtime in the prototype.
-- **Internationalization:** i18next and react-i18next. Interface strings and project content use the same three-language shape, with an automatic English fallback when a prototype translation is intentionally missing.
+- **Internationalization:** a small typed local translation layer. Interface strings and project content use the same three-language shape, with English as the explicit development fallback.
 - **Package manager/runtime:** npm with a committed lockfile; current Node LTS, recorded in `.nvmrc` and `package.json`.
-- **Deployment:** a static production build deployed to Cloudflare Pages from the private GitHub repository. Preview deployments will be produced for branches and pull requests; the production branch will be `main`.
+- **Deployment:** an OpenAI Sites production build on Cloudflare infrastructure, sourced from the private GitHub repository. The production branch is `main`.
 - **Code quality:** ESLint, Prettier, strict TypeScript, and accessible semantic HTML.
 
 This stack keeps the prototype inexpensive and portable. It can later move to another static host without changing the content model. A CMS can be added after the editorial workflow is known rather than guessed now.
@@ -69,15 +69,11 @@ This stack keeps the prototype inexpensive and portable. It can later move to an
 ### Proposed source structure
 
 ```text
-src/
-  app/                 routing, providers, metadata
-  components/          navigation, object shape, filters, gallery
-  content/             object/project records and translations
-  pages/               collection, project, catalogue, not found
-  styles/              tokens, global rules, grain, utilities
-  utils/               seeded shuffle, layout, locale helpers
-public/                 favicon and social preview
-tests/                  layout, filters, routing, accessibility smoke tests
+prototype/
+  app/                 routes, pages, metadata, global design system
+  components/          navigation, object shapes, randomized collection
+  lib/                  typed object/project records and translations
+  public/               social preview and public assets
 ```
 
 ### Content record
