@@ -9,7 +9,7 @@
   --oxidized: #6b7971;
   --clay: #a65e45;
   --gold: #a98048;
-  --grain-strength: 0.11;
+  --grain-strength: 0.13;
   --grain-rate: 840ms;
 }
 
@@ -28,7 +28,7 @@ button { font: inherit; }
 
 .background-grain {
   position: fixed;
-  z-index: 90;
+  z-index: 9999;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
@@ -38,8 +38,8 @@ button { font: inherit; }
   position: absolute;
   inset: -20%;
   background-image: var(--grain-url);
-  background-size: 512px 512px;
-  filter: contrast(2.4) brightness(0.72);
+  background-size: 1024px 1024px;
+  filter: contrast(2.55) brightness(0.7);
   mix-blend-mode: multiply;
   opacity: var(--grain-strength);
   animation: background-grain-shift var(--grain-rate) steps(1) infinite;
