@@ -1,0 +1,6 @@
+@import '../app/globals.css';
+
+html { scroll-behavior: smooth; }
+#root { min-height: 100dvh; }
+.site-header a { color: inherit; }
+@media (max-width: 760px) { .site-header { width: 100%; } }
