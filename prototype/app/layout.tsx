@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Lori, Found',
     description: 'Objects and stories from MEMO’s summer school',
-    images: [{ url: '/og.png', width: 1729, height: 910, alt: 'Lori, Found — six found-object illustrations on warm paper' }],
+    images: [{ url: '/og.png', width: 1729, height: 910, alt: 'Lori, Found — found-object illustrations on warm paper' }],
   },
   twitter: {
     card: 'summary_large_image',

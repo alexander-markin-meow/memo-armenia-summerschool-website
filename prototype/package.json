@@ -10,7 +10,8 @@
     "build": "vinext build",
     "build:pages": "vite build --config vite.pages.config.ts",
     "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern github-pages-dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern github-pages-dist --ignore-pattern .next",
+    "test": "node --experimental-strip-types --test lib/collage-layout.test.ts"
   },
   "dependencies": {
     "next": "16.2.6",

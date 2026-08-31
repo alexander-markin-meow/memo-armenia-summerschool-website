@@ -199,6 +199,182 @@ export const entries: MuseumEntry[] = [
       ),
     },
   },
+  {
+    slug: 'amber-glass-bead',
+    shape: 'button',
+    objectName: l('Amber glass bead', 'Սաթագույն ապակե ուլունք', 'Янтарная стеклянная бусина'),
+    location: l('Mets Ayrum, Lori', 'Մեծ Այրում, Լոռի', 'Мец Айрум, Лори'),
+    approximateDate: l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
+    context: l(
+      'A fictional amber-coloured bead, imagined as a small lens for stories about light and passing time.',
+      'Սաթագույն հորինված ուլունք՝ որպես լույսի և անցնող ժամանակի պատմությունների փոքր ոսպնյակ։',
+      'Вымышленная янтарная бусина — маленькая линза для историй о свете и проходящем времени.',
+    ),
+    project: {
+      title: l('The Light Between Steps', 'Լույսը քայլերի միջև', 'Свет между шагами'),
+      participant: l('Anush R.', 'Անուշ Ռ.', 'Ануш Р.'),
+      medium: 'photo',
+      introduction: l(
+        'A fictional photo sequence that follows a glint from a doorstep to an imagined hillside path.',
+        'Հորինված լուսաշարք, որը հետևում է փայլին՝ շեմքից մինչև երևակայական բլրի արահետ։',
+        'Вымышленная фотопоследовательность, которая ведёт за бликом от порога к воображаемой тропе на склоне.',
+      ),
+    },
+  },
+  {
+    slug: 'charcoal-rubbing',
+    shape: 'tile',
+    objectName: l('Charcoal rubbing', 'Ածխային դրոշմ', 'Угольный оттиск'),
+    location: l('Shnogh, Lori', 'Շնող, Լոռի', 'Шнох, Лори'),
+    approximateDate: l('c. 2010s — prototype date', 'մոտ 2010-ականներ — նախատիպային ամսաթիվ', 'ок. 2010-х — дата прототипа'),
+    context: l(
+      'A fictional paper rubbing that records no real inscription, only the pressure of a hand in a prototype exercise.',
+      'Հորինված թղթե դրոշմ, որը չի արձանագրում իրական գրություն, այլ միայն ձեռքի ճնշում նախատիպային փորձի մեջ։',
+      'Вымышленный бумажный оттиск без реальной надписи — только давление руки в прототипном упражнении.',
+    ),
+    project: {
+      title: l('Surface, Remembered', 'Հիշված մակերես', 'Поверхность в памяти'),
+      participant: l('Gor H.', 'Գոռ Հ.', 'Гор Х.'),
+      medium: 'text',
+      introduction: l(
+        'A fictional fragment about touch as a way of noticing what cannot be read aloud.',
+        'Հորինված հատված՝ շփման մասին՝ որպես այն նկատելու ձև, ինչը բարձրաձայն չի կարդացվում։',
+        'Вымышленный фрагмент о прикосновении как способе заметить то, что нельзя прочесть вслух.',
+      ),
+    },
+  },
+  {
+    slug: 'brass-keyhole-plate',
+    shape: 'metal',
+    objectName: l('Brass keyhole plate', 'Փականանցքի պղնձե թիթեղ', 'Латунная накладка от замочной скважины'),
+    location: l('Kurtan, Lori', 'Կուրթան, Լոռի', 'Куртан, Лори'),
+    approximateDate: l('c. 1960s — prototype date', 'մոտ 1960-ականներ — նախատիպային ամսաթիվ', 'ок. 1960-х — дата прототипа'),
+    context: l(
+      'A fictional brass plate offered as a prompt about thresholds without linking it to a real house or family.',
+      'Հորինված պղնձե թիթեղ՝ շեմերի մասին մտածելու առիթ, առանց այն կապելու իրական տան կամ ընտանիքի հետ։',
+      'Вымышленная латунная накладка как повод подумать о порогах, не связывая её с реальным домом или семьёй.',
+    ),
+    project: {
+      title: l('Who Kept the Door', 'Ով պահեց դուռը', 'Кто держал дверь'),
+      participant: l('Mika P.', 'Միկա Պ.', 'Мика П.'),
+      medium: 'video',
+      introduction: l(
+        'A fictional quiet film score built around openings, pauses, and the sound of an imagined latch.',
+        'Հորինված հանգիստ կինոէտյուդ՝ բացվածքների, դադարների և երևակայական փականի ձայնի շուրջ։',
+        'Вымышленный тихий киноэтюд об открытиях, паузах и звуке воображаемой защёлки.',
+      ),
+    },
+  },
+  {
+    slug: 'mossy-ceramic-chip',
+    shape: 'stone',
+    objectName: l('Mossy ceramic chip', 'Մամռապատ կերամիկական կտոր', 'Керамический осколок с мхом'),
+    location: l('Haghpat, Lori', 'Հաղպատ, Լոռի', 'Ахпат, Лори'),
+    approximateDate: l('c. 1980s — prototype date', 'մոտ 1980-ականներ — նախատիպային ամսաթիվ', 'ок. 1980-х — дата прототипа'),
+    context: l(
+      'A fictional ceramic chip whose mossy colour is a visual prompt, not a claim about a real excavation.',
+      'Հորինված կերամիկական կտոր, որի մամռագույնը տեսողական հուշում է, ոչ թե իրական պեղման մասին պնդում։',
+      'Вымышленный керамический осколок, чей мшистый цвет служит зрительной подсказкой, а не заявлением о раскопках.',
+    ),
+    project: {
+      title: l('Weather for a Fragment', 'Եղանակ բեկորի համար', 'Погода для фрагмента'),
+      participant: l('Lena V.', 'Լենա Վ.', 'Лена В.'),
+      medium: 'mixed',
+      introduction: l(
+        'A fictional collage of colour notes and weather words gathered around one imperfect edge.',
+        'Հորինված կոլաժ՝ գունային նշումներից և եղանակային բառերից՝ մեկ անկատար եզրի շուրջ։',
+        'Вымышленный коллаж из цветовых заметок и слов о погоде вокруг одного несовершенного края.',
+      ),
+    },
+  },
+  {
+    slug: 'paper-seed-envelope',
+    shape: 'tile',
+    objectName: l('Paper seed envelope', 'Թղթե սերմերի ծրար', 'Бумажный пакетик для семян'),
+    location: l('Vahagnadzor, Lori', 'Վահագնաձոր, Լոռի', 'Вահагнадзор, Лори'),
+    approximateDate: l('c. 2000s — prototype date', 'մոտ 2000-ականներ — նախատիպային ամսաթիվ', 'ок. 2000-х — дата прототипа'),
+    context: l(
+      'A fictional folded seed envelope that holds imagined names rather than real collected plants.',
+      'Հորինված ծալված սերմերի ծրար, որը պահում է երևակայական անուններ, ոչ թե իրական հավաքված բույսեր։',
+      'Вымышленный сложенный пакетик для семян с воображаемыми названиями, а не реальными собранными растениями.',
+    ),
+    project: {
+      title: l('Names for a Future Garden', 'Ապագա այգու անուններ', 'Названия для будущего сада'),
+      participant: l('Sirus M.', 'Սիրուս Մ.', 'Сирус М.'),
+      medium: 'text',
+      introduction: l(
+        'A fictional list-poem that lets unnamed seeds become a shared vocabulary for care.',
+        'Հորինված բանաստեղծական ցանկ, որտեղ անանուն սերմերը դառնում են խնամքի ընդհանուր բառապաշար։',
+        'Вымышленное стихотворение-список, в котором безымянные семена становятся общим словарём заботы.',
+      ),
+    },
+  },
+  {
+    slug: 'copper-wire-loop',
+    shape: 'spool',
+    objectName: l('Copper wire loop', 'Պղնձե լարի օղակ', 'Петля медной проволоки'),
+    location: l('Akhtala, Lori', 'Ախթալա, Լոռի', 'Ахтала, Лори'),
+    approximateDate: l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
+    context: l(
+      'A fictional loop of copper wire for thinking about circuits, repair, and routes that return.',
+      'Պղնձե լարի հորինված օղակ՝ շղթաների, վերանորոգման և վերադարձող ուղիների մասին մտածելու համար։',
+      'Вымышленная петля медной проволоки для размышления о цепях, ремонте и маршрутах, которые возвращаются.',
+    ),
+    project: {
+      title: l('A Circuit of Listening', 'Լսելու շղթա', 'Цепь слушания'),
+      participant: l('Ruben L.', 'Ռուբեն Լ.', 'Рубен Л.'),
+      medium: 'video',
+      introduction: l(
+        'A fictional sound-and-image study in which a line carries a question around a room.',
+        'Հորինված ձայնա-պատկերային ուսումնասիրություն, որտեղ գիծը հարց է տանում սենյակի շուրջ։',
+        'Вымышленное звуковое и визуальное исследование, в котором линия несёт вопрос по комнате.',
+      ),
+    },
+  },
+  {
+    slug: 'faded-bus-ticket',
+    shape: 'tile',
+    objectName: l('Faded bus ticket', 'Խունացած ավտոբուսի տոմս', 'Выцветший автобусный билет'),
+    location: l('Vanadzor, Lori', 'Վանաձոր, Լոռի', 'Ванадзор, Лори'),
+    approximateDate: l('c. 1990s — prototype date', 'մոտ 1990-ականներ — նախատիպային ամսաթիվ', 'ок. 1990-х — дата прототипа'),
+    context: l(
+      'A fictional ticket with invented routes and dates, used only to explore how a journey may be remembered.',
+      'Հորինված տոմս՝ երևակայական երթուղիներով և ամսաթվերով, որը ծառայում է միայն ճանապարհի հիշողությունն ուսումնասիրելուն։',
+      'Вымышленный билет с придуманными маршрутами и датами, нужный только для разговора о памяти путешествия.',
+    ),
+    project: {
+      title: l('Last Stop, First Story', 'Վերջին կանգառ, առաջին պատմություն', 'Конечная, первая история'),
+      participant: l('Eva T.', 'Եվա Տ.', 'Ева Т.'),
+      medium: 'photo',
+      introduction: l(
+        'A fictional image essay assembled from windows, waiting places, and routes that do not appear on a map.',
+        'Հորինված պատկերային էսսե՝ պատուհաններից, սպասման վայրերից և քարտեզում չերևացող երթուղիներից։',
+        'Вымышленное фотоэссе из окон, мест ожидания и маршрутов, которых нет на карте.',
+      ),
+    },
+  },
+  {
+    slug: 'dried-apple-slice',
+    shape: 'leaf',
+    objectName: l('Dried apple slice', 'Չորացրած խնձորի շերտ', 'Сушёная долька яблока'),
+    location: l('Pambak, Lori', 'Փամբակ, Լոռի', 'Памбак, Лори'),
+    approximateDate: l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),
+    context: l(
+      'A fictional dried apple slice, offered as an ordinary seasonal marker rather than a documented food history.',
+      'Չորացրած խնձորի հորինված շերտ՝ որպես սովորական սեզոնային նշան, ոչ թե սննդի փաստագրված պատմություն։',
+      'Вымышленная сушёная долька яблока как простой сезонный знак, а не документальная история еды.',
+    ),
+    project: {
+      title: l('A Season Kept in Paper', 'Թղթում պահված եղանակ', 'Сезон, сохранённый в бумаге'),
+      participant: l('Mariam O.', 'Մարիամ Օ.', 'Мариам О.'),
+      medium: 'mixed',
+      introduction: l(
+        'A fictional exchange of recipes, colour swatches, and remembered conversations about autumn.',
+        'Հորինված փոխանակում՝ բաղադրատոմսերի, գունային նմուշների և աշնան մասին հիշվող զրույցների։',
+        'Вымышленный обмен рецептами, цветовыми образцами и запомнившимися разговорами об осени.',
+      ),
+    },
+  },
 ];
 
 export const isLocale = (value: string): value is Locale => locales.includes(value as Locale);

@@ -1,6 +1,6 @@
 # Replacing prototype content safely
 
-The current six entries are fictional. Do not partially rewrite them as if they were verified records.
+The current fourteen entries are fictional. Do not partially rewrite them as if they were verified records.
 
 ## Before adding a real entry
 

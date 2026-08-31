@@ -1,4 +1,4 @@
-The prototype will be a small, public, trilingual digital museum with three working views: a warm, randomized collection of non-overlapping placeholder objects, an object-first project page, and a filterable catalogue. It will use six fictional object/project pairs made from simple CSS shapes, demonstrate the complete visitor flow on phone and desktop, and keep the content easy to replace later with real photographs, text, galleries, and video.
+The prototype will be a small, public, trilingual digital museum with three working views: a warm, randomized collection of non-overlapping placeholder objects, an object-first project page, and a filterable catalogue. It uses fourteen fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
@@ -17,7 +17,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 ### Visual collection (`/:lang`)
 
-- A full-viewport, light and warm field containing six irregular placeholder objects.
+- A light and warm free-form field containing fourteen irregular placeholder objects. Desktop keeps the whole collection in view; narrow screens use a taller scrollable field.
 - Objects are CSS shapes rather than photographs: a button, a stone, a metal fragment, a leaf, a tile shard, and a thread spool.
 - Every new browser session gets a newly shuffled composition.
 - Objects never overlap, remain inside safe screen margins, and reflow at mobile, tablet, and desktop sizes.
@@ -38,7 +38,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 ### Structured catalogue (`/:lang/catalogue`)
 
-- The same six pairs displayed in a calm responsive list/grid.
+- The same fourteen pairs displayed in a calm responsive list/grid.
 - Filters for location, object type, and project medium.
 - Filters combine with AND logic; “All” resets each group.
 - The current filter state is stored in the URL query string, so a view can be shared or refreshed.
@@ -111,22 +111,21 @@ The `sensitivity` field is included now so real material cannot accidentally be 
 
 The scattered layout is the only custom technical feature and will be kept deterministic enough to test:
 
-1. On first visit, create a random seed and store it in `sessionStorage`.
-2. Derive object order, rotation, scale, and placement candidates from that seed.
-3. Divide the usable viewport into a responsive grid of safe cells, reserve the menu area, and assign at most one object to each cell.
-4. Add bounded x/y jitter inside each cell for a natural composition while maintaining a minimum gap.
-5. Recalculate cell geometry at responsive breakpoints; debounce ordinary window resizing.
-6. Keep the session seed so returning from a project restores the same arrangement. A full new session produces a fresh shuffle.
-7. If JavaScript is unavailable or the viewport is unusually small, fall back to a simple non-overlapping CSS grid.
+1. On first landing-page load, create a random seed and store it in `sessionStorage`; a hard refresh starts a fresh composition.
+2. Use the seed to derive each object’s rotation, scale, and many continuous placement candidates inside a collision-safe canvas.
+3. Place larger objects first and score candidates for distance, edge safety, broad coverage, negative space, and avoidance of obvious rows, columns, symmetry, and dense clusters.
+4. Reserve the header and the prototype notice; labels and link hit areas never overlap, while visual shapes have no more than a tiny optional overlap allowance.
+5. Recalculate from the same seed on resize. Narrow screens expand vertically so labels and touch targets remain legible.
+6. If an unusually narrow canvas cannot fit a composition, reduce scale and spacing before extending the canvas rather than clipping or colliding objects.
 
-For six objects this cell-and-jitter method is more reliable than real-time collision physics, easier to test, and visually chaotic enough. The layout helper will be independent from the shape renderer so later cut-out images can replace the CSS shapes without changing placement logic.
+The focused layout helper is independent from the shape renderer and shared with the GitHub Pages build, so later cut-out images can replace CSS shapes without duplicating placement logic.
 
 ## 5. Visual system
 
 - **Palette:** parchment background, charcoal text, muted clay, mineral green, oxidized blue, and rust accents.
 - **Typography:** a readable variable sans-serif that supports Latin, Armenian, and Cyrillic; one locally served family to avoid script mismatch and third-party font tracking.
 - **Objects:** irregular CSS shapes with subtle inner texture, soft contact shadows, and slight rotations. They are placeholders, not attempts to imitate archaeological artefacts.
-- **Grain:** a tiny locally stored texture applied as a low-opacity fixed overlay with `pointer-events: none`; disabled in high-contrast mode.
+- **Grain:** a large high-resolution animated texture applied as a low-opacity fixed top layer with `pointer-events: none`; reduced motion disables the animation.
 - **Motion:** short fades and gentle object lift only. `prefers-reduced-motion` removes reshuffle transitions and movement.
 - **Spacing:** generous reading width on project pages; catalogue uses a quieter regular rhythm to contrast with the collection.
 
@@ -161,7 +160,7 @@ For the prototype, all interface and fictional content will be translated into E
 
 ### Phase 2 — Complete visitor flow (2–3 days)
 
-- Finish all six placeholder shapes and responsive non-overlap layout.
+- Finish the fourteen placeholder entries and responsive non-overlap layout.
 - Build the reusable object-first project page, gallery, deferred video, and return-state behavior.
 - Add the catalogue and URL-based filters.
 
@@ -193,7 +192,7 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 The prototype is ready for review when:
 
-- six fictional objects appear in a fresh, non-overlapping composition on each new session;
+- fourteen fictional objects appear in a fresh, non-overlapping composition on each new session;
 - every object opens the correct object-first project page;
 - returning to the collection preserves the visitor’s arrangement;
 - catalogue filters work together and survive refresh through the URL;
@@ -213,4 +212,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-Approval of this plan means the first build will use the provisional **Lori, Found** identity, six fictional CSS-shape entries, the three routes and three languages described above, and a static Cloudflare Pages deployment. Naming, real content, and the final public-source decision remain review points rather than blockers for the prototype.
+The current redesign keeps the provisional **Lori, Found** identity, fourteen fictional CSS-shape entries, the three routes and three languages described above, and a static Cloudflare Pages deployment. Naming and real content remain review points rather than blockers for the prototype.

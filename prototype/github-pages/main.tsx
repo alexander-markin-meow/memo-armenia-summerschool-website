@@ -1,7 +1,8 @@
-import { StrictMode, useEffect, useState, type CSSProperties, type FormEvent } from 'react';
+import { StrictMode, useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Shape } from '@/components/Shape';
 import { GrainLayer } from '@/components/GrainLayer';
+import { createCollageLayout, type CollageLayout } from '@/lib/collage-layout';
 import { entries, isLocale, mediumLabel, text, ui, type Locale, type Medium } from '@/lib/content';
 import './pages.css';
 
@@ -37,50 +38,43 @@ function Header({ route }: { route: Route }) {
   </header>;
 }
 
-function mulberry32(seed: number) {
-  return () => {
-    let value = (seed += 0x6d2b79f5);
-    value = Math.imul(value ^ value >>> 15, value | 1);
-    value ^= value + Math.imul(value ^ value >>> 7, value | 61);
-    return ((value ^ value >>> 14) >>> 0) / 4294967296;
-  };
-}
-
-function placements(seed: number, width: number) {
-  const columns = width < 700 ? 2 : width < 1100 ? 3 : 4;
-  const rows = width < 700 ? 3 : 2;
-  const random = mulberry32(seed + columns * 101);
-  const slots = Array.from({ length: columns * rows }, (_, index) => index);
-  for (let index = slots.length - 1; index; index--) {
-    const swap = Math.floor(random() * (index + 1));
-    [slots[index], slots[swap]] = [slots[swap], slots[index]];
-  }
-  return slots.slice(0, 6).map((slot) => ({
-    column: slot % columns + 1,
-    row: Math.floor(slot / columns) + 1,
-    rotation: random() * 24 - 12,
-    scale: .9 + random() * .18,
-    dx: random() * 14 - 7,
-    dy: random() * 12 - 6,
-  }));
-}
-
 function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }) {
-  const [layout, setLayout] = useState<ReturnType<typeof placements>>([]);
+  const field = useRef<HTMLElement>(null);
+  const [layout, setLayout] = useState<CollageLayout | null>(null);
   useEffect(() => {
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const stored = sessionStorage.getItem('lori-collection-seed');
-    const seed = stored ? Number(stored) : crypto.getRandomValues(new Uint32Array(1))[0];
+    const seed = stored && navigation?.type !== 'reload' ? Number(stored) : crypto.getRandomValues(new Uint32Array(1))[0];
     sessionStorage.setItem('lori-collection-seed', String(seed));
-    const update = () => setLayout(placements(seed, innerWidth));
-    update(); addEventListener('resize', update);
-    return () => removeEventListener('resize', update);
+
+    const update = () => {
+      const width = field.current?.getBoundingClientRect().width;
+      if (!width) return;
+      setLayout(createCollageLayout(seed, entries.map((entry) => ({ id: entry.slug, shape: entry.shape })), Math.floor(width), innerHeight));
+    };
+    update();
+    let timeout = 0;
+    const onResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(update, 120);
+    };
+    addEventListener('resize', onResize);
+    return () => { clearTimeout(timeout); removeEventListener('resize', onResize); };
   }, []);
   return <main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
-    <section className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout.length ? 'true' : 'false'}>
+    <section ref={field} className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
       {entries.map((entry, index) => {
-        const place = layout[index];
-        const style: CSSProperties | undefined = place ? { gridColumn: place.column, gridRow: place.row, transform: `translate(${place.dx}%, ${place.dy}%) rotate(${place.rotation}deg) scale(${place.scale})` } : undefined;
-        return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug}><Shape name={entry.shape} /><span className="object-label"><b>{String(index + 1).padStart(2, '0')} — {text(entry.objectName, route.locale)}</b><small>{text(entry.project.title, route.locale)}</small></span></a>;
+        const place = layout?.placements[index];
+        const style: CSSProperties | undefined = place ? {
+          left: place.x,
+          top: place.y,
+          width: place.width,
+          height: place.height,
+          '--shape-width': `${place.shapeWidth}px`,
+          '--shape-height': `${place.shapeHeight}px`,
+          '--shape-rotation': `${place.rotation}deg`,
+        } as CSSProperties : undefined;
+        return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug} aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}><Shape name={entry.shape} /><span className="object-label"><b>{String(index + 1).padStart(2, '0')} — {text(entry.objectName, route.locale)}</b><small className="object-project">{text(entry.project.title, route.locale)}</small></span></a>;
       })}
     </section>
   </main>;
