@@ -48,6 +48,16 @@ test('varies object scales within each seeded composition', () => {
   }
 });
 
+test('uses a modest size lift on wide desktops without changing mobile density', () => {
+  for (const seed of seeds) {
+    const intermediate = createCollageLayout(seed, objects, 1024, 900);
+    const wide = createCollageLayout(seed, objects, 1440, 900);
+    const intermediateAverage = intermediate.placements.reduce((total, item) => total + item.scale, 0) / objects.length;
+    const wideAverage = wide.placements.reduce((total, item) => total + item.scale, 0) / objects.length;
+    assert.ok(wideAverage > intermediateAverage * 1.06, `${seed}: wide-screen composition was not enlarged enough`);
+  }
+});
+
 test('keeps distribution broad and uses a taller canvas on narrow screens', () => {
   for (const seed of seeds) {
     const mobile = createCollageLayout(seed, objects, 360, 720);

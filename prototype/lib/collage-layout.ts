@@ -77,6 +77,7 @@ function itemDimensions(
   random: () => number,
   fallback: number,
   mobile: boolean,
+  wide: boolean,
   clusterSize: number,
 ) {
   const source = SHAPES[item.shape];
@@ -84,7 +85,9 @@ function itemDimensions(
   const prominence = mobile
     ? [1, 0.46, 0.2, 0.38, 0.25][clusterRole] ?? 0.28
     : 1 - order / Math.max(1, count - 1);
-  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? 0.58 : count > 10 ? 0.79 : 1;
+  // Thirty objects need a compact desktop treatment, but wide canvases have enough room
+  // for a small scale lift without compromising the protected label and hit-area spacing.
+  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? wide ? 0.63 : 0.58 : count > 10 ? 0.79 : 1;
   const fallbackScale = 1 - fallback * 0.065;
   const scaleJitter = 0.84 + random() * 0.32;
   const minimumScale = mobile ? 0.42 : count > 20 ? 0.36 : 0.42;
@@ -156,6 +159,7 @@ function scoreCandidate(
 function makeAttempt(seed: number, items: CollageItem[], width: number, height: number, fallback: number): CollagePlacement[] | null {
   const random = mulberry32(seed + fallback * 104729);
   const mobile = width < 520;
+  const wide = width >= 1200;
   const clusterRandom = mulberry32(seed + fallback * 1327);
   const clusterCount = mobile ? Math.min(6, Math.ceil(items.length / 4)) : 4;
   const mobileClusterY = Array.from({ length: clusterCount }, (_, index) => {
@@ -168,7 +172,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
       item,
       index,
       cluster: Math.min(Math.floor(index / clusterSize), clusterCount - 1),
-      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile, clusterSize),
+      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile, wide, clusterSize),
     }))
     .sort((a, b) => (b.dimensions.shapeWidth * b.dimensions.shapeHeight) - (a.dimensions.shapeWidth * a.dimensions.shapeHeight));
   const placed: Array<CollagePlacement & { rect: Rect }> = [];
