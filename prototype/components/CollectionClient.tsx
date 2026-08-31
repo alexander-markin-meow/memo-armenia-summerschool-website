@@ -43,6 +43,7 @@ export function CollectionClient({ entries, locale }: { entries: MuseumEntry[]; 
       <CollectionIntro locale={locale} />
       <section
         ref={field}
+        id="objects"
         className="object-field"
         aria-label={text(ui.collection, locale)}
         data-ready={layout ? 'true' : 'false'}

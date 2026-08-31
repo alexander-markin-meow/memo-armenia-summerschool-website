@@ -66,8 +66,8 @@ function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }
     addEventListener('resize', onResize);
     return () => { clearTimeout(timeout); removeEventListener('resize', onResize); };
   }, []);
-  return <><CollectionIntro locale={route.locale} /><main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
-    <section ref={field} className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
+  return <><main className="collection-shell" id="main"><Header route={route} /><CollectionIntro locale={route.locale} />
+    <section ref={field} id="objects" className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
       {entries.map((entry, index) => {
         const place = layout?.placements[index];
         const style: CSSProperties | undefined = place ? {

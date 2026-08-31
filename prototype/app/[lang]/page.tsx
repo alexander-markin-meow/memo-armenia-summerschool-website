@@ -25,7 +25,6 @@ export default async function CollectionPage({ params }: Props) {
     <main className="collection-shell" id="main">
       <LocaleSync locale={lang} />
       <SiteHeader locale={lang} view="collection" />
-      <p className="prototype-badge">{text(ui.prototype, lang)}</p>
       <CollectionClient entries={entries} locale={lang} />
     </main>
     <SiteFooter locale={lang} />
