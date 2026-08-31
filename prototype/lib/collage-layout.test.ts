@@ -50,7 +50,7 @@ test('varies object scales within each seeded composition', () => {
   for (const seed of seeds) {
     const layout = createCollageLayout(seed, objects, 1440, 900);
     const scales = layout.placements.map((item) => item.scale);
-    assert.ok(Math.max(...scales) - Math.min(...scales) > 0.16, `${seed}: object scale range is too narrow`);
+    assert.ok(Math.max(...scales) - Math.min(...scales) > 0.2, `${seed}: object scale range is too narrow`);
   }
 });
 

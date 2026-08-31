@@ -1,7 +1,7 @@
 export const locales = ['en', 'hy', 'ru'] as const;
 export type Locale = (typeof locales)[number];
 export type LocalizedText = Record<Locale, string>;
-export type ShapeName = 'button' | 'stone' | 'metal' | 'leaf' | 'tile' | 'spool';
+export type ShapeName = 'button' | 'stone' | 'metal' | 'leaf' | 'tile' | 'spool' | 'bead' | 'paper' | 'ribbon' | 'ring' | 'shard';
 export type Medium = 'text' | 'photo' | 'video' | 'mixed';
 
 export type MuseumEntry = {
@@ -107,7 +107,7 @@ export const ui = {
 export const entries: MuseumEntry[] = [
   {
     slug: 'blue-coat-button',
-    shape: 'button',
+    shape: 'bead',
     objectName: l('Blue coat button', 'Կապույտ վերարկուի կոճակ', 'Пуговица от синего пальто'),
     location: l('Dsegh, Lori', 'Դսեղ, Լոռի', 'Дсех, Лори'),
     approximateDate: l('c. 1990s — prototype date', 'մոտ 1990-ականներ — նախատիպային ամսաթիվ', 'ок. 1990-х — дата прототипа'),
@@ -195,7 +195,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'green-glazed-tile-shard',
-    shape: 'tile',
+    shape: 'paper',
     objectName: l('Green glazed tile shard', 'Կանաչ ջնարակապատ սալիկի բեկոր', 'Фрагмент зелёной глазурованной плитки'),
     location: l('Tumanyan, Lori', 'Թումանյան, Լոռի', 'Туманян, Лори'),
     approximateDate: l('c. 1980s — prototype date', 'մոտ 1980-ականներ — նախատիպային ամսաթիվ', 'ок. 1980-х — дата прототипа'),
@@ -283,7 +283,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'brass-keyhole-plate',
-    shape: 'metal',
+    shape: 'shard',
     objectName: l('Brass keyhole plate', 'Փականանցքի պղնձե թիթեղ', 'Латунная накладка от замочной скважины'),
     location: l('Kurtan, Lori', 'Կուրթան, Լոռի', 'Куртан, Лори'),
     approximateDate: l('c. 1960s — prototype date', 'մոտ 1960-ականներ — նախատիպային ամսաթիվ', 'ок. 1960-х — дата прототипа'),
@@ -327,7 +327,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'paper-seed-envelope',
-    shape: 'tile',
+    shape: 'paper',
     objectName: l('Paper seed envelope', 'Թղթե սերմերի ծրար', 'Бумажный пакетик для семян'),
     location: l('Vahagnadzor, Lori', 'Վահագնաձոր, Լոռի', 'Вահагнадзор, Лори'),
     approximateDate: l('c. 2000s — prototype date', 'մոտ 2000-ականներ — նախատիպային ամսաթիվ', 'ок. 2000-х — дата прототипа'),
@@ -349,7 +349,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'copper-wire-loop',
-    shape: 'spool',
+    shape: 'ring',
     objectName: l('Copper wire loop', 'Պղնձե լարի օղակ', 'Петля медной проволоки'),
     location: l('Akhtala, Lori', 'Ախթալա, Լոռի', 'Ахтала, Лори'),
     approximateDate: l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -371,7 +371,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'faded-bus-ticket',
-    shape: 'tile',
+    shape: 'paper',
     objectName: l('Faded bus ticket', 'Խունացած ավտոբուսի տոմս', 'Выцветший автобусный билет'),
     location: l('Vanadzor, Lori', 'Վանաձոր, Լոռի', 'Ванадзор, Лори'),
     approximateDate: l('c. 1990s — prototype date', 'մոտ 1990-ականներ — նախատիպային ամսաթիվ', 'ок. 1990-х — дата прототипа'),
@@ -393,7 +393,7 @@ export const entries: MuseumEntry[] = [
   },
   {
     slug: 'dried-apple-slice',
-    shape: 'leaf',
+    shape: 'shard',
     objectName: l('Dried apple slice', 'Չորացրած խնձորի շերտ', 'Сушёная долька яблока'),
     location: l('Pambak, Lori', 'Փամբակ, Լոռի', 'Памбак, Лори'),
     approximateDate: l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),
@@ -414,7 +414,7 @@ export const entries: MuseumEntry[] = [
     },
   },
   fictionalEntry(
-    'weathered-matchbook', 'tile',
+    'weathered-matchbook', 'paper',
     l('Weathered matchbook', 'Մաշված լուցկու տուփ', 'Потёртый коробок спичек'),
     l('Sarchapet, Lori', 'Սարչապետ, Լոռի', 'Сарчапет, Лори'),
     l('c. 1990s — prototype date', 'մոտ 1990-ականներ — նախատիպային ամսաթիվ', 'ок. 1990-х — дата прототипа'),
@@ -423,7 +423,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional note about the rituals that make a room feel occupied.', 'Հորինված գրառում այն ծեսերի մասին, որոնք սենյակը կենդանի են դարձնում։', 'Вымышленная заметка о ритуалах, которые делают комнату обжитой.'),
   ),
   fictionalEntry(
-    'blue-enamel-cap', 'button',
+    'blue-enamel-cap', 'bead',
     l('Blue enamel cap', 'Կապույտ էմալե կափարիչ', 'Синяя эмалированная крышка'),
     l('Lernapat, Lori', 'Լեռնապատ, Լոռի', 'Лернапaт, Лори'),
     l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -432,7 +432,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional photo study of blue surfaces, jars, and borrowed containers.', 'Հորինված լուսանկարչական ուսումնասիրություն՝ կապույտ մակերեսների, բանկաների և փոխառված տարաների մասին։', 'Вымышленное фотонаблюдение за синими поверхностями, банками и одолженными ёмкостями.'),
   ),
   fictionalEntry(
-    'twine-knot', 'spool',
+    'twine-knot', 'ribbon',
     l('Twine knot', 'Թելի հանգույց', 'Узел бечёвки'),
     l('Bazum, Lori', 'Բազում, Լոռի', 'Базум, Лори'),
     l('c. 2000s — prototype date', 'մոտ 2000-ականներ — նախատիպային ամսաթիվ', 'ок. 2000-х — дата прототипа'),
@@ -450,7 +450,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional page that leaves its most important lines at the edge.', 'Հորինված էջ, որը կարևոր տողերը թողնում է եզրին։', 'Вымышленная страница, оставляющая самые важные строки на полях.'),
   ),
   fictionalEntry(
-    'nickel-washer', 'metal',
+    'nickel-washer', 'ring',
     l('Nickel washer', 'Նիկելե օղակ', 'Никелевая шайба'),
     l('Gugark, Lori', 'Գուգարք, Լոռի', 'Гугарк, Лори'),
     l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -459,7 +459,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional close-up film of circles, tools, and interrupted work.', 'Հորինված խոշոր պլանով ֆիլմ՝ շրջանների, գործիքների և ընդհատված աշխատանքի մասին։', 'Вымышленный крупноплановый фильм о кругах, инструментах и прерванной работе.'),
   ),
   fictionalEntry(
-    'violet-bottle-fragment', 'metal',
+    'violet-bottle-fragment', 'shard',
     l('Violet bottle fragment', 'Մանուշակագույն շշի բեկոր', 'Фрагмент фиолетовой бутылки'),
     l('Fioletovo, Lori', 'Ֆիոլետովո, Լոռի', 'Фиолетово, Лори'),
     l('c. 1980s — prototype date', 'մոտ 1980-ականներ — նախատիպային ամսաթիվ', 'ок. 1980-х — дата прототипа'),
@@ -468,7 +468,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional sequence in which one colour changes a room by degrees.', 'Հորինված շարք, որտեղ մեկ գույն աստիճանաբար փոխում է սենյակը։', 'Вымышленная серия, в которой один цвет постепенно меняет комнату.'),
   ),
   fictionalEntry(
-    'paper-map-corner', 'tile',
+    'paper-map-corner', 'paper',
     l('Paper map corner', 'Թղթե քարտեզի անկյուն', 'Уголок бумажной карты'),
     l('Tashir, Lori', 'Տաշիր, Լոռի', 'Ташир, Лори'),
     l('c. 2010s — prototype date', 'մոտ 2010-ականներ — նախատիպային ամսաթիվ', 'ок. 2010-х — дата прототипа'),
@@ -477,7 +477,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional assemblage of detours, folded paper, and directions withheld.', 'Հորինված համադրություն՝ շրջանցումներից, ծալված թղթից և չասված ուղղություններից։', 'Вымышленная композиция из объездов, сложенной бумаги и невыданных направлений.'),
   ),
   fictionalEntry(
-    'apricot-pit', 'stone',
+    'apricot-pit', 'bead',
     l('Apricot pit', 'Ծիրանի կորիզ', 'Абрикосовая косточка'),
     l('Shirakamut, Lori', 'Շիրակամուտ, Լոռի', 'Ширакаму́т, Лори'),
     l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),
@@ -486,7 +486,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional miniature about fruit, shade, and the small measures of a day.', 'Հորինված մանրապատում՝ մրգի, ստվերի և օրվա փոքր չափումների մասին։', 'Вымышленная миниатюра о фруктах, тени и малых мерах дня.'),
   ),
   fictionalEntry(
-    'chalk-line-sample', 'tile',
+    'chalk-line-sample', 'paper',
     l('Chalk line sample', 'Կավճե գծի նմուշ', 'Образец меловой линии'),
     l('Saramej, Lori', 'Սարամեջ, Լոռի', 'Сарамедж, Лори'),
     l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -513,7 +513,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional photo essay about surfaces that almost hold a reflection.', 'Հորինված ֆոտոէսսե՝ մակերեսների մասին, որոնք գրեթե պահում են արտացոլանքը։', 'Вымышленное фотоэссе о поверхностях, которые почти удерживают отражение.'),
   ),
   fictionalEntry(
-    'plum-thread-skein', 'spool',
+    'plum-thread-skein', 'ribbon',
     l('Plum thread skein', 'Սալորագույն թելի կծիկ', 'Моток сливовой нити'),
     l('Lermontovo, Lori', 'Լերմոնտովո, Լոռի', 'Лермонтово, Лори'),
     l('c. 2010s — prototype date', 'մոտ 2010-ականներ — նախատիպային ամսաթիվ', 'ок. 2010-х — дата прототипа'),
@@ -531,7 +531,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional prose fragment about fastening, removing, and leaving a trace.', 'Հորինված արձակ հատված՝ ամրացնելու, հանելու և հետք թողնելու մասին։', 'Вымышленный прозаический фрагмент о закреплении, извлечении и оставленном следе.'),
   ),
   fictionalEntry(
-    'woven-fabric-patch', 'leaf',
+    'woven-fabric-patch', 'ribbon',
     l('Woven fabric patch', 'Գործվածքի կտոր', 'Тканая заплата'),
     l('Dzoraget, Lori', 'Ձորագետ, Լոռի', 'Дзорагет, Лори'),
     l('c. 1980s — prototype date', 'մոտ 1980-ականներ — նախատիպային ամսաթիվ', 'ок. 1980-х — дата прототипа'),
@@ -540,7 +540,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional set of close images that follows threads across changing light.', 'Հորինված խոշոր պլանների շարք, որը հետևում է թելերին փոփոխվող լույսի մեջ։', 'Вымышленная серия крупных планов, следящая за нитями в меняющемся свете.'),
   ),
   fictionalEntry(
-    'mirror-backing', 'metal',
+    'mirror-backing', 'shard',
     l('Mirror backing', 'Հայելու թիկունք', 'Оборотная сторона зеркала'),
     l('Vardablur, Lori', 'Վարդաբլուր, Լոռի', 'Вардаблур, Лори'),
     l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -549,7 +549,7 @@ export const entries: MuseumEntry[] = [
     l('A fictional film of glints, backs of objects, and deliberately missed portraits.', 'Հորինված ֆիլմ՝ փայլերի, առարկաների թիկունքների և միտումնավոր բաց թողնված դիմանկարների մասին։', 'Вымышленный фильм о бликах, оборотах предметов и намеренно пропущенных портретах.'),
   ),
   fictionalEntry(
-    'folded-note', 'tile',
+    'folded-note', 'paper',
     l('Folded note', 'Ծալված գրություն', 'Сложенная записка'),
     l('Katnaghbyur, Lori', 'Կաթնաղբյուր, Լոռի', 'Катнахбюр, Лори'),
     l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),

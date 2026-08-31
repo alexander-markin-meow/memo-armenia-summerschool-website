@@ -30,6 +30,11 @@ const SHAPES: Record<ShapeName, { width: number; height: number }> = {
   leaf: { width: 112, height: 164 },
   tile: { width: 144, height: 128 },
   spool: { width: 118, height: 142 },
+  bead: { width: 118, height: 118 },
+  paper: { width: 154, height: 116 },
+  ribbon: { width: 156, height: 82 },
+  ring: { width: 126, height: 126 },
+  shard: { width: 142, height: 132 },
 };
 
 const DESKTOP_LABEL_HEIGHT = 54;
@@ -78,7 +83,7 @@ function compositionZones(width: number, height: number, itemCount: number, mobi
   // Desktop zones carry two objects; mobile gives every object its own vertical territory
   // so touch targets remain clear without creating a long empty field.
   const zoneCount = Math.ceil(itemCount / (mobile ? 1 : 2));
-  const columns = mobile ? 2 : width < 900 ? 3 : 5;
+  const columns = width < 300 ? 1 : mobile ? 2 : width < 900 ? 3 : 5;
   const rows = Math.ceil(zoneCount / columns);
   const zoneWidth = width / columns;
   const zoneHeight = height / rows;
@@ -122,9 +127,10 @@ function itemDimensions(
     ? [1, 0.46, 0.2, 0.38, 0.25][order % 5] ?? 0.28
     : 1 - order / Math.max(1, count - 1);
   // Wide laptop and desktop canvases deliberately give the collection a stronger physical presence.
-  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? wide ? 0.86 : 0.64 : count > 10 ? 0.79 : 1;
+  const densityScale = mobile ? count > 20 ? 0.78 : 0.9 : count > 20 ? wide ? 0.94 : 0.7 : count > 10 ? 0.86 : 1.06;
   const fallbackScale = 1 - fallback * 0.065;
-  const scaleJitter = 0.84 + random() * 0.32;
+  // Every seed keeps a restrained per-object size variation rather than repeating one scale.
+  const scaleJitter = 0.88 + random() * 0.28;
   const minimumScale = mobile ? 0.42 : count > 20 ? 0.36 : 0.42;
   const scale = clamp((0.64 + prominence * 0.28) * densityScale * fallbackScale * scaleJitter, minimumScale, 1.08);
   const shapeWidth = Math.round(source.width * scale);
