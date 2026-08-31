@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description: 'A prototype digital museum of objects and participant projects from Lori, Armenia.',
   openGraph: {
     title: 'Lost and Found: Lori, Armenia',
-    description: 'Objects and stories from MEMO’s summer school',
+    description: 'Objects and stories from the “person in history” summer school',
     images: [{ url: '/og.png', width: 1729, height: 910, alt: 'Lost and Found: Lori, Armenia — found-object illustrations on warm paper' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lost and Found: Lori, Armenia',
-    description: 'Objects and stories from MEMO’s summer school',
+    description: 'Objects and stories from the “person in history” summer school',
     images: ['/og.png'],
   },
 };

@@ -1,6 +1,6 @@
-# MEMO Armenia summer school museum
+# person in history — Lori digital museum prototype
 
-Prototype digital museum based on MEMO’s summer school in the Lori region of Armenia.
+Prototype digital museum based on the “person in history” summer school in the Lori region of Armenia.
 
 The site implementation is in [`prototype/`](prototype/). The scope and technical decisions live in [PROTOTYPE_PLAN.md](PROTOTYPE_PLAN.md), and the safe content-replacement process lives in [CONTENT_GUIDE.md](CONTENT_GUIDE.md).
 
