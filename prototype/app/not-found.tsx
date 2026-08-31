@@ -6,7 +6,7 @@ export default function NotFound() {
   return <>
     <SkipLink locale="en" />
     <main className="not-found" id="main" lang="en" tabIndex={-1}>
-      <p className="eyebrow">Lost and Found: Lori, Armenia · 404</p>
+      <p className="eyebrow">Lost and Found: Pokr Ayrum · 404</p>
       <h1>This object or project was not found.</h1>
       <Link href="/en">← Back to collection</Link>
     </main>

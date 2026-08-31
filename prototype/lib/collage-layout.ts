@@ -85,9 +85,8 @@ function itemDimensions(
   const prominence = mobile
     ? [1, 0.46, 0.2, 0.38, 0.25][clusterRole] ?? 0.28
     : 1 - order / Math.max(1, count - 1);
-  // Thirty objects need a compact desktop treatment, but wide canvases have enough room
-  // for a small scale lift without compromising the protected label and hit-area spacing.
-  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? wide ? 0.63 : 0.58 : count > 10 ? 0.79 : 1;
+  // Wide laptop and desktop canvases deliberately give the collection a stronger physical presence.
+  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? wide ? 0.86 : 0.64 : count > 10 ? 0.79 : 1;
   const fallbackScale = 1 - fallback * 0.065;
   const scaleJitter = 0.84 + random() * 0.32;
   const minimumScale = mobile ? 0.42 : count > 20 ? 0.36 : 0.42;
@@ -112,7 +111,7 @@ function scoreCandidate(
   candidate: Rect,
   placed: Rect[],
   canvas: { width: number; height: number },
-  minimumGap: number,
+  maximumOverlapRatio: number,
   mobileClusterY?: number,
 ) {
   const centreX = candidate.x + candidate.width / 2;
@@ -122,9 +121,13 @@ function scoreCandidate(
   let rowPenalty = 0;
   let columnPenalty = 0;
   let symmetryPenalty = 0;
+  let overlapScore = 0;
 
   for (const current of placed) {
-    if (overlapArea(candidate, current) > 0) return Number.NEGATIVE_INFINITY;
+    const overlap = overlapArea(candidate, current);
+    const smallerArea = Math.min(candidate.width * candidate.height, current.width * current.height);
+    if (overlap > smallerArea * maximumOverlapRatio) return Number.NEGATIVE_INFINITY;
+    overlapScore += overlap / smallerArea;
     const currentDistance = distance(candidate, current);
     nearest = Math.min(nearest, currentDistance);
     const currentX = current.x + current.width / 2;
@@ -138,7 +141,6 @@ function scoreCandidate(
   }
 
   const edgeDistance = Math.min(candidate.x, candidate.y, canvas.width - candidate.x - candidate.width, canvas.height - candidate.y - candidate.height);
-  const density = placed.length ? nearest / Math.max(minimumGap, 1) : 1.5;
   const edgeScore = clamp(edgeDistance / 58, 0, 1);
   const centrality = Math.hypot(centreX - canvas.width / 2, centreY - canvas.height / 2) / diagonal;
 
@@ -152,8 +154,12 @@ function scoreCandidate(
     return spacingScore * 2.3 + clusterScore * 2.8 + edgeScore * 0.45 - rowPenalty * 0.45 - columnPenalty * 0.8 - symmetryPenalty;
   }
 
-  // A small centre preference avoids a large accidental empty desert without building rows or columns.
-  return density * 3.8 + edgeScore * 0.8 + (1 - centrality) * 0.35 - rowPenalty - columnPenalty - symmetryPenalty * 0.9;
+  // Prefer a close, layered field instead of turning objects into an evenly spaced grid.
+  const desiredSpacing = Math.max(candidate.width, candidate.height) * 0.82;
+  const proximityScore = placed.length
+    ? 1 - clamp(Math.abs(nearest - desiredSpacing) / desiredSpacing, 0, 1)
+    : 1;
+  return proximityScore * 3.8 + overlapScore * 4.2 + edgeScore * 0.8 + (1 - centrality) * 0.35 - rowPenalty - columnPenalty - symmetryPenalty * 0.9;
 }
 
 function makeAttempt(seed: number, items: CollageItem[], width: number, height: number, fallback: number): CollagePlacement[] | null {
@@ -177,7 +183,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
     .sort((a, b) => (b.dimensions.shapeWidth * b.dimensions.shapeHeight) - (a.dimensions.shapeWidth * a.dimensions.shapeHeight));
   const placed: Array<CollagePlacement & { rect: Rect }> = [];
   const canvas = { width, height };
-  const minimumGap = Math.max(22 - fallback * 5, 6);
+  const maximumOverlapRatio = mobile ? 0 : wide ? 0.16 : 0.08;
 
   for (const current of bySize) {
     const { dimensions } = current;
@@ -194,7 +200,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
         width: dimensions.width,
         height: dimensions.height,
       };
-      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, minimumGap, mobile ? mobileClusterY[current.cluster] : undefined);
+      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, maximumOverlapRatio, mobile ? mobileClusterY[current.cluster] : undefined);
       if (!winner || score > winner.score) winner = { rect, score };
     }
     if (!winner || !Number.isFinite(winner.score)) return null;

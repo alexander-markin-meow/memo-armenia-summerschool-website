@@ -1,4 +1,4 @@
-The prototype is a small, public, trilingual digital museum with two working views: a warm, randomized collection of non-overlapping placeholder objects and an object-first project page. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
+The prototype is a small, public, trilingual digital museum with two working views: a warm, randomized collection of closely clustered placeholder objects and an object-first project page. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
@@ -20,7 +20,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 - A light and warm free-form field containing thirty irregular placeholder objects. Desktop keeps the whole collection in view; narrow screens use a taller scrollable field.
 - Objects are CSS shapes rather than photographs: a button, a stone, a metal fragment, a leaf, a tile shard, and a thread spool.
 - Every new browser session gets a newly shuffled composition.
-- Objects never overlap, remain inside safe screen margins, and reflow at mobile, tablet, and desktop sizes.
+- Objects remain inside safe screen margins, reflow at mobile, tablet, and desktop sizes, and may gently overlap on larger screens.
 - Each object is a real link with a visible focus state and a short accessible label.
 - Pointer hover or keyboard focus reveals the object name and project title; touch devices show the object name by default.
 - Selecting an object opens its project page directly.
@@ -40,7 +40,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 - English, Armenian, and Russian interface and placeholder content.
 - Language selection persists locally and preserves the current page when switched.
-- The approved site name is **Lost and Found: Lori, Armenia**. The landing page uses no subtitle.
+- The approved site name is **Lost and Found: Pokr Ayrum**. The landing page uses no subtitle.
 - Responsive navigation, custom not-found page, metadata, favicon, and a simple social-preview image.
 
 ## 3. Technical decisions
@@ -104,9 +104,9 @@ The `sensitivity` field is included now so real material cannot accidentally be 
 The scattered layout is the only custom technical feature and will be kept deterministic enough to test:
 
 1. On first landing-page load, create a random seed and store it in `sessionStorage`; a hard refresh starts a fresh composition.
-2. Use the seed to derive each object’s rotation, scale, and many continuous placement candidates inside a collision-safe canvas.
-3. Place larger objects first and score candidates for distance, edge safety, broad coverage, negative space, and avoidance of obvious rows, columns, symmetry, and dense clusters.
-4. Reserve the header and the prototype notice; labels and link hit areas never overlap, while visual shapes have no more than a tiny optional overlap allowance.
+2. Use the seed to derive each object’s rotation, scale, and many continuous placement candidates inside a safe canvas.
+3. Place larger objects first and score candidates for close proximity, gentle overlap on larger screens, edge safety, broad coverage, and avoidance of obvious rows, columns, and symmetry.
+4. Reserve the header and the prototype notice; labels and link hit areas remain usable while visual shapes may overlap slightly.
 5. Recalculate from the same seed on resize. Narrow screens expand vertically so labels and touch targets remain legible.
 6. If an unusually narrow canvas cannot fit a composition, reduce scale and spacing before extending the canvas rather than clipping or colliding objects.
 
@@ -203,4 +203,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-The current redesign uses the approved **Lost and Found: Lori, Armenia** identity, thirty fictional CSS-shape entries, collection and project routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional CSS-shape entries, collection and project routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.

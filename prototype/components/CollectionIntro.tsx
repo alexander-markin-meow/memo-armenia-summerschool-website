@@ -7,7 +7,6 @@ export function CollectionIntro({ locale }: { locale: Locale }) {
         <p className="eyebrow">{text(ui.siteTitle, locale)}</p>
         <h1 id="collection-intro-title">{text(ui.introTitle, locale)}</h1>
         <p>{text(ui.introText, locale)}</p>
-        <a href="#objects" className="collection-intro-link">{text(ui.startExploring, locale)} <span aria-hidden="true">↓</span></a>
         <small>{text(ui.prototype, locale)}</small>
       </div>
     </section>

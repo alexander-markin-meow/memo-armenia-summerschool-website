@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${text(ui.siteTitle, lang)} — ${text(ui.collection, lang)}`,
       description: text(ui.prototypeLong, lang),
-      images: [{ url: '/og.png', width: 1729, height: 910, alt: 'Lost and Found: Lori, Armenia — found-object illustrations on warm paper' }],
+      images: [{ url: '/og.png', width: 1729, height: 910, alt: 'Lost and Found: Pokr Ayrum — found-object illustrations on warm paper' }],
     },
     twitter: {
       card: 'summary_large_image',

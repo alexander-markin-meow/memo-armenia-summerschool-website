@@ -11,7 +11,7 @@ const viewports = [
   { width: 1440, height: 900 },
 ];
 
-test('places every object inside its safe canvas without hit-area collisions', () => {
+test('keeps objects inside the safe canvas with controlled overlap', () => {
   for (const seed of seeds) {
     for (const viewport of viewports) {
       const layout = createCollageLayout(seed, objects, viewport.width, viewport.height);
@@ -23,7 +23,13 @@ test('places every object inside its safe canvas without hit-area collisions', (
       }
       for (let index = 0; index < layout.placements.length; index += 1) {
         for (let next = index + 1; next < layout.placements.length; next += 1) {
-          assert.equal(rectsOverlap(layout.placements[index], layout.placements[next]), 0, `${seed}: overlapping labels or hit areas`);
+          const overlap = rectsOverlap(layout.placements[index], layout.placements[next]);
+          const smallerArea = Math.min(
+            layout.placements[index].width * layout.placements[index].height,
+            layout.placements[next].width * layout.placements[next].height,
+          );
+          const allowedOverlap = viewport.width >= 1200 ? 0.16 : viewport.width < 520 ? 0 : 0.08;
+          assert.ok(overlap <= smallerArea * allowedOverlap, `${seed}: overlap is too large`);
         }
       }
     }
@@ -48,13 +54,23 @@ test('varies object scales within each seeded composition', () => {
   }
 });
 
-test('uses a modest size lift on wide desktops without changing mobile density', () => {
+test('uses a pronounced size lift on wide desktops without changing mobile density', () => {
   for (const seed of seeds) {
     const intermediate = createCollageLayout(seed, objects, 1024, 900);
     const wide = createCollageLayout(seed, objects, 1440, 900);
     const intermediateAverage = intermediate.placements.reduce((total, item) => total + item.scale, 0) / objects.length;
     const wideAverage = wide.placements.reduce((total, item) => total + item.scale, 0) / objects.length;
-    assert.ok(wideAverage > intermediateAverage * 1.06, `${seed}: wide-screen composition was not enlarged enough`);
+    assert.ok(wideAverage > intermediateAverage * 1.22, `${seed}: wide-screen composition was not enlarged enough`);
+  }
+});
+
+test('layers at least some objects on wide screens', () => {
+  for (const seed of seeds) {
+    const layout = createCollageLayout(seed, objects, 1440, 900);
+    const overlapCount = layout.placements.reduce((total, item, index) => total + layout.placements
+      .slice(index + 1)
+      .filter((other) => rectsOverlap(item, other) > 0).length, 0);
+    assert.ok(overlapCount > 0, `${seed}: wide-screen composition should have layered objects`);
   }
 });
 

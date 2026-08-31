@@ -43,7 +43,7 @@ const fictionalEntry = (
 });
 
 export const ui = {
-  siteTitle: l('Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia'),
+  siteTitle: l('Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum'),
   collection: l('Collection', 'Հավաքածու', 'Коллекция'),
   language: l('Language', 'Լեզու', 'Язык'),
   skipToContent: l('Skip to content', 'Անցնել հիմնական բովանդակությանը', 'Перейти к основному содержанию'),
@@ -55,14 +55,13 @@ export const ui = {
   ),
   introTitle: l('Start with a found object.', 'Սկսեք գտնված առարկայից։', 'Начните с найденного предмета.'),
   introText: l(
-    'A digital collection connecting local fragments to participant projects from the “person in history” summer school in Lori, Armenia.',
+    'A digital collection connecting local fragments to participant projects from the “Person in History” summer school in Lori, Armenia.',
     'Թվային հավաքածու, որը կապում է տեղական բեկորները Լոռիում «մարդը պատմության մեջ» ամառային դպրոցի մասնակիցների նախագծերի հետ։',
     'Цифровая коллекция, соединяющая местные фрагменты с проектами участников летней школы «человек в истории» в Лори, Армения.',
   ),
-  startExploring: l('Start exploring', 'Սկսել ուսումնասիրել', 'Начать исследование'),
   about: l('About', 'Մասին', 'О проекте'),
   aboutText: l(
-    'A public digital museum concept based on the “person in history” summer school in Lori, Armenia. This prototype uses fictional material while its content model and care principles are developed.',
+    'A public digital museum concept based on the “Person in History” summer school in Lori, Armenia. This prototype uses fictional material while its content model and care principles are developed.',
     'Հանրային թվային թանգարանի գաղափար՝ հիմնված Լոռիում «մարդը պատմության մեջ» ամառային դպրոցի վրա։ Այս նախատիպն օգտագործում է հորինված նյութ, մինչ մշակվում են բովանդակության մոդելն ու խնամքի սկզբունքները։',
     'Концепция публичного цифрового музея, основанная на летней школе «человек в истории» в Лори, Армения. Этот прототип использует вымышленный материал, пока разрабатываются модель содержания и принципы бережной работы.',
   ),
@@ -74,7 +73,7 @@ export const ui = {
   ),
   credits: l('Credits', 'Հեղինակներ', 'Создатели'),
   creditsText: l(
-    'person in history · Site design and development: Alex Markin · 2026',
+    'Person in History · Site design and development: Alex Markin · 2026',
     '«մարդը պատմության մեջ» · կայքի դիզայն և մշակում՝ Ալեքս Մարկին · 2026',
     '«человек в истории» · дизайн и разработка сайта: Алекс Маркин · 2026',
   ),
