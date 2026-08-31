@@ -53,6 +53,13 @@ export const ui = {
     'Այստեղ ներկայացված բոլոր առարկաները, վայրերը, ամսաթվերը, մարդիկ և նախագծերը հորինված օրինակներ են՝ միջերեսի փորձարկման համար։',
     'Все показанные здесь объекты, места, даты, люди и проекты — вымышленные примеры для тестирования интерфейса.',
   ),
+  introTitle: l('Start with a found object.', 'Սկսեք գտնված առարկայից։', 'Начните с найденного предмета.'),
+  introText: l(
+    'A digital collection connecting local fragments to participant projects from MEMO’s summer school in Lori, Armenia.',
+    'Թվային հավաքածու, որը կապում է տեղական բեկորները Լոռիում MEMO-ի ամառային դպրոցի մասնակիցների նախագծերի հետ։',
+    'Цифровая коллекция, соединяющая местные фрагменты с проектами участников летней школы MEMO в Лори, Армения.',
+  ),
+  startExploring: l('Start exploring', 'Սկսել ուսումնասիրել', 'Начать исследование'),
   about: l('About', 'Մասին', 'О проекте'),
   aboutText: l(
     'A public digital museum concept based on MEMO’s summer school in Lori, Armenia. This prototype uses fictional material while its content model and care principles are developed.',

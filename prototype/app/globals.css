@@ -21,6 +21,7 @@ body {
   background: var(--paper);
   font-family: "Noto Sans Armenian", "Noto Sans", system-ui, -apple-system, sans-serif;
 }
+body[data-collection-intro="active"] { overflow: hidden; }
 a { color: inherit; }
 button { font: inherit; }
 .skip-link { position: fixed; left: 1rem; top: -4rem; z-index: 100; background: var(--ink); color: var(--paper); padding: .7rem 1rem; }
@@ -73,6 +74,16 @@ button { font: inherit; }
 .language-links a { text-decoration: none; padding: .1rem .14rem; }
 .language-links a[aria-current="true"] { color: var(--ink); text-decoration: underline; text-underline-offset: .25rem; }
 .prototype-badge { position: absolute; bottom: 1.25rem; left: clamp(1rem, 4vw, 4rem); z-index: 20; margin: 0; color: var(--muted); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; }
+
+.collection-intro { position: fixed; z-index: 80; inset: 0; display: grid; place-items: center; padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left)); background: var(--paper); }
+.collection-intro::before { content: ""; position: absolute; inset: 0; opacity: .42; background: radial-gradient(ellipse at 14% 18%, rgb(169 128 72 / 18%), transparent 35%), radial-gradient(ellipse at 86% 78%, rgb(94 107 82 / 19%), transparent 39%); }
+.collection-intro-inner { position: relative; display: grid; justify-items: start; width: min(100%, 620px); }
+.collection-intro .eyebrow { margin: 0 0 1.1rem; }
+.collection-intro h1 { max-width: 9ch; margin: 0; font-family: "Noto Serif Armenian", Georgia, serif; font-size: clamp(3rem, 9vw, 7rem); font-weight: 500; letter-spacing: -.045em; line-height: .88; }
+.collection-intro h1 + p { max-width: 40ch; margin: 2rem 0 0; color: var(--muted); font-size: clamp(.95rem, 1.5vw, 1.08rem); line-height: 1.6; }
+.collection-intro button { margin-top: 2rem; padding: .8rem 1rem; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; font-size: .78rem; }
+.collection-intro button span { margin-left: .45rem; }
+.collection-intro small { margin-top: 2.1rem; color: var(--muted); font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
 
 .object-field {
   position: relative;

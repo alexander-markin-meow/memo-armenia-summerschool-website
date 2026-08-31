@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Shape } from '@/components/Shape';
+import { CollectionIntro } from '@/components/CollectionIntro';
 import { GrainLayer } from '@/components/GrainLayer';
 import { createCollageLayout, type CollageLayout } from '@/lib/collage-layout';
 import { entries, isLocale, mediumLabel, text, ui, type Locale, type Medium } from '@/lib/content';
@@ -69,7 +70,7 @@ function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }
     addEventListener('resize', onResize);
     return () => { clearTimeout(timeout); removeEventListener('resize', onResize); };
   }, []);
-  return <><main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
+  return <><CollectionIntro locale={route.locale} /><main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
     <section ref={field} className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
       {entries.map((entry, index) => {
         const place = layout?.placements[index];
