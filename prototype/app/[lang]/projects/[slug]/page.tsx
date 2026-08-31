@@ -9,18 +9,7 @@ import { entries, entryBySlug, isLocale, mediumLabel, text, ui } from '@/lib/con
 
 type Props = {
   params: Promise<{ lang: string; slug: string }>;
-  searchParams: Promise<{ from?: string }>;
 };
-
-function safeReturn(value: string | undefined, lang: string) {
-  if (!value) return null;
-  try {
-    const decoded = decodeURIComponent(value);
-    return decoded.startsWith(`/${lang}/catalogue`) && !decoded.startsWith('//') ? decoded : null;
-  } catch {
-    return null;
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, slug } = await params;
@@ -36,15 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProjectPage({ params, searchParams }: Props) {
+export default async function ProjectPage({ params }: Props) {
   const { lang, slug } = await params;
-  const search = await searchParams;
   const entry = entryBySlug(slug);
   if (!isLocale(lang) || !entry) notFound();
   const index = entries.indexOf(entry);
   const previous = entries[(index - 1 + entries.length) % entries.length];
   const next = entries[(index + 1) % entries.length];
-  const returnPath = safeReturn(search.from, lang);
 
   return <>
     <main className="project-page" id="main">
@@ -52,7 +39,6 @@ export default async function ProjectPage({ params, searchParams }: Props) {
       <SiteHeader locale={lang} view="project" pathSuffix={`/projects/${slug}`} />
       <div className="project-controls">
         <Link className="back-link" href={`/${lang}`}>← {text(ui.backCollection, lang)}</Link>
-        {returnPath && <Link className="back-link" href={returnPath}>← {text(ui.backCatalogue, lang)}</Link>}
       </div>
       <p className="prototype-badge project-notice">{text(ui.prototype, lang)}</p>
 

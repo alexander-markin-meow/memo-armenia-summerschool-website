@@ -152,26 +152,6 @@ button { font: inherit; }
 .project-pagination a:last-child { text-align: right; }
 .project-pagination small { color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
 
-.catalogue-page { min-height: 100dvh; padding-bottom: 7rem; }
-.catalogue-heading, .filters, .result-count, .catalogue-list { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
-.catalogue-heading { display: grid; grid-template-columns: 1fr minmax(260px, 480px); gap: 3rem; align-items: end; padding: clamp(3rem, 8vw, 7rem) 0 2.5rem; border-bottom: 1px solid var(--line); }
-.catalogue-heading h1 { margin: .5rem 0 0; font-family: "Noto Serif Armenian", Georgia, serif; font-size: clamp(3.2rem, 8vw, 7.5rem); font-weight: 500; line-height: .9; }
-.catalogue-heading > p { margin: 0; color: var(--muted); line-height: 1.6; }
-.filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; gap: .8rem; align-items: end; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
-.filters label { display: grid; gap: .4rem; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; }
-.filters select { min-height: 44px; border: 1px solid var(--line); border-radius: 0; background: rgb(255 255 255 / 18%); color: var(--ink); padding: .6rem 2rem .6rem .65rem; font: inherit; font-size: .78rem; text-transform: none; letter-spacing: 0; }
-.filters button, .filters > a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: .65rem .9rem; font-size: .73rem; }
-.filters button { border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; }
-.filters > a { color: var(--muted); }
-.result-count { margin-top: 1.5rem; color: var(--muted); font-size: .72rem; }
-.catalogue-list { margin-top: .75rem; border-top: 1px solid var(--line); }
-.catalogue-row { display: grid; grid-template-columns: 120px minmax(150px, 1fr) minmax(190px, 1.3fr) 24px; gap: 1.2rem; align-items: center; min-height: 145px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background 140ms ease; }
-.catalogue-row:hover, .catalogue-row:focus-visible { background: rgb(255 255 255 / 19%); }
-.catalogue-object { display: grid; place-items: center; height: 100px; }
-.catalogue-object .shape { transform: scale(.55); }
-.catalogue-names, .catalogue-project { display: grid; gap: .3rem; }
-.catalogue-names b, .catalogue-project b { font-weight: 500; }
-.catalogue-names small, .catalogue-project small { color: var(--muted); }
 .not-found { min-height: 100dvh; display: grid; align-content: center; justify-items: start; gap: 1rem; width: min(720px, calc(100% - 2rem)); margin: 0 auto; }
 .not-found h1 { margin: 0; font-family: "Noto Serif Armenian", Georgia, serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 500; line-height: 1; }
 
@@ -183,11 +163,6 @@ button { font: inherit; }
 .social-placeholders li { padding-bottom: .12rem; border-bottom: 1px solid var(--line); }
 
 *:focus-visible { outline: 2px solid var(--lichen); outline-offset: 3px; }
-
-@media (max-width: 1100px) and (min-width: 761px) {
-  .filters { grid-template-columns: repeat(3, 1fr); }
-  .filters button, .filters > a { justify-self: start; }
-}
 
 @media (max-width: 760px) {
   .site-header { height: 64px; }
@@ -203,12 +178,6 @@ button { font: inherit; }
   .object-lead { grid-template-columns: 1fr; }
   .lead-object { min-height: 320px; }
   .object-lead h1 { max-width: none; }
-  .catalogue-heading { grid-template-columns: 1fr; gap: 1.5rem; }
-  .filters { grid-template-columns: 1fr; }
-  .filters button, .filters > a { width: 100%; }
-  .catalogue-row { grid-template-columns: 75px 1fr 20px; gap: .65rem; min-height: 120px; }
-  .catalogue-project { grid-column: 2; }
-  .catalogue-row > span:last-child { grid-column: 3; grid-row: 1 / 3; }
   .placeholder-gallery { grid-template-columns: 1fr; grid-template-rows: repeat(3, 210px); }
   .gallery-1 { grid-row: auto; }
   .video-placeholder { min-height: 260px; }

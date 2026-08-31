@@ -1,4 +1,4 @@
-The prototype will be a small, public, trilingual digital museum with three working views: a warm, randomized collection of non-overlapping placeholder objects, an object-first project page, and a filterable catalogue. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
+The prototype is a small, public, trilingual digital museum with two working views: a warm, randomized collection of non-overlapping placeholder objects and an object-first project page. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
@@ -8,7 +8,7 @@ Build a convincing but deliberately limited prototype that answers four question
 
 1. Does object-first navigation make the participant projects feel discoverable?
 2. Can the scattered collection feel playful without becoming confusing or inaccessible?
-3. Does one content structure support the visual collection, project pages, catalogue filters, and three languages?
+3. Does one content structure support the visual collection, project pages, and three languages?
 4. Can Alex replace placeholder material with real objects and projects without redesigning the site?
 
 The prototype will be public on the web, while its GitHub repository remains private during development. Making the source public later is a separate launch decision.
@@ -24,7 +24,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 - Each object is a real link with a visible focus state and a short accessible label.
 - Pointer hover or keyboard focus reveals the object name and project title; touch devices show the object name by default.
 - Selecting an object opens its project page directly.
-- A compact corner menu contains the language switcher and the switch to catalogue view. There is no large hero heading.
+- A compact corner menu contains the language switcher. There is no large hero heading.
 
 ### Project page (`/:lang/projects/:slug`)
 
@@ -35,14 +35,6 @@ The prototype will be public on the web, while its GitHub repository remains pri
   - a privacy-friendly YouTube placeholder that only loads an embed after visitor action.
 - Previous/next project links allow sequential exploration without returning to the collection.
 - The page demonstrates the final reading hierarchy, but all content is clearly marked as fictional prototype copy.
-
-### Structured catalogue (`/:lang/catalogue`)
-
-- The same thirty pairs displayed in a calm responsive list/grid.
-- Filters for location, object type, and project medium.
-- Filters combine with AND logic; “All” resets each group.
-- The current filter state is stored in the URL query string, so a view can be shared or refreshed.
-- Each entry shows the object shape, object name, place, project title, and medium and links to the same project page.
 
 ### Shared shell
 
@@ -127,7 +119,7 @@ The focused layout helper is independent from the shape renderer and shared with
 - **Objects:** irregular CSS shapes with subtle inner texture, soft contact shadows, and slight rotations. They are placeholders, not attempts to imitate archaeological artefacts.
 - **Grain:** a large high-resolution animated texture applied as a low-opacity fixed top layer with `pointer-events: none`; reduced motion disables the animation.
 - **Motion:** short fades and gentle object lift only. `prefers-reduced-motion` removes reshuffle transitions and movement.
-- **Spacing:** generous reading width on project pages; catalogue uses a quieter regular rhythm to contrast with the collection.
+- **Spacing:** generous reading width on project pages and a fluid, open rhythm in the collection.
 
 ## 6. Language and editorial approach
 
@@ -162,7 +154,7 @@ For the prototype, all interface and fictional content will be translated into E
 
 - Finish the thirty placeholder entries and responsive non-overlap layout.
 - Build the reusable object-first project page, gallery, deferred video, and return-state behavior.
-- Add the catalogue and URL-based filters.
+- Refine the collection and project navigation.
 
 ### Phase 3 — Three languages and care rules (1–2 days)
 
@@ -173,7 +165,7 @@ For the prototype, all interface and fictional content will be translated into E
 ### Phase 4 — Verification and handoff (1–2 days)
 
 - Test the primary flow on current Chrome, Safari, and Firefox, plus representative phone and desktop widths.
-- Run automated checks for routes, seeded placement, non-overlap, filters, keyboard navigation, and missing translations.
+- Run automated checks for routes, seeded placement, non-overlap, keyboard navigation, and missing translations.
 - Run an accessibility audit and fix blocking issues.
 - Write a short content replacement guide and deploy the agreed prototype.
 
@@ -181,10 +173,10 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 ## 9. Verification plan
 
-- **Unit tests (Vitest):** seeded random output, placement boundaries, collision checks, locale fallback, and filter logic.
-- **Interaction tests (React Testing Library):** object links, keyboard focus, language switcher, filter reset, and return-to-collection behavior.
-- **End-to-end smoke tests (Playwright):** collection → project → collection, catalogue → filtered project, direct localized URLs, and not-found routes.
-- **Automated accessibility:** axe on the collection, one gallery project, one video project, and the catalogue.
+- **Unit tests (Vitest):** seeded random output, placement boundaries, collision checks, and locale fallback.
+- **Interaction tests (React Testing Library):** object links, keyboard focus, language switcher, and return-to-collection behavior.
+- **End-to-end smoke tests (Playwright):** collection → project → collection, direct localized URLs, and not-found routes.
+- **Automated accessibility:** axe on the collection, one gallery project, and one video project.
 - **Manual visual checks:** 360 px phone, 768 px tablet, 1440 px desktop, zoom at 200%, reduced motion, and high contrast.
 - **Performance target:** Lighthouse scores of at least 90 for performance, accessibility, best practices, and SEO on the static placeholder build.
 
@@ -195,7 +187,6 @@ The prototype is ready for review when:
 - thirty fictional objects appear in a fresh, non-overlapping composition on each new session;
 - every object opens the correct object-first project page;
 - returning to the collection preserves the visitor’s arrangement;
-- catalogue filters work together and survive refresh through the URL;
 - all visitor-facing prototype text exists in English, Armenian, and Russian;
 - phone, keyboard, reduced-motion, and 200% zoom flows remain usable;
 - fictional placeholder content is visibly distinguishable from publishable material;
@@ -206,10 +197,10 @@ The prototype is ready for review when:
 
 - Real object photographs, participant projects, final translations, and final site name/identity.
 - A CMS, editor login, database, user accounts, search, comments, or analytics.
-- Map-based browsing, advanced animated physics, or visitor-created collections.
+- Map-based browsing, a structured catalogue, advanced animated physics, or visitor-created collections.
 - Final consent policy or legal review; the prototype only establishes a safe publication gate.
 - Public release of the source repository. The private repository can be made public later after content, secrets, licensing, and documentation are reviewed.
 
 ## 12. Approval point
 
-The current redesign uses the approved **Lost and Found: Lori, Armenia** identity, thirty fictional CSS-shape entries, the three routes and three languages described above, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Lori, Armenia** identity, thirty fictional CSS-shape entries, collection and project routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
