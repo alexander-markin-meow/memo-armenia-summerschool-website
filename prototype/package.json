@@ -11,7 +11,9 @@
     "build:pages": "vite build --config vite.pages.config.ts",
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern github-pages-dist --ignore-pattern .next",
-    "test": "node --experimental-strip-types --test lib/collage-layout.test.ts"
+    "test": "node --experimental-strip-types --test lib/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm test && npm run typecheck && npm run lint && npm run build && npm run build:pages"
   },
   "dependencies": {
     "next": "16.2.6",
