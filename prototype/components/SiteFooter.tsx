@@ -2,7 +2,7 @@ import { text, ui, type Locale } from '@/lib/content';
 
 export function SiteFooter({ locale }: { locale: Locale }) {
   return (
-    <footer className="site-footer" id="site-footer">
+    <footer className="site-footer" id="site-footer" lang={locale}>
       <section>
         <h2>{text(ui.about, locale)}</h2>
         <p>{text(ui.aboutText, locale)}</p>

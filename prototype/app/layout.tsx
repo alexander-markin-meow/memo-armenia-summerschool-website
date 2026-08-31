@@ -3,7 +3,7 @@ import { GrainLayer } from '@/components/GrainLayer';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? 'http://localhost:3000'),
+  metadataBase: new URL(process.env.SITE_URL ?? 'https://lori-found-memo.alex-markin.chatgpt.site'),
   title: 'Lost and Found: Lori, Armenia',
   description: 'A prototype digital museum of objects and participant projects from Lori, Armenia.',
   openGraph: {
@@ -24,7 +24,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         <GrainLayer />
-        <a className="skip-link" href="#main">Skip to content</a>
         {children}
       </body>
     </html>

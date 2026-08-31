@@ -1,5 +1,3 @@
-'use client';
-
 import { text, ui, type Locale } from '@/lib/content';
 
 export function CollectionIntro({ locale }: { locale: Locale }) {

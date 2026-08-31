@@ -202,8 +202,6 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
       id: current.item.id,
       x: winner.rect.x,
       y: winner.rect.y,
-      width: winner.rect.width,
-      height: winner.rect.height,
       ...dimensions,
       rect: winner.rect,
     });

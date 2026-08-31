@@ -46,6 +46,7 @@ export const ui = {
   siteTitle: l('Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia'),
   collection: l('Collection', 'Հավաքածու', 'Коллекция'),
   language: l('Language', 'Լեզու', 'Язык'),
+  skipToContent: l('Skip to content', 'Անցնել հիմնական բովանդակությանը', 'Перейти к основному содержанию'),
   prototype: l('Fictional prototype content', 'Հորինված նախատիպային բովանդակություն', 'Вымышленный прототипный контент'),
   prototypeLong: l(
     'All objects, places, dates, people, and projects shown here are fictional examples created for interface testing.',
@@ -86,6 +87,7 @@ export const ui = {
   pseudonym: l('pseudonym', 'կեղծանուն', 'псевдоним'),
   previous: l('Previous', 'Նախորդ', 'Предыдущий'),
   next: l('Next', 'Հաջորդ', 'Следующий'),
+  adjacentProjects: l('Adjacent projects', 'Հարակից նախագծեր', 'Соседние проекты'),
   gallery: l('Placeholder gallery', 'Պատկերասրահի տեղապահ', 'Макет галереи'),
   video: l('Video placeholder', 'Տեսանյութի տեղապահ', 'Макет видео'),
   playVideo: l('Play prototype video', 'Նվագարկել նախատիպային տեսանյութը', 'Воспроизвести прототипное видео'),
