@@ -48,7 +48,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 - English, Armenian, and Russian interface and placeholder content.
 - Language selection persists locally and preserves the current page when switched.
-- An understated site name will be used provisionally: **Lori, Found**. The working tagline will be **Objects and stories from MEMO’s summer school**. Both remain easy to replace after approval.
+- The approved site name is **Lost and Found: Lori, Armenia**. The landing page uses no subtitle.
 - Responsive navigation, custom not-found page, metadata, favicon, and a simple social-preview image.
 
 ## 3. Technical decisions
@@ -212,4 +212,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-The current redesign keeps the provisional **Lori, Found** identity, thirty fictional CSS-shape entries, the three routes and three languages described above, and a static Cloudflare Pages deployment. Naming and real content remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Lori, Armenia** identity, thirty fictional CSS-shape entries, the three routes and three languages described above, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.

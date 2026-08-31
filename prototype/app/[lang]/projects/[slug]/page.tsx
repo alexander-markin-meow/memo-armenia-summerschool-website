@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { LocaleSync } from '@/components/LocaleSync';
 import { Shape } from '@/components/Shape';
+import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { entries, entryBySlug, isLocale, mediumLabel, text, ui } from '@/lib/content';
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, slug } = await params;
   const entry = entryBySlug(slug);
   if (!isLocale(lang) || !entry) return {};
-  const title = `${text(entry.project.title, lang)} — Lori, Found`;
+  const title = `${text(entry.project.title, lang)} — ${text(ui.siteTitle, lang)}`;
   const description = text(entry.project.introduction, lang);
   return {
     title,
@@ -45,7 +46,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
   const next = entries[(index + 1) % entries.length];
   const returnPath = safeReturn(search.from, lang);
 
-  return (
+  return <>
     <main className="project-page" id="main">
       <LocaleSync locale={lang} />
       <SiteHeader locale={lang} view="project" pathSuffix={`/projects/${slug}`} />
@@ -97,5 +98,6 @@ export default async function ProjectPage({ params, searchParams }: Props) {
         </nav>
       </article>
     </main>
-  );
+    <SiteFooter locale={lang} />
+  </>;
 }

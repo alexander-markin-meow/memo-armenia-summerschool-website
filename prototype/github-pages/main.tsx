@@ -29,13 +29,21 @@ function localizedRoute(route: Route, locale: Locale) {
 
 function Header({ route }: { route: Route }) {
   return <header className="site-header">
-    <a href={`#/${route.locale}`} className="wordmark"><span>Lori, Found</span><small>{text(ui.siteSubtitle, route.locale)}</small></a>
+    <a href={`#/${route.locale}`} className="wordmark" aria-label={`${text(ui.siteTitle, route.locale)} — ${text(ui.collection, route.locale)}`}><span>{text(ui.siteTitle, route.locale)}</span></a>
     <nav className="site-nav" aria-label={text(ui.language, route.locale)}>
       <a href={`#/${route.locale}`} aria-current={route.kind === 'collection' ? 'page' : undefined}>{text(ui.collection, route.locale)}</a>
       <a href={`#/${route.locale}/catalogue`} aria-current={route.kind === 'catalogue' ? 'page' : undefined}>{text(ui.catalogue, route.locale)}</a>
       <span className="language-links">{(['en', 'hy', 'ru'] as Locale[]).map((locale) => <a key={locale} href={localizedRoute(route, locale)} aria-current={route.locale === locale ? 'true' : undefined}>{locale.toUpperCase()}</a>)}</span>
     </nav>
   </header>;
+}
+
+function Footer({ locale }: { locale: Locale }) {
+  return <footer className="site-footer" id="site-footer">
+    <section><h2>{text(ui.about, locale)}</h2><p>{text(ui.aboutText, locale)}</p></section>
+    <section><h2>{text(ui.socialMedia, locale)}</h2><p>{text(ui.socialPending, locale)}</p><ul className="social-placeholders" aria-label={text(ui.socialMedia, locale)}><li>Instagram</li><li>Facebook</li><li>YouTube</li></ul></section>
+    <section><h2>{text(ui.credits, locale)}</h2><p>{text(ui.creditsText, locale)}</p></section>
+  </footer>;
 }
 
 function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }) {
@@ -61,7 +69,7 @@ function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }
     addEventListener('resize', onResize);
     return () => { clearTimeout(timeout); removeEventListener('resize', onResize); };
   }, []);
-  return <main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
+  return <><main className="collection-shell" id="main"><Header route={route} /><p className="prototype-badge">{text(ui.prototype, route.locale)}</p>
     <section ref={field} className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
       {entries.map((entry, index) => {
         const place = layout?.placements[index];
@@ -77,7 +85,7 @@ function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }
         return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug} aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}><Shape name={entry.shape} /><span className="object-label"><b>{text(entry.objectName, route.locale)}</b><small className="object-project">{text(entry.project.title, route.locale)}</small></span></a>;
       })}
     </section>
-  </main>;
+  </main><Footer locale={route.locale} /></>;
 }
 
 function Catalogue({ route }: { route: Extract<Route, { kind: 'catalogue' }> }) {
@@ -93,8 +101,8 @@ function Catalogue({ route }: { route: Extract<Route, { kind: 'catalogue' }> }) 
     new FormData(event.currentTarget).forEach((value, key) => { if (value) query.set(key, String(value)); });
     location.hash = `/${route.locale}/catalogue${query.size ? `?${query}` : ''}`;
   };
-  return <main className="catalogue-page" id="main"><Header route={route} />
-    <div className="catalogue-heading"><div><p className="eyebrow">Lori, Found</p><h1>{text(ui.catalogue, route.locale)}</h1></div><p>{text(ui.prototypeLong, route.locale)}</p></div>
+  return <><main className="catalogue-page" id="main"><Header route={route} />
+    <div className="catalogue-heading"><div><p className="eyebrow">{text(ui.siteTitle, route.locale)}</p><h1>{text(ui.catalogue, route.locale)}</h1></div><p>{text(ui.prototypeLong, route.locale)}</p></div>
     <form className="filters" onSubmit={submit}>
       <label>{text(ui.location, route.locale)}<select name="location" defaultValue={locationFilter}><option value="">{text(ui.all, route.locale)}</option>{locations.map((location) => { const entry = entries.find((item) => item.location.en === location)!; return <option key={location} value={location}>{text(entry.location, route.locale)}</option>; })}</select></label>
       <label>{text(ui.objectType, route.locale)}<select name="type" defaultValue={typeFilter}><option value="">{text(ui.all, route.locale)}</option>{types.map((type) => { const entry = entries.find((item) => item.shape === type)!; return <option key={type} value={type}>{text(entry.objectName, route.locale)}</option>; })}</select></label>
@@ -105,22 +113,22 @@ function Catalogue({ route }: { route: Extract<Route, { kind: 'catalogue' }> }) 
     <section className="catalogue-list">{filtered.map((entry) => <a className="catalogue-row" href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug}>
       <span className="catalogue-object"><Shape name={entry.shape} /></span><span className="catalogue-names"><b>{text(entry.objectName, route.locale)}</b><small>{text(entry.location, route.locale)}</small></span><span className="catalogue-project"><b>{text(entry.project.title, route.locale)}</b><small>{mediumLabel(entry.project.medium, route.locale)}</small></span><span>↗</span>
     </a>)}</section>
-  </main>;
+  </main><Footer locale={route.locale} /></>;
 }
 
 function Project({ route }: { route: Extract<Route, { kind: 'project' }> }) {
   const entry = entries.find((item) => item.slug === route.slug);
-  if (!entry) return <main className="not-found" id="main"><h1>{text(ui.notFound, route.locale)}</h1><a href={`#/${route.locale}`}>← {text(ui.backCollection, route.locale)}</a></main>;
+  if (!entry) return <><main className="not-found" id="main"><h1>{text(ui.notFound, route.locale)}</h1><a href={`#/${route.locale}`}>← {text(ui.backCollection, route.locale)}</a></main><Footer locale={route.locale} /></>;
   const index = entries.indexOf(entry);
   const previous = entries[(index - 1 + entries.length) % entries.length];
   const next = entries[(index + 1) % entries.length];
-  return <main className="project-page" id="main"><Header route={route} />
+  return <><main className="project-page" id="main"><Header route={route} />
     <div className="project-controls"><a className="back-link" href={`#/${route.locale}`}>← {text(ui.backCollection, route.locale)}</a><a className="back-link" href={`#/${route.locale}/catalogue`}>← {text(ui.backCatalogue, route.locale)}</a></div><p className="prototype-badge project-notice">{text(ui.prototype, route.locale)}</p>
     <article><section className="object-lead"><div className="lead-object"><Shape name={entry.shape} /></div><div><p className="eyebrow">{text(ui.foundObject, route.locale)}</p><h1>{text(entry.objectName, route.locale)}</h1><dl className="metadata"><div><dt>{text(ui.place, route.locale)}</dt><dd>{text(entry.location, route.locale)}</dd></div><div><dt>{text(ui.date, route.locale)}</dt><dd>{text(entry.approximateDate, route.locale)}</dd></div></dl><p className="object-context">{text(entry.context, route.locale)}</p></div></section>
       <section className="project-story"><p className="eyebrow">{text(ui.participantProject, route.locale)} · {mediumLabel(entry.project.medium, route.locale)}</p><h2>{text(entry.project.title, route.locale)}</h2><p className="byline">{text(entry.project.participant, route.locale)} · {text(ui.pseudonym, route.locale)}</p><p className="standfirst">{text(entry.project.introduction, route.locale)}</p>{entry.project.medium === 'video' ? <button className="video-placeholder"><span>▶</span><b>{text(ui.video, route.locale)}</b></button> : entry.project.medium === 'text' ? <div className="story-placeholder"><p>{text(ui.storyOne, route.locale)}</p><p>{text(ui.storyTwo, route.locale)}</p></div> : <div className="placeholder-gallery">{[1, 2, 3].map((item) => <span key={item} className={`gallery-cell gallery-${item}`} />)}</div>}</section>
       <nav className="project-pagination"><a href={`#/${route.locale}/projects/${previous.slug}`}><small>{text(ui.previous, route.locale)}</small><b>{text(previous.project.title, route.locale)}</b></a><a href={`#/${route.locale}/projects/${next.slug}`}><small>{text(ui.next, route.locale)}</small><b>{text(next.project.title, route.locale)}</b></a></nav>
     </article>
-  </main>;
+  </main><Footer locale={route.locale} /></>;
 }
 
 function App() {
@@ -132,7 +140,7 @@ function App() {
   }, []);
   useEffect(() => {
     document.documentElement.lang = route.locale;
-    document.title = `Lori, Found — ${route.kind === 'collection' ? text(ui.collection, route.locale) : route.kind === 'catalogue' ? text(ui.catalogue, route.locale) : entries.find((entry) => entry.slug === route.slug)?.project.title[route.locale] || 'Project'}`;
+    document.title = `${text(ui.siteTitle, route.locale)} — ${route.kind === 'collection' ? text(ui.collection, route.locale) : route.kind === 'catalogue' ? text(ui.catalogue, route.locale) : entries.find((entry) => entry.slug === route.slug)?.project.title[route.locale] || 'Project'}`;
     scrollTo(0, 0);
   }, [route]);
   return route.kind === 'collection' ? <Collection route={route} /> : route.kind === 'catalogue' ? <Catalogue route={route} /> : <Project route={route} />;

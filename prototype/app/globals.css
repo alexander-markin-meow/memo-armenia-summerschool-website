@@ -63,9 +63,8 @@ button { font: inherit; }
   position: relative;
   z-index: 20;
 }
-.wordmark { text-decoration: none; display: grid; line-height: 1.05; font-family: "Noto Serif Armenian", Georgia, serif; }
-.wordmark span { font-size: 1.05rem; }
-.wordmark small { color: var(--muted); font-family: inherit; font-size: .67rem; margin-top: .28rem; }
+.wordmark { max-inline-size: min(48vw, 24rem); text-decoration: none; display: block; line-height: 1.05; font-family: "Noto Serif Armenian", Georgia, serif; }
+.wordmark span { display: block; font-size: clamp(.92rem, 1.35vw, 1.08rem); }
 .site-nav { display: flex; align-items: center; gap: clamp(.85rem, 2.2vw, 2rem); color: var(--muted); font-size: .78rem; }
 .site-nav > a { text-decoration: none; }
 .site-nav [aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: .32rem; }
@@ -165,6 +164,13 @@ button { font: inherit; }
 .not-found { min-height: 100dvh; display: grid; align-content: center; justify-items: start; gap: 1rem; width: min(720px, calc(100% - 2rem)); margin: 0 auto; }
 .not-found h1 { margin: 0; font-family: "Noto Serif Armenian", Georgia, serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 500; line-height: 1; }
 
+.site-footer { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(11rem, 1fr)); gap: clamp(1.8rem, 4vw, 5rem); padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 4vw, 4rem); border-top: 1px solid var(--line); background: rgb(255 255 255 / 10%); }
+.site-footer section { min-width: 0; }
+.site-footer h2 { margin: 0 0 .85rem; font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.site-footer p { max-width: 48ch; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+.social-placeholders { display: flex; flex-wrap: wrap; gap: .55rem .85rem; margin: 1rem 0 0; padding: 0; color: var(--ink); font-size: .72rem; list-style: none; }
+.social-placeholders li { padding-bottom: .12rem; border-bottom: 1px solid var(--line); }
+
 *:focus-visible { outline: 2px solid var(--lichen); outline-offset: 3px; }
 
 @media (max-width: 1100px) and (min-width: 761px) {
@@ -174,7 +180,8 @@ button { font: inherit; }
 
 @media (max-width: 760px) {
   .site-header { height: 64px; }
-  .wordmark small { display: none; }
+  .wordmark { max-inline-size: 15ch; }
+  .wordmark span { font-size: .88rem; }
   .site-nav { gap: .8rem; }
   .site-nav > a { display: none; }
   .language-links { gap: .22rem; padding-inline: .36rem; }
@@ -196,6 +203,7 @@ button { font: inherit; }
   .video-placeholder { min-height: 260px; }
   .project-pagination { grid-template-columns: 1fr; }
   .project-pagination a:last-child { text-align: left; border-top: 1px solid var(--line); }
+  .site-footer { grid-template-columns: 1fr; gap: 1.9rem; padding-block: 2.5rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

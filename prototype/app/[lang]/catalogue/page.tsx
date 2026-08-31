@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { LocaleSync } from '@/components/LocaleSync';
 import { Shape } from '@/components/Shape';
+import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { entries, isLocale, mediumLabel, text, ui, type Medium } from '@/lib/content';
 
@@ -12,7 +13,7 @@ type Props = { params: Promise<{ lang: string }>; searchParams: Promise<Search> 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: `Lori, Found — ${text(ui.catalogue, lang)}`, description: text(ui.prototypeLong, lang) };
+  return { title: `${text(ui.siteTitle, lang)} — ${text(ui.catalogue, lang)}`, description: text(ui.prototypeLong, lang) };
 }
 
 export default async function CataloguePage({ params, searchParams }: Props) {
@@ -34,13 +35,13 @@ export default async function CataloguePage({ params, searchParams }: Props) {
   if (filters.medium) query.set('medium', filters.medium);
   const returnPath = `/${lang}/catalogue${query.size ? `?${query.toString()}` : ''}`;
 
-  return (
+  return <>
     <main className="catalogue-page" id="main">
       <LocaleSync locale={lang} />
       <SiteHeader locale={lang} view="catalogue" pathSuffix="/catalogue" />
       <div className="catalogue-heading">
         <div>
-          <p className="eyebrow">Lori, Found</p>
+          <p className="eyebrow">{text(ui.siteTitle, lang)}</p>
           <h1>{text(ui.catalogue, lang)}</h1>
         </div>
         <p>{text(ui.prototypeLong, lang)}</p>
@@ -97,5 +98,6 @@ export default async function CataloguePage({ params, searchParams }: Props) {
         ))}
       </section>
     </main>
-  );
+    <SiteFooter locale={lang} />
+  </>;
 }

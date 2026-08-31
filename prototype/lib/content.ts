@@ -43,7 +43,7 @@ const fictionalEntry = (
 });
 
 export const ui = {
-  siteSubtitle: l('MEMO summer school museum', 'MEMO-ի ամառային դպրոցի թանգարան', 'Музей летней школы MEMO'),
+  siteTitle: l('Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia', 'Lost and Found: Lori, Armenia'),
   collection: l('Collection', 'Հավաքածու', 'Коллекция'),
   catalogue: l('Catalogue', 'Կատալոգ', 'Каталог'),
   language: l('Language', 'Լեզու', 'Язык'),
@@ -52,6 +52,24 @@ export const ui = {
     'All objects, places, dates, people, and projects shown here are fictional examples created for interface testing.',
     'Այստեղ ներկայացված բոլոր առարկաները, վայրերը, ամսաթվերը, մարդիկ և նախագծերը հորինված օրինակներ են՝ միջերեսի փորձարկման համար։',
     'Все показанные здесь объекты, места, даты, люди и проекты — вымышленные примеры для тестирования интерфейса.',
+  ),
+  about: l('About', 'Մասին', 'О проекте'),
+  aboutText: l(
+    'A public digital museum concept based on MEMO’s summer school in Lori, Armenia. This prototype uses fictional material while its content model and care principles are developed.',
+    'Հանրային թվային թանգարանի գաղափար՝ հիմնված Լոռիում MEMO-ի ամառային դպրոցի վրա։ Այս նախատիպն օգտագործում է հորինված նյութ, մինչ մշակվում են բովանդակության մոդելն ու խնամքի սկզբունքները։',
+    'Концепция публичного цифрового музея, основанная на летней школе MEMO в Лори, Армения. Этот прототип использует вымышленный материал, пока разрабатываются модель содержания и принципы бережной работы.',
+  ),
+  socialMedia: l('Social media', 'Սոցիալական մեդիա', 'Социальные сети'),
+  socialPending: l(
+    'Official links will appear here.',
+    'Պաշտոնական հղումները կհայտնվեն այստեղ։',
+    'Официальные ссылки появятся здесь.',
+  ),
+  credits: l('Credits', 'Հեղինակներ', 'Создатели'),
+  creditsText: l(
+    'MEMO summer school · Site design and development: Alex Markin · 2026',
+    'MEMO-ի ամառային դպրոց · կայքի դիզայն և մշակում՝ Ալեքս Մարկին · 2026',
+    'Летняя школа MEMO · дизайн и разработка сайта: Алекс Маркин · 2026',
   ),
   backCollection: l('Back to collection', 'Վերադառնալ հավաքածու', 'Вернуться к коллекции'),
   backCatalogue: l('Back to catalogue', 'Վերադառնալ կատալոգ', 'Вернуться в каталог'),

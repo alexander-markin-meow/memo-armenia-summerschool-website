@@ -4,9 +4,8 @@ import { locales, text, ui, type Locale } from '@/lib/content';
 export function SiteHeader({ locale, view, pathSuffix = '' }: { locale: Locale; view: 'collection' | 'catalogue' | 'project'; pathSuffix?: string }) {
   return (
     <header className="site-header">
-      <Link href={`/${locale}`} className="wordmark" aria-label={`Lori, Found — ${text(ui.collection, locale)}`}>
-        <span>Lori, Found</span>
-        <small>{text(ui.siteSubtitle, locale)}</small>
+      <Link href={`/${locale}`} className="wordmark" aria-label={`${text(ui.siteTitle, locale)} — ${text(ui.collection, locale)}`}>
+        <span>{text(ui.siteTitle, locale)}</span>
       </Link>
       <nav aria-label={text(ui.language, locale)} className="site-nav">
         <Link href={`/${locale}`} aria-current={view === 'collection' ? 'page' : undefined}>{text(ui.collection, locale)}</Link>
