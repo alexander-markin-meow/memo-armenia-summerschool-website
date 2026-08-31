@@ -31,7 +31,8 @@ const SHAPES: Record<ShapeName, { width: number; height: number }> = {
   spool: { width: 118, height: 142 },
 };
 
-const LABEL_HEIGHT = 54;
+const DESKTOP_LABEL_HEIGHT = 54;
+const MOBILE_LABEL_HEIGHT = 42;
 const HIT_PADDING_X = 14;
 const EDGE_PADDING = 12;
 const CANDIDATES_PER_ITEM = 260;
@@ -64,15 +65,19 @@ function distance(a: Rect, b: Rect) {
 }
 
 function fieldHeight(width: number, viewportHeight: number) {
-  if (width < 520) return Math.max(1280, Math.round(viewportHeight * 2.05));
+  if (width < 520) return Math.max(1340, Math.round(viewportHeight * 1.86));
   if (width < 900) return Math.max(1050, Math.round(viewportHeight * 1.4));
   return Math.max(450, viewportHeight - 140);
 }
 
-function itemDimensions(item: CollageItem, order: number, count: number, random: () => number, fallback: number) {
+function itemDimensions(item: CollageItem, order: number, count: number, random: () => number, fallback: number, mobile: boolean) {
   const source = SHAPES[item.shape];
-  const prominence = 1 - order / Math.max(1, count - 1);
-  const densityScale = count > 10 ? 0.79 : 1;
+  const clusterSize = Math.ceil(count / 4);
+  const clusterRole = order % clusterSize;
+  const prominence = mobile
+    ? [1, 0.46, 0.2, 0.38][clusterRole] ?? 0.3
+    : 1 - order / Math.max(1, count - 1);
+  const densityScale = mobile ? 0.84 : count > 10 ? 0.79 : 1;
   const fallbackScale = 1 - fallback * 0.065;
   const scale = clamp((0.66 + prominence * 0.24 + random() * 0.12) * densityScale * fallbackScale, 0.46, 1.08);
   const shapeWidth = Math.round(source.width * scale);
@@ -85,13 +90,19 @@ function itemDimensions(item: CollageItem, order: number, count: number, random:
     shapeWidth,
     shapeHeight,
     width: rotatedWidth + HIT_PADDING_X * 2,
-    height: rotatedHeight + LABEL_HEIGHT,
+    height: rotatedHeight + (mobile ? MOBILE_LABEL_HEIGHT : DESKTOP_LABEL_HEIGHT),
     rotation,
     scale,
   };
 }
 
-function scoreCandidate(candidate: Rect, placed: Rect[], canvas: { width: number; height: number }, minimumGap: number) {
+function scoreCandidate(
+  candidate: Rect,
+  placed: Rect[],
+  canvas: { width: number; height: number },
+  minimumGap: number,
+  mobileClusterY?: number,
+) {
   const centreX = candidate.x + candidate.width / 2;
   const centreY = candidate.y + candidate.height / 2;
   const diagonal = Math.hypot(canvas.width, canvas.height);
@@ -119,14 +130,37 @@ function scoreCandidate(candidate: Rect, placed: Rect[], canvas: { width: number
   const edgeScore = clamp(edgeDistance / 58, 0, 1);
   const centrality = Math.hypot(centreX - canvas.width / 2, centreY - canvas.height / 2) / diagonal;
 
+  if (mobileClusterY !== undefined) {
+    const desiredSpacing = Math.max(candidate.width, candidate.height) * 1.15;
+    const spacingScore = placed.length
+      ? 1.45 - Math.abs(nearest - desiredSpacing) / desiredSpacing
+      : 1.1;
+    const clusterScore = 1 - clamp(Math.abs(centreY - mobileClusterY) / (canvas.height * 0.22), 0, 1);
+    // Mobile deliberately forms loose, irregular vertical constellations instead of a left/right sequence.
+    return spacingScore * 2.3 + clusterScore * 2.8 + edgeScore * 0.45 - rowPenalty * 0.45 - columnPenalty * 0.8 - symmetryPenalty;
+  }
+
   // A small centre preference avoids a large accidental empty desert without building rows or columns.
   return density * 3.8 + edgeScore * 0.8 + (1 - centrality) * 0.35 - rowPenalty - columnPenalty - symmetryPenalty * 0.9;
 }
 
 function makeAttempt(seed: number, items: CollageItem[], width: number, height: number, fallback: number): CollagePlacement[] | null {
   const random = mulberry32(seed + fallback * 104729);
+  const mobile = width < 520;
+  const clusterRandom = mulberry32(seed + fallback * 1327);
+  const clusterCount = Math.min(4, Math.ceil(items.length / 3));
+  const mobileClusterY = Array.from({ length: clusterCount }, (_, index) => {
+    const base = (index + 0.5) / clusterCount;
+    return height * (base + (clusterRandom() - 0.5) * 0.085);
+  });
+  const clusterSize = Math.ceil(items.length / clusterCount);
   const bySize = items
-    .map((item, index) => ({ item, index, dimensions: itemDimensions(item, index, items.length, random, fallback) }))
+    .map((item, index) => ({
+      item,
+      index,
+      cluster: Math.min(Math.floor(index / clusterSize), clusterCount - 1),
+      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile),
+    }))
     .sort((a, b) => (b.dimensions.shapeWidth * b.dimensions.shapeHeight) - (a.dimensions.shapeWidth * a.dimensions.shapeHeight));
   const placed: Array<CollagePlacement & { rect: Rect }> = [];
   const canvas = { width, height };
@@ -139,14 +173,15 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
     if (maxX <= EDGE_PADDING || maxY <= EDGE_PADDING) return null;
 
     let winner: { rect: Rect; score: number } | null = null;
-    for (let attempt = 0; attempt < CANDIDATES_PER_ITEM; attempt += 1) {
+    const candidateCount = mobile ? CANDIDATES_PER_ITEM * 6 : CANDIDATES_PER_ITEM;
+    for (let attempt = 0; attempt < candidateCount; attempt += 1) {
       const rect = {
         x: Math.round(EDGE_PADDING + random() * (maxX - EDGE_PADDING)),
         y: Math.round(EDGE_PADDING + random() * (maxY - EDGE_PADDING)),
         width: dimensions.width,
         height: dimensions.height,
       };
-      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, minimumGap);
+      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, minimumGap, mobile ? mobileClusterY[current.cluster] : undefined);
       if (!winner || score > winner.score) winner = { rect, score };
     }
     if (!winner || !Number.isFinite(winner.score)) return null;

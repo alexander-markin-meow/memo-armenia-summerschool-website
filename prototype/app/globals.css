@@ -180,8 +180,8 @@ button { font: inherit; }
   .site-nav > a { display: none; }
   .language-links { gap: .22rem; padding-inline: .36rem; }
   .collection-shell { padding-bottom: 4rem; }
-  .object-field { height: max(1280px, 205dvh); min-height: 1280px; }
-  .object-label { opacity: .88; }
+  .object-field { height: max(1340px, 186dvh); min-height: 1340px; }
+  .object-label { min-height: 42px; opacity: .88; }
   .object-label small { display: none; }
   .object-lead { grid-template-columns: 1fr; }
   .lead-object { min-height: 320px; }

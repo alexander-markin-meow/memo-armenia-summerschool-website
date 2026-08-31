@@ -49,6 +49,7 @@ test('keeps distribution broad and uses a taller canvas on narrow screens', () =
     const mobileSpread = Math.max(...mobileCentres.map((item) => item.y)) - Math.min(...mobileCentres.map((item) => item.y));
     const desktopSpread = Math.max(...desktopCentres.map((item) => item.x)) - Math.min(...desktopCentres.map((item) => item.x));
     assert.ok(mobile.height > 720, 'mobile canvas should be scrollable and generous');
+    assert.ok(mobile.height < 1500, 'mobile canvas should stay compact enough to avoid empty deserts');
     assert.ok(mobileSpread > mobile.height * 0.52, 'mobile composition should cover the canvas');
     assert.ok(desktopSpread > 1440 * 0.5, 'desktop composition should not cluster into a column');
   }
@@ -57,6 +58,6 @@ test('keeps distribution broad and uses a taller canvas on narrow screens', () =
 test('falls back to a legible vertical canvas on an unusually narrow size', () => {
   const layout = createCollageLayout(99, objects, 220, 400);
   assert.equal(layout.placements.length, 14);
-  assert.ok(layout.height >= 1280);
+  assert.ok(layout.height >= 1340);
   assert.ok(layout.placements.every((item) => item.x + item.width <= 220));
 });
