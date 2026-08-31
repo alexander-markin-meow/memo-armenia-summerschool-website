@@ -15,7 +15,7 @@ test('places every object inside its safe canvas without hit-area collisions', (
   for (const seed of seeds) {
     for (const viewport of viewports) {
       const layout = createCollageLayout(seed, objects, viewport.width, viewport.height);
-      assert.equal(layout.placements.length, 14);
+      assert.equal(layout.placements.length, 30);
       for (const placement of layout.placements) {
         assert.ok(placement.x >= 0 && placement.y >= 0, `${seed}: negative placement`);
         assert.ok(placement.x + placement.width <= viewport.width, `${seed}: clipped horizontally`);
@@ -40,6 +40,14 @@ test('is repeatable by seed, changes between seeds, and reflows on resize', () =
   assert.notDeepEqual(resized.placements, first.placements);
 });
 
+test('varies object scales within each seeded composition', () => {
+  for (const seed of seeds) {
+    const layout = createCollageLayout(seed, objects, 1440, 900);
+    const scales = layout.placements.map((item) => item.scale);
+    assert.ok(Math.max(...scales) - Math.min(...scales) > 0.16, `${seed}: object scale range is too narrow`);
+  }
+});
+
 test('keeps distribution broad and uses a taller canvas on narrow screens', () => {
   for (const seed of seeds) {
     const mobile = createCollageLayout(seed, objects, 360, 720);
@@ -48,8 +56,8 @@ test('keeps distribution broad and uses a taller canvas on narrow screens', () =
     const desktopCentres = desktop.placements.map((item) => ({ x: item.x + item.width / 2, y: item.y + item.height / 2 }));
     const mobileSpread = Math.max(...mobileCentres.map((item) => item.y)) - Math.min(...mobileCentres.map((item) => item.y));
     const desktopSpread = Math.max(...desktopCentres.map((item) => item.x)) - Math.min(...desktopCentres.map((item) => item.x));
-    assert.ok(mobile.height > 720, 'mobile canvas should be scrollable and generous');
-    assert.ok(mobile.height < 1500, 'mobile canvas should stay compact enough to avoid empty deserts');
+    assert.ok(mobile.height > 1800, 'a thirty-object mobile canvas should remain legible and scrollable');
+    assert.ok(mobile.height < 2600, 'mobile canvas should not add unnecessary empty desert');
     assert.ok(mobileSpread > mobile.height * 0.52, 'mobile composition should cover the canvas');
     assert.ok(desktopSpread > 1440 * 0.5, 'desktop composition should not cluster into a column');
   }
@@ -57,7 +65,7 @@ test('keeps distribution broad and uses a taller canvas on narrow screens', () =
 
 test('falls back to a legible vertical canvas on an unusually narrow size', () => {
   const layout = createCollageLayout(99, objects, 220, 400);
-  assert.equal(layout.placements.length, 14);
-  assert.ok(layout.height >= 1340);
+  assert.equal(layout.placements.length, 30);
+  assert.ok(layout.height >= 2400);
   assert.ok(layout.placements.every((item) => item.x + item.width <= 220));
 });

@@ -64,22 +64,31 @@ function distance(a: Rect, b: Rect) {
   return Math.hypot(ax - bx, ay - by);
 }
 
-function fieldHeight(width: number, viewportHeight: number) {
-  if (width < 520) return Math.max(1340, Math.round(viewportHeight * 1.86));
+function fieldHeight(width: number, viewportHeight: number, itemCount: number) {
+  if (width < 520) return Math.max(1340, Math.round(viewportHeight * 1.86), itemCount * 80);
   if (width < 900) return Math.max(1050, Math.round(viewportHeight * 1.4));
   return Math.max(450, viewportHeight - 140);
 }
 
-function itemDimensions(item: CollageItem, order: number, count: number, random: () => number, fallback: number, mobile: boolean) {
+function itemDimensions(
+  item: CollageItem,
+  order: number,
+  count: number,
+  random: () => number,
+  fallback: number,
+  mobile: boolean,
+  clusterSize: number,
+) {
   const source = SHAPES[item.shape];
-  const clusterSize = Math.ceil(count / 4);
   const clusterRole = order % clusterSize;
   const prominence = mobile
-    ? [1, 0.46, 0.2, 0.38][clusterRole] ?? 0.3
+    ? [1, 0.46, 0.2, 0.38, 0.25][clusterRole] ?? 0.28
     : 1 - order / Math.max(1, count - 1);
-  const densityScale = mobile ? 0.84 : count > 10 ? 0.79 : 1;
+  const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? 0.58 : count > 10 ? 0.79 : 1;
   const fallbackScale = 1 - fallback * 0.065;
-  const scale = clamp((0.66 + prominence * 0.24 + random() * 0.12) * densityScale * fallbackScale, 0.46, 1.08);
+  const scaleJitter = 0.84 + random() * 0.32;
+  const minimumScale = mobile ? 0.42 : count > 20 ? 0.36 : 0.42;
+  const scale = clamp((0.64 + prominence * 0.28) * densityScale * fallbackScale * scaleJitter, minimumScale, 1.08);
   const shapeWidth = Math.round(source.width * scale);
   const shapeHeight = Math.round(source.height * scale);
   const rotation = Math.round((random() * 18 - 9) * 10) / 10;
@@ -148,7 +157,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
   const random = mulberry32(seed + fallback * 104729);
   const mobile = width < 520;
   const clusterRandom = mulberry32(seed + fallback * 1327);
-  const clusterCount = Math.min(4, Math.ceil(items.length / 3));
+  const clusterCount = mobile ? Math.min(6, Math.ceil(items.length / 4)) : 4;
   const mobileClusterY = Array.from({ length: clusterCount }, (_, index) => {
     const base = (index + 0.5) / clusterCount;
     return height * (base + (clusterRandom() - 0.5) * 0.085);
@@ -159,7 +168,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
       item,
       index,
       cluster: Math.min(Math.floor(index / clusterSize), clusterCount - 1),
-      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile),
+      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile, clusterSize),
     }))
     .sort((a, b) => (b.dimensions.shapeWidth * b.dimensions.shapeHeight) - (a.dimensions.shapeWidth * a.dimensions.shapeHeight));
   const placed: Array<CollagePlacement & { rect: Rect }> = [];
@@ -215,7 +224,7 @@ function makeAttempt(seed: number, items: CollageItem[], width: number, height: 
 
 /** Builds a deterministic, free-form layout and retains its seed through responsive reflows. */
 export function createCollageLayout(seed: number, items: CollageItem[], width: number, viewportHeight: number): CollageLayout {
-  const height = fieldHeight(width, viewportHeight);
+  const height = fieldHeight(width, viewportHeight, items.length);
   for (let fallback = 0; fallback < 5; fallback += 1) {
     const placements = makeAttempt(seed, items, width, height, fallback);
     if (placements) return { height, placements, fallbackLevel: fallback };

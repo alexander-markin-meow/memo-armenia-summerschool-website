@@ -74,7 +74,7 @@ function Collection({ route }: { route: Extract<Route, { kind: 'collection' }> }
           '--shape-height': `${place.shapeHeight}px`,
           '--shape-rotation': `${place.rotation}deg`,
         } as CSSProperties : undefined;
-        return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug} aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}><Shape name={entry.shape} /><span className="object-label"><b>{String(index + 1).padStart(2, '0')} — {text(entry.objectName, route.locale)}</b><small className="object-project">{text(entry.project.title, route.locale)}</small></span></a>;
+        return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug} aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}><Shape name={entry.shape} /><span className="object-label"><b>{text(entry.objectName, route.locale)}</b><small className="object-project">{text(entry.project.title, route.locale)}</small></span></a>;
       })}
     </section>
   </main>;
@@ -84,6 +84,8 @@ function Catalogue({ route }: { route: Extract<Route, { kind: 'catalogue' }> }) 
   const locationFilter = route.query.get('location') || '';
   const typeFilter = route.query.get('type') || '';
   const mediumFilter = route.query.get('medium') || '';
+  const locations = [...new Set(entries.map((entry) => entry.location.en))];
+  const types = [...new Set(entries.map((entry) => entry.shape))];
   const filtered = entries.filter((entry) => (!locationFilter || entry.location.en === locationFilter) && (!typeFilter || entry.shape === typeFilter) && (!mediumFilter || entry.project.medium === mediumFilter));
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -94,14 +96,14 @@ function Catalogue({ route }: { route: Extract<Route, { kind: 'catalogue' }> }) 
   return <main className="catalogue-page" id="main"><Header route={route} />
     <div className="catalogue-heading"><div><p className="eyebrow">Lori, Found</p><h1>{text(ui.catalogue, route.locale)}</h1></div><p>{text(ui.prototypeLong, route.locale)}</p></div>
     <form className="filters" onSubmit={submit}>
-      <label>{text(ui.location, route.locale)}<select name="location" defaultValue={locationFilter}><option value="">{text(ui.all, route.locale)}</option>{entries.map((entry) => <option key={entry.slug} value={entry.location.en}>{text(entry.location, route.locale)}</option>)}</select></label>
-      <label>{text(ui.objectType, route.locale)}<select name="type" defaultValue={typeFilter}><option value="">{text(ui.all, route.locale)}</option>{entries.map((entry) => <option key={entry.shape} value={entry.shape}>{text(entry.objectName, route.locale)}</option>)}</select></label>
+      <label>{text(ui.location, route.locale)}<select name="location" defaultValue={locationFilter}><option value="">{text(ui.all, route.locale)}</option>{locations.map((location) => { const entry = entries.find((item) => item.location.en === location)!; return <option key={location} value={location}>{text(entry.location, route.locale)}</option>; })}</select></label>
+      <label>{text(ui.objectType, route.locale)}<select name="type" defaultValue={typeFilter}><option value="">{text(ui.all, route.locale)}</option>{types.map((type) => { const entry = entries.find((item) => item.shape === type)!; return <option key={type} value={type}>{text(entry.objectName, route.locale)}</option>; })}</select></label>
       <label>{text(ui.projectMedium, route.locale)}<select name="medium" defaultValue={mediumFilter}><option value="">{text(ui.all, route.locale)}</option>{(['text', 'photo', 'video', 'mixed'] as Medium[]).map((medium) => <option key={medium} value={medium}>{mediumLabel(medium, route.locale)}</option>)}</select></label>
       <button type="submit">{text(ui.applyFilters, route.locale)}</button><a href={`#/${route.locale}/catalogue`}>{text(ui.clearFilters, route.locale)}</a>
     </form>
     <p className="result-count" aria-live="polite">{filtered.length} {text(ui.results, route.locale)}</p>
     <section className="catalogue-list">{filtered.map((entry) => <a className="catalogue-row" href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug}>
-      <span className="catalogue-index">{String(entries.indexOf(entry) + 1).padStart(2, '0')}</span><span className="catalogue-object"><Shape name={entry.shape} /></span><span className="catalogue-names"><b>{text(entry.objectName, route.locale)}</b><small>{text(entry.location, route.locale)}</small></span><span className="catalogue-project"><b>{text(entry.project.title, route.locale)}</b><small>{mediumLabel(entry.project.medium, route.locale)}</small></span><span>↗</span>
+      <span className="catalogue-object"><Shape name={entry.shape} /></span><span className="catalogue-names"><b>{text(entry.objectName, route.locale)}</b><small>{text(entry.location, route.locale)}</small></span><span className="catalogue-project"><b>{text(entry.project.title, route.locale)}</b><small>{mediumLabel(entry.project.medium, route.locale)}</small></span><span>↗</span>
     </a>)}</section>
   </main>;
 }
@@ -114,7 +116,7 @@ function Project({ route }: { route: Extract<Route, { kind: 'project' }> }) {
   const next = entries[(index + 1) % entries.length];
   return <main className="project-page" id="main"><Header route={route} />
     <div className="project-controls"><a className="back-link" href={`#/${route.locale}`}>← {text(ui.backCollection, route.locale)}</a><a className="back-link" href={`#/${route.locale}/catalogue`}>← {text(ui.backCatalogue, route.locale)}</a></div><p className="prototype-badge project-notice">{text(ui.prototype, route.locale)}</p>
-    <article><section className="object-lead"><div className="lead-object"><Shape name={entry.shape} /></div><div><p className="eyebrow">{text(ui.foundObject, route.locale)} {String(index + 1).padStart(2, '0')}</p><h1>{text(entry.objectName, route.locale)}</h1><dl className="metadata"><div><dt>{text(ui.place, route.locale)}</dt><dd>{text(entry.location, route.locale)}</dd></div><div><dt>{text(ui.date, route.locale)}</dt><dd>{text(entry.approximateDate, route.locale)}</dd></div></dl><p className="object-context">{text(entry.context, route.locale)}</p></div></section>
+    <article><section className="object-lead"><div className="lead-object"><Shape name={entry.shape} /></div><div><p className="eyebrow">{text(ui.foundObject, route.locale)}</p><h1>{text(entry.objectName, route.locale)}</h1><dl className="metadata"><div><dt>{text(ui.place, route.locale)}</dt><dd>{text(entry.location, route.locale)}</dd></div><div><dt>{text(ui.date, route.locale)}</dt><dd>{text(entry.approximateDate, route.locale)}</dd></div></dl><p className="object-context">{text(entry.context, route.locale)}</p></div></section>
       <section className="project-story"><p className="eyebrow">{text(ui.participantProject, route.locale)} · {mediumLabel(entry.project.medium, route.locale)}</p><h2>{text(entry.project.title, route.locale)}</h2><p className="byline">{text(entry.project.participant, route.locale)} · {text(ui.pseudonym, route.locale)}</p><p className="standfirst">{text(entry.project.introduction, route.locale)}</p>{entry.project.medium === 'video' ? <button className="video-placeholder"><span>▶</span><b>{text(ui.video, route.locale)}</b></button> : entry.project.medium === 'text' ? <div className="story-placeholder"><p>{text(ui.storyOne, route.locale)}</p><p>{text(ui.storyTwo, route.locale)}</p></div> : <div className="placeholder-gallery">{[1, 2, 3].map((item) => <span key={item} className={`gallery-cell gallery-${item}`} />)}</div>}</section>
       <nav className="project-pagination"><a href={`#/${route.locale}/projects/${previous.slug}`}><small>{text(ui.previous, route.locale)}</small><b>{text(previous.project.title, route.locale)}</b></a><a href={`#/${route.locale}/projects/${next.slug}`}><small>{text(ui.next, route.locale)}</small><b>{text(next.project.title, route.locale)}</b></a></nav>
     </article>

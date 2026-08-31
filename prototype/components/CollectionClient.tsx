@@ -67,7 +67,7 @@ export function CollectionClient({ entries, locale }: { entries: MuseumEntry[]; 
           >
             <Shape name={entry.shape} />
             <span className="object-label">
-              <b>{String(index + 1).padStart(2, '0')} — {text(entry.objectName, locale)}</b>
+              <b>{text(entry.objectName, locale)}</b>
               <small className="object-project">{text(entry.project.title, locale)}</small>
             </span>
           </Link>

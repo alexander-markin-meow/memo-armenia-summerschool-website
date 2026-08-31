@@ -83,7 +83,6 @@ export default async function CataloguePage({ params, searchParams }: Props) {
             className="catalogue-row"
             key={entry.slug}
           >
-            <span className="catalogue-index">{String(entries.indexOf(entry) + 1).padStart(2, '0')}</span>
             <span className="catalogue-object"><Shape name={entry.shape} /></span>
             <span className="catalogue-names">
               <b>{text(entry.objectName, lang)}</b>

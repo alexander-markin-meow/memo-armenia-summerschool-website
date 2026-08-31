@@ -1,4 +1,4 @@
-The prototype will be a small, public, trilingual digital museum with three working views: a warm, randomized collection of non-overlapping placeholder objects, an object-first project page, and a filterable catalogue. It uses fourteen fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
+The prototype will be a small, public, trilingual digital museum with three working views: a warm, randomized collection of non-overlapping placeholder objects, an object-first project page, and a filterable catalogue. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
@@ -17,7 +17,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 ### Visual collection (`/:lang`)
 
-- A light and warm free-form field containing fourteen irregular placeholder objects. Desktop keeps the whole collection in view; narrow screens use a taller scrollable field.
+- A light and warm free-form field containing thirty irregular placeholder objects. Desktop keeps the whole collection in view; narrow screens use a taller scrollable field.
 - Objects are CSS shapes rather than photographs: a button, a stone, a metal fragment, a leaf, a tile shard, and a thread spool.
 - Every new browser session gets a newly shuffled composition.
 - Objects never overlap, remain inside safe screen margins, and reflow at mobile, tablet, and desktop sizes.
@@ -38,7 +38,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 
 ### Structured catalogue (`/:lang/catalogue`)
 
-- The same fourteen pairs displayed in a calm responsive list/grid.
+- The same thirty pairs displayed in a calm responsive list/grid.
 - Filters for location, object type, and project medium.
 - Filters combine with AND logic; “All” resets each group.
 - The current filter state is stored in the URL query string, so a view can be shared or refreshed.
@@ -154,13 +154,13 @@ For the prototype, all interface and fictional content will be translated into E
 ### Phase 1 — Foundation and recognizable first view (1–2 days)
 
 - Create the Vite/React/TypeScript app and quality tooling.
-- Add routes, design tokens, provisional site identity, and six typed fictional records.
+- Add routes, design tokens, provisional site identity, and thirty typed fictional records.
 - Build the smallest working visual collection with object links and one complete project page.
 - Deploy the first preview so the direction can be approved early.
 
 ### Phase 2 — Complete visitor flow (2–3 days)
 
-- Finish the fourteen placeholder entries and responsive non-overlap layout.
+- Finish the thirty placeholder entries and responsive non-overlap layout.
 - Build the reusable object-first project page, gallery, deferred video, and return-state behavior.
 - Add the catalogue and URL-based filters.
 
@@ -192,7 +192,7 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 The prototype is ready for review when:
 
-- fourteen fictional objects appear in a fresh, non-overlapping composition on each new session;
+- thirty fictional objects appear in a fresh, non-overlapping composition on each new session;
 - every object opens the correct object-first project page;
 - returning to the collection preserves the visitor’s arrangement;
 - catalogue filters work together and survive refresh through the URL;
@@ -212,4 +212,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-The current redesign keeps the provisional **Lori, Found** identity, fourteen fictional CSS-shape entries, the three routes and three languages described above, and a static Cloudflare Pages deployment. Naming and real content remain review points rather than blockers for the prototype.
+The current redesign keeps the provisional **Lori, Found** identity, thirty fictional CSS-shape entries, the three routes and three languages described above, and a static Cloudflare Pages deployment. Naming and real content remain review points rather than blockers for the prototype.

@@ -59,7 +59,7 @@ export default async function ProjectPage({ params, searchParams }: Props) {
         <section className="object-lead">
           <div className="lead-object"><Shape name={entry.shape} /></div>
           <div>
-            <p className="eyebrow">{text(ui.foundObject, lang)} {String(index + 1).padStart(2, '0')}</p>
+            <p className="eyebrow">{text(ui.foundObject, lang)}</p>
             <h1>{text(entry.objectName, lang)}</h1>
             <dl className="metadata">
               <div><dt>{text(ui.place, lang)}</dt><dd>{text(entry.location, lang)}</dd></div>
