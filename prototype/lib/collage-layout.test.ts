@@ -28,7 +28,7 @@ test('keeps objects inside the safe canvas with controlled overlap', () => {
             layout.placements[index].width * layout.placements[index].height,
             layout.placements[next].width * layout.placements[next].height,
           );
-          const allowedOverlap = viewport.width >= 1200 ? 0.16 : viewport.width < 520 ? 0 : 0.08;
+          const allowedOverlap = viewport.width >= 1200 ? 0.1 : viewport.width < 520 ? 0 : 0.06;
           assert.ok(overlap <= smallerArea * allowedOverlap, `${seed}: overlap is too large`);
         }
       }
@@ -71,6 +71,23 @@ test('layers at least some objects on wide screens', () => {
       .slice(index + 1)
       .filter((other) => rectsOverlap(item, other) > 0).length, 0);
     assert.ok(overlapCount > 0, `${seed}: wide-screen composition should have layered objects`);
+  }
+});
+
+test('balances desktop visual mass across the whole composition', () => {
+  for (const seed of seeds) {
+    const layout = createCollageLayout(seed, objects, 1440, 900);
+    const zoneCounts = Array<number>(15).fill(0);
+    const zoneMasses = Array<number>(15).fill(0);
+    for (const item of layout.placements) {
+      const column = Math.min(4, Math.floor((item.x + item.width / 2) / (1440 / 5)));
+      const row = Math.min(2, Math.floor((item.y + item.height / 2) / (layout.height / 3)));
+      const zone = row * 5 + column;
+      zoneCounts[zone] += 1;
+      zoneMasses[zone] += item.shapeWidth * item.shapeHeight;
+    }
+    assert.ok(zoneCounts.every((count) => count === 2), `${seed}: every desktop zone needs two objects`);
+    assert.ok(Math.max(...zoneMasses) / Math.min(...zoneMasses) < 2.3, `${seed}: visual mass is too uneven`);
   }
 });
 

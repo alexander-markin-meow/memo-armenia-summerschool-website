@@ -21,6 +21,7 @@ export type CollageLayout = {
 };
 
 type Rect = { x: number; y: number; width: number; height: number };
+type Zone = Rect & { angle: number };
 
 const SHAPES: Record<ShapeName, { width: number; height: number }> = {
   button: { width: 116, height: 116 },
@@ -64,6 +65,43 @@ function distance(a: Rect, b: Rect) {
   return Math.hypot(ax - bx, ay - by);
 }
 
+function shuffle<T>(items: T[], random: () => number) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(random() * (index + 1));
+    [shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function compositionZones(width: number, height: number, itemCount: number, mobile: boolean): Zone[] {
+  // Desktop zones carry two objects; mobile gives every object its own vertical territory
+  // so touch targets remain clear without creating a long empty field.
+  const zoneCount = Math.ceil(itemCount / (mobile ? 1 : 2));
+  const columns = mobile ? 2 : width < 900 ? 3 : 5;
+  const rows = Math.ceil(zoneCount / columns);
+  const zoneWidth = width / columns;
+  const zoneHeight = height / rows;
+  const zoneRandom = mulberry32(Math.round(width * 31 + height * 17 + itemCount));
+
+  return Array.from({ length: zoneCount }, (_, index) => ({
+    x: (index % columns) * zoneWidth,
+    y: Math.floor(index / columns) * zoneHeight,
+    width: zoneWidth,
+    height: zoneHeight,
+    angle: zoneRandom() * Math.PI * 2,
+  }));
+}
+
+function zoneAnchor(zone: Zone, slot: number, random: () => number) {
+  const radius = Math.min(zone.width, zone.height) * (0.14 + random() * 0.08);
+  const angle = zone.angle + (slot % 2) * Math.PI + (random() - 0.5) * 0.48;
+  return {
+    x: zone.x + zone.width / 2 + Math.cos(angle) * radius,
+    y: zone.y + zone.height / 2 + Math.sin(angle) * radius,
+  };
+}
+
 function fieldHeight(width: number, viewportHeight: number, itemCount: number) {
   if (width < 520) return Math.max(1340, Math.round(viewportHeight * 1.86), itemCount * 80);
   if (width < 900) return Math.max(1050, Math.round(viewportHeight * 1.4));
@@ -78,12 +116,10 @@ function itemDimensions(
   fallback: number,
   mobile: boolean,
   wide: boolean,
-  clusterSize: number,
 ) {
   const source = SHAPES[item.shape];
-  const clusterRole = order % clusterSize;
   const prominence = mobile
-    ? [1, 0.46, 0.2, 0.38, 0.25][clusterRole] ?? 0.28
+    ? [1, 0.46, 0.2, 0.38, 0.25][order % 5] ?? 0.28
     : 1 - order / Math.max(1, count - 1);
   // Wide laptop and desktop canvases deliberately give the collection a stronger physical presence.
   const densityScale = mobile ? count > 20 ? 0.72 : 0.84 : count > 20 ? wide ? 0.86 : 0.64 : count > 10 ? 0.79 : 1;
@@ -112,7 +148,8 @@ function scoreCandidate(
   placed: Rect[],
   canvas: { width: number; height: number },
   maximumOverlapRatio: number,
-  mobileClusterY?: number,
+  anchor: { x: number; y: number },
+  zone: Zone,
 ) {
   const centreX = candidate.x + candidate.width / 2;
   const centreY = candidate.y + candidate.height / 2;
@@ -142,65 +179,64 @@ function scoreCandidate(
 
   const edgeDistance = Math.min(candidate.x, candidate.y, canvas.width - candidate.x - candidate.width, canvas.height - candidate.y - candidate.height);
   const edgeScore = clamp(edgeDistance / 58, 0, 1);
-  const centrality = Math.hypot(centreX - canvas.width / 2, centreY - canvas.height / 2) / diagonal;
-
-  if (mobileClusterY !== undefined) {
-    const desiredSpacing = Math.max(candidate.width, candidate.height) * 1.15;
-    const spacingScore = placed.length
-      ? 1.45 - Math.abs(nearest - desiredSpacing) / desiredSpacing
-      : 1.1;
-    const clusterScore = 1 - clamp(Math.abs(centreY - mobileClusterY) / (canvas.height * 0.22), 0, 1);
-    // Mobile deliberately forms loose, irregular vertical constellations instead of a left/right sequence.
-    return spacingScore * 2.3 + clusterScore * 2.8 + edgeScore * 0.45 - rowPenalty * 0.45 - columnPenalty * 0.8 - symmetryPenalty;
-  }
-
-  // Prefer a close, layered field instead of turning objects into an evenly spaced grid.
-  const desiredSpacing = Math.max(candidate.width, candidate.height) * 0.82;
+  const anchorDistance = Math.hypot(centreX - anchor.x, centreY - anchor.y);
+  const anchorScore = 1 - clamp(anchorDistance / (Math.min(zone.width, zone.height) * 0.42), 0, 1);
+  const desiredSpacing = Math.max(candidate.width, candidate.height) * 1.04;
   const proximityScore = placed.length
     ? 1 - clamp(Math.abs(nearest - desiredSpacing) / desiredSpacing, 0, 1)
     : 1;
-  return proximityScore * 3.8 + overlapScore * 4.2 + edgeScore * 0.8 + (1 - centrality) * 0.35 - rowPenalty - columnPenalty - symmetryPenalty * 0.9;
+  // Anchors guarantee even coverage; the remaining scoring retains a small, natural mess.
+  return anchorScore * 4.6 + proximityScore * 0.7 + overlapScore * 0.85 + edgeScore * 0.35 - rowPenalty * 0.55 - columnPenalty * 0.65 - symmetryPenalty * 0.7;
 }
 
 function makeAttempt(seed: number, items: CollageItem[], width: number, height: number, fallback: number): CollagePlacement[] | null {
   const random = mulberry32(seed + fallback * 104729);
   const mobile = width < 520;
   const wide = width >= 1200;
-  const clusterRandom = mulberry32(seed + fallback * 1327);
-  const clusterCount = mobile ? Math.min(6, Math.ceil(items.length / 4)) : 4;
-  const mobileClusterY = Array.from({ length: clusterCount }, (_, index) => {
-    const base = (index + 0.5) / clusterCount;
-    return height * (base + (clusterRandom() - 0.5) * 0.085);
-  });
-  const clusterSize = Math.ceil(items.length / clusterCount);
+  const zones = compositionZones(width, height, items.length, mobile);
+  const zoneOrder = shuffle(zones, mulberry32(seed + fallback * 1327));
+  const zoneSlots = new Map<Zone, number>();
   const bySize = items
     .map((item, index) => ({
       item,
       index,
-      cluster: Math.min(Math.floor(index / clusterSize), clusterCount - 1),
-      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile, wide, clusterSize),
+      dimensions: itemDimensions(item, index, items.length, random, fallback, mobile, wide),
     }))
     .sort((a, b) => (b.dimensions.shapeWidth * b.dimensions.shapeHeight) - (a.dimensions.shapeWidth * a.dimensions.shapeHeight));
   const placed: Array<CollagePlacement & { rect: Rect }> = [];
   const canvas = { width, height };
-  const maximumOverlapRatio = mobile ? 0 : wide ? 0.16 : 0.08;
+  const maximumOverlapRatio = mobile ? 0 : wide ? 0.1 : 0.06;
 
-  for (const current of bySize) {
+  for (const [placementIndex, current] of bySize.entries()) {
     const { dimensions } = current;
     const maxX = width - dimensions.width - EDGE_PADDING;
     const maxY = height - dimensions.height - EDGE_PADDING;
     if (maxX <= EDGE_PADDING || maxY <= EDGE_PADDING) return null;
+    const zone = zoneOrder[placementIndex % zoneOrder.length];
+    const slot = zoneSlots.get(zone) ?? 0;
+    zoneSlots.set(zone, slot + 1);
+    const anchor = zoneAnchor(zone, slot, random);
 
     let winner: { rect: Rect; score: number } | null = null;
-    const candidateCount = mobile ? CANDIDATES_PER_ITEM * 6 : CANDIDATES_PER_ITEM;
+    const candidateCount = mobile ? CANDIDATES_PER_ITEM * 4 : CANDIDATES_PER_ITEM;
     for (let attempt = 0; attempt < candidateCount; attempt += 1) {
+      const centreX = clamp(
+        anchor.x + (random() - 0.5) * zone.width * 0.48,
+        dimensions.width / 2 + EDGE_PADDING,
+        width - dimensions.width / 2 - EDGE_PADDING,
+      );
+      const centreY = clamp(
+        anchor.y + (random() - 0.5) * zone.height * 0.48,
+        dimensions.height / 2 + EDGE_PADDING,
+        height - dimensions.height / 2 - EDGE_PADDING,
+      );
       const rect = {
-        x: Math.round(EDGE_PADDING + random() * (maxX - EDGE_PADDING)),
-        y: Math.round(EDGE_PADDING + random() * (maxY - EDGE_PADDING)),
+        x: Math.round(centreX - dimensions.width / 2),
+        y: Math.round(centreY - dimensions.height / 2),
         width: dimensions.width,
         height: dimensions.height,
       };
-      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, maximumOverlapRatio, mobile ? mobileClusterY[current.cluster] : undefined);
+      const score = scoreCandidate(rect, placed.map((item) => item.rect), canvas, maximumOverlapRatio, anchor, zone);
       if (!winner || score > winner.score) winner = { rect, score };
     }
     if (!winner || !Number.isFinite(winner.score)) return null;
