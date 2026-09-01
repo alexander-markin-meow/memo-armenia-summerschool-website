@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { StrictMode, useEffect, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { CollectionIntro } from '@/components/CollectionIntro';
 import { GrainLayer } from '@/components/GrainLayer';
@@ -7,7 +7,6 @@ import { Shape } from '@/components/Shape';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeaderBase } from '@/components/SiteHeaderBase';
 import { SkipLink } from '@/components/SkipLink';
-import { useCollectionLayout } from '@/components/useCollectionLayout';
 import { rememberLocale } from '@/lib/browser-state';
 import { entries, text, ui, type Locale } from '@/lib/content';
 import { localizedHashRoute, parseHashRoute, type HashRoute } from '@/lib/github-pages-routing';
@@ -31,24 +30,31 @@ function Header({ route }: { route: HashRoute }) {
 }
 
 function Collection({ route }: { route: Extract<HashRoute, { kind: 'collection' }> }) {
-  const { field, layout, rememberScroll } = useCollectionLayout(entries);
-  return <><main className="collection-shell" id="main" lang={route.locale} tabIndex={-1}><Header route={route} /><CollectionIntro locale={route.locale} />
-    <section ref={field} id="objects" className="object-field" aria-label={text(ui.collection, route.locale)} data-ready={layout ? 'true' : 'false'} style={layout ? { height: layout.height } : undefined}>
-      {entries.map((entry, index) => {
-        const place = layout?.placements[index];
-        const style: CSSProperties | undefined = place ? {
-          left: place.x,
-          top: place.y,
-          width: place.width,
-          height: place.height,
-          '--shape-width': `${place.shapeWidth}px`,
-          '--shape-height': `${place.shapeHeight}px`,
-          '--shape-rotation': `${place.rotation}deg`,
-        } as CSSProperties : undefined;
-        return <a className="object-link" style={style} href={`#/${route.locale}/projects/${entry.slug}`} key={entry.slug} onClick={rememberScroll} aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}><Shape name={entry.shape} /><span className="object-label"><b>{text(entry.objectName, route.locale)}</b><small className="object-project">{text(entry.project.title, route.locale)}</small></span></a>;
-      })}
-    </section>
-  </main><SiteFooter locale={route.locale} /></>;
+  return (
+    <>
+      <main className="collection-shell" id="main" lang={route.locale} tabIndex={-1}>
+        <Header route={route} />
+        <CollectionIntro locale={route.locale} />
+        <section id="objects" className="object-grid" aria-label={text(ui.collection, route.locale)}>
+          {entries.map((entry) => (
+            <a
+              className="object-card"
+              href={`#/${route.locale}/projects/${entry.slug}`}
+              key={entry.slug}
+              aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}
+            >
+              <span className="object-figure"><Shape name={entry.shape} /></span>
+              <span className="object-label">
+                <b>{text(entry.objectName, route.locale)}</b>
+                <small className="object-project">{text(entry.project.title, route.locale)}</small>
+              </span>
+            </a>
+          ))}
+        </section>
+      </main>
+      <SiteFooter locale={route.locale} />
+    </>
+  );
 }
 
 function Project({ route }: { route: Extract<HashRoute, { kind: 'project' }> }) {

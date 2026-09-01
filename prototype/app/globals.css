@@ -84,43 +84,35 @@ main[tabindex="-1"]:focus { outline: none; }
 .collection-intro h1 + p { max-width: 40ch; margin: 2rem 0 0; color: var(--muted); font-size: clamp(.95rem, 1.5vw, 1.08rem); line-height: 1.6; }
 .collection-intro small { margin-top: 2.1rem; color: var(--muted); font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
 
-.object-field {
-  position: relative;
-  height: calc(100dvh - 140px);
-  margin: clamp(1.5rem, 4vw, 4rem) clamp(1rem, 4vw, 4rem) 0;
-  min-height: 450px;
-}
-.object-link {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-decoration: none;
-  transition: filter 160ms ease;
-  z-index: 1;
-}
-.object-field[data-ready="false"] .object-link { opacity: 0; pointer-events: none; }
-.object-link[href]:hover { filter: brightness(1.04); }
-.object-link[href]:focus-visible { outline: 2px solid var(--lichen); outline-offset: 8px; border-radius: 1rem; }
-.object-label { display: grid; width: calc(100% + 8px); min-height: 54px; padding-top: .35rem; text-align: center; align-content: start; line-height: 1.2; opacity: .63; transition: opacity 120ms ease; overflow-wrap: anywhere; }
+.object-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 172px), 1fr)); gap: clamp(2rem, 4vw, 4.5rem) clamp(1.2rem, 3vw, 3.5rem); margin: clamp(3rem, 7vw, 7rem) clamp(1rem, 4vw, 4rem) 0; }
+.object-card { display: grid; grid-template-rows: 176px auto; justify-items: center; align-items: start; min-width: 0; padding: .25rem; text-decoration: none; transition: filter 160ms ease, transform 160ms ease; }
+.object-card[href]:hover { filter: brightness(1.04); transform: translateY(-4px); }
+.object-card[href]:focus-visible { outline: 2px solid var(--lichen); outline-offset: 8px; border-radius: 1rem; }
+.object-figure { width: 100%; height: 176px; display: grid; place-items: center; }
+.object-label { display: grid; width: 100%; min-height: 54px; padding-top: .6rem; text-align: center; align-content: start; line-height: 1.2; opacity: .78; transition: opacity 120ms ease; overflow-wrap: anywhere; }
 .object-label b { font-size: .66rem; font-weight: 600; letter-spacing: .015em; }
 .object-label small { font-size: .61rem; color: var(--muted); margin-top: .25rem; }
-.object-link:hover .object-label, .object-link:focus-visible .object-label { opacity: 1; }
+.object-card:hover .object-label, .object-card:focus-visible .object-label { opacity: 1; }
 
 .shape { display: block; filter: drop-shadow(0 14px 10px rgb(47 35 23 / 16%)); transition: filter 160ms ease; }
-.object-link .shape { width: var(--shape-width); height: var(--shape-height); aspect-ratio: auto; transform: rotate(var(--shape-rotation)); }
+.object-figure .shape { width: min(100%, 168px); height: 142px; }
+.object-figure .shape-button, .object-figure .shape-bead, .object-figure .shape-ring { width: 140px; height: 140px; }
+.object-figure .shape-stone { width: 168px; height: 108px; }
+.object-figure .shape-metal, .object-figure .shape-paper, .object-figure .shape-shard { width: 168px; height: 132px; }
+.object-figure .shape-leaf, .object-figure .shape-spool { width: 128px; height: 166px; }
+.object-figure .shape-tile { width: 158px; height: 136px; }
+.object-figure .shape-ribbon { width: 168px; height: 96px; }
 .shape-button { width: clamp(72px, 8vw, 126px); aspect-ratio: 1; border-radius: 50%; border: 2px solid #71613f; background: radial-gradient(circle at 42% 38%, #e5c77d 0 5%, transparent 6%), radial-gradient(circle at 60% 38%, #e5c77d 0 5%, transparent 6%), radial-gradient(circle at 42% 58%, #d0ad5a 0 5%, transparent 6%), radial-gradient(circle at 60% 58%, #d0ad5a 0 5%, transparent 6%), radial-gradient(circle at 35% 27%, #cfb066, #8a6b36 73%); box-shadow: inset 0 0 0 8px rgb(66 47 20 / 10%), inset 8px 8px 15px rgb(255 255 255 / 18%); }
 .shape-stone { width: clamp(100px, 11vw, 160px); height: clamp(70px, 8vw, 115px); border-radius: 48% 52% 61% 39% / 45% 38% 62% 55%; background: radial-gradient(circle at 35% 28%, #a9a894, #62685f 74%); }
 .shape-metal { width: clamp(105px, 11vw, 165px); height: clamp(70px, 8vw, 112px); clip-path: polygon(3% 24%, 78% 0, 100% 48%, 68% 100%, 12% 79%); background: linear-gradient(135deg, #a8afa7 0 22%, #61746e 45%, #9d6d50 70%, #4c5754); }
 .shape-leaf { width: clamp(72px, 8vw, 115px); height: clamp(110px, 12vw, 175px); clip-path: polygon(48% 0, 86% 27%, 100% 66%, 53% 100%, 8% 70%, 0 30%); background: linear-gradient(95deg, #38452f 0 48%, #8b9362 50% 53%, #566548 55%); }
 .shape-tile { width: clamp(94px, 10vw, 150px); height: clamp(86px, 9vw, 135px); clip-path: polygon(7% 5%, 90% 0, 100% 76%, 71% 100%, 3% 86%); background: linear-gradient(145deg, rgb(255 255 255 / 20%), transparent 38%), linear-gradient(18deg, #426d61, #789985); border: 1px solid rgb(255 255 255 / 30%); }
 .shape-spool { width: clamp(80px, 8vw, 128px); height: clamp(100px, 10vw, 150px); border-radius: 42% 42% 35% 35% / 10% 10% 16% 16%; background: linear-gradient(90deg, #6d3c31 0 10%, #b05b49 12% 88%, #6d3c31 90%), repeating-linear-gradient(0deg, transparent 0 5px, rgb(255 255 255 / 12%) 6px); box-shadow: inset 0 11px #684f35, inset 0 -11px #684f35; }
-.shape-bead { aspect-ratio: 1; border-radius: 52% 48% 46% 54% / 50% 43% 57% 50%; background: radial-gradient(circle at 34% 28%, rgb(255 240 202 / 85%) 0 4%, transparent 5%), radial-gradient(circle at 62% 62%, rgb(255 180 128 / 35%) 0 11%, transparent 12%), radial-gradient(circle at 42% 38%, #d57a5c, #8d3d53 66%, #4d2c45); box-shadow: inset 8px 9px 13px rgb(255 244 223 / 24%), inset -9px -10px 15px rgb(58 20 38 / 26%); }
-.shape-paper { clip-path: polygon(4% 11%, 82% 0, 100% 18%, 93% 91%, 57% 100%, 2% 83%); background: linear-gradient(135deg, transparent 0 78%, rgb(121 70 64 / 48%) 79% 100%), linear-gradient(165deg, #efd19b, #c98265 55%, #9f4f56); box-shadow: inset 0 0 0 2px rgb(255 247 220 / 18%); }
-.shape-ribbon { height: 58%; margin-top: 15%; border-radius: 48% 14% 48% 18% / 36% 54% 38% 60%; background: repeating-linear-gradient(102deg, #493e7c 0 11%, #7762a0 12% 25%, #c27691 26% 37%, #d89b74 38% 50%); box-shadow: inset 0 5px 7px rgb(255 243 220 / 20%), inset 0 -7px 9px rgb(46 31 78 / 24%); }
-.shape-ring { aspect-ratio: 1; border-radius: 50%; background: conic-gradient(from 35deg, #234c61, #65a6a0 21%, #edbd74 42%, #b45a58 63%, #523967 79%, #234c61); -webkit-mask: radial-gradient(circle, transparent 0 33%, #000 35%); mask: radial-gradient(circle, transparent 0 33%, #000 35%); box-shadow: inset 0 0 0 7px rgb(255 244 215 / 13%); }
-.shape-shard { clip-path: polygon(12% 0, 92% 13%, 100% 65%, 61% 100%, 5% 76%); background: linear-gradient(125deg, rgb(255 247 214 / 24%), transparent 33%), linear-gradient(35deg, #2d4d7d 0 29%, #4d7592 30% 48%, #c56a57 49% 72%, #e1ac62 73%); }
+.shape-bead { width: clamp(80px, 8vw, 126px); aspect-ratio: 1; border-radius: 52% 48% 46% 54% / 50% 43% 57% 50%; background: radial-gradient(circle at 34% 28%, rgb(255 240 202 / 85%) 0 4%, transparent 5%), radial-gradient(circle at 62% 62%, rgb(255 180 128 / 35%) 0 11%, transparent 12%), radial-gradient(circle at 42% 38%, #d57a5c, #8d3d53 66%, #4d2c45); box-shadow: inset 8px 9px 13px rgb(255 244 223 / 24%), inset -9px -10px 15px rgb(58 20 38 / 26%); }
+.shape-paper { width: clamp(108px, 11vw, 168px); height: clamp(84px, 8vw, 132px); clip-path: polygon(4% 11%, 82% 0, 100% 18%, 93% 91%, 57% 100%, 2% 83%); background: linear-gradient(135deg, transparent 0 78%, rgb(121 70 64 / 48%) 79% 100%), linear-gradient(165deg, #efd19b, #c98265 55%, #9f4f56); box-shadow: inset 0 0 0 2px rgb(255 247 220 / 18%); }
+.shape-ribbon { width: clamp(112px, 11vw, 168px); height: clamp(60px, 7vw, 96px); border-radius: 48% 14% 48% 18% / 36% 54% 38% 60%; background: repeating-linear-gradient(102deg, #493e7c 0 11%, #7762a0 12% 25%, #c27691 26% 37%, #d89b74 38% 50%); box-shadow: inset 0 5px 7px rgb(255 243 220 / 20%), inset 0 -7px 9px rgb(46 31 78 / 24%); }
+.shape-ring { width: clamp(82px, 8vw, 140px); aspect-ratio: 1; border-radius: 50%; background: conic-gradient(from 35deg, #234c61, #65a6a0 21%, #edbd74 42%, #b45a58 63%, #523967 79%, #234c61); -webkit-mask: radial-gradient(circle, transparent 0 33%, #000 35%); mask: radial-gradient(circle, transparent 0 33%, #000 35%); box-shadow: inset 0 0 0 7px rgb(255 244 215 / 13%); }
+.shape-shard { width: clamp(108px, 10vw, 168px); height: clamp(92px, 8vw, 132px); clip-path: polygon(12% 0, 92% 13%, 100% 65%, 61% 100%, 5% 76%); background: linear-gradient(125deg, rgb(255 247 214 / 24%), transparent 33%), linear-gradient(35deg, #2d4d7d 0 29%, #4d7592 30% 48%, #c56a57 49% 72%, #e1ac62 73%); }
 
 .project-page { width: min(1280px, calc(100% - 2rem)); margin: 0 auto; padding: 0 0 6rem; }
 .project-page .site-header { padding-inline: 0; }
@@ -177,9 +169,16 @@ main[tabindex="-1"]:focus { outline: none; }
   .language-links { gap: .22rem; padding-inline: .36rem; }
   .collection-shell { padding-bottom: 4rem; }
   .collection-intro { min-height: min(38rem, 72svh); padding: 3rem 1rem 2.5rem; }
-  .object-field { height: max(1340px, 186dvh); min-height: 1340px; }
+  .object-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1rem; margin-top: 3rem; }
+  .object-card { grid-template-rows: 142px auto; }
+  .object-figure { height: 142px; }
   .object-label { min-height: 42px; opacity: .88; }
-  .object-label small { display: none; }
+  .object-figure .shape-button, .object-figure .shape-bead, .object-figure .shape-ring { width: 110px; height: 110px; }
+  .object-figure .shape-stone { width: 132px; height: 84px; }
+  .object-figure .shape-metal, .object-figure .shape-paper, .object-figure .shape-shard { width: 132px; height: 104px; }
+  .object-figure .shape-leaf, .object-figure .shape-spool { width: 102px; height: 132px; }
+  .object-figure .shape-tile { width: 124px; height: 106px; }
+  .object-figure .shape-ribbon { width: 132px; height: 76px; }
   .object-lead { grid-template-columns: 1fr; }
   .lead-object { min-height: 320px; }
   .object-lead h1 { max-width: none; }
