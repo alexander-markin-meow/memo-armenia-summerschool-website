@@ -25,8 +25,9 @@ export type Rect = { x: number; y: number; width: number; height: number };
 const DESKTOP_WIDTH = 1200;
 const MOBILE_WIDTH = 360;
 const DESKTOP_STEP = 190;
-const MOBILE_STEP = 202;
-const LABEL_HEIGHT = 68;
+const MOBILE_STEP = 160;
+const DESKTOP_LABEL_HEIGHT = 68;
+const MOBILE_LABEL_HEIGHT = 32;
 const CENTRAL_TARGET = 48;
 const MOBILE_HIT_PADDING = 12;
 
@@ -62,16 +63,16 @@ export function overlapRatio(a: Rect, b: Rect) {
   return overlapArea(a, b) / Math.min(a.width * a.height, b.width * b.height);
 }
 
-function itemRect(item: CollageItem, position: CollagePosition, viewportWidth: number, includeLabel: boolean): Rect {
+function itemRect(item: CollageItem, position: CollagePosition, viewportWidth: number): Rect {
   const width = item.collage.dimensions.width * position.scale;
   const height = item.collage.dimensions.height * position.scale;
   const left = viewportWidth * position.xPercent / 100 - width / 2;
-  return { x: left, y: position.top, width, height: height + (includeLabel ? LABEL_HEIGHT : 0) };
+  return { x: left, y: position.top, width, height };
 }
 
 export function visibleRect(item: CollageItem, placement: CollagePlacement, variant: CollageVariant, viewportWidth = variant === 'desktop' ? DESKTOP_WIDTH : MOBILE_WIDTH) {
   const position = placement[variant];
-  const source = itemRect(item, position, viewportWidth, false);
+  const source = itemRect(item, position, viewportWidth);
   const bounds = item.collage.visibleBounds;
   const left = source.width * bounds.left / 100;
   const right = source.width * bounds.right / 100;
@@ -82,13 +83,14 @@ export function visibleRect(item: CollageItem, placement: CollagePlacement, vari
 
 export function hitRect(item: CollageItem, placement: CollagePlacement, variant: CollageVariant, viewportWidth = variant === 'desktop' ? DESKTOP_WIDTH : MOBILE_WIDTH) {
   const position = placement[variant];
-  const shape = itemRect(item, position, viewportWidth, false);
+  const shape = itemRect(item, position, viewportWidth);
   const padding = variant === 'mobile' ? MOBILE_HIT_PADDING : item.collage.hitPadding;
+  const labelHeight = variant === 'mobile' ? MOBILE_LABEL_HEIGHT : DESKTOP_LABEL_HEIGHT;
   return {
     x: shape.x - padding,
     y: shape.y - padding,
     width: Math.max(CENTRAL_TARGET, shape.width + padding * 2),
-    height: Math.max(CENTRAL_TARGET, shape.height + padding * 2 + LABEL_HEIGHT),
+    height: Math.max(CENTRAL_TARGET, shape.height + padding * 2 + labelHeight),
   };
 }
 

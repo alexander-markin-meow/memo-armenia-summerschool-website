@@ -122,6 +122,8 @@ main[tabindex="-1"]:focus { outline: none; }
   overflow-wrap: anywhere;
 }
 .object-label b { font-size: .68rem; font-weight: 650; letter-spacing: .015em; }
+.object-title-row { display: inline-flex; align-items: baseline; justify-content: center; gap: .32rem; max-width: 100%; }
+.mobile-object-arrow { display: none; }
 .object-label small { margin-top: .22rem; color: var(--muted); font-size: .61rem; }
 .object-action { display: inline-flex; gap: .28rem; margin-top: .45rem; color: var(--lichen); font-size: .58rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
 .object-link[href]:hover, .object-link[href]:focus-visible { z-index: 1000; filter: brightness(1.04); transform: translateX(-50%) translateY(-8px) scale(1.025); }
@@ -221,10 +223,11 @@ main[tabindex="-1"]:focus { outline: none; }
   .object-link { left: var(--mobile-x); top: var(--mobile-y); width: max(48px, calc(var(--mobile-shape-width) + var(--mobile-hit-padding) + var(--mobile-hit-padding))); padding: var(--mobile-hit-padding) var(--mobile-hit-padding) .25rem; transform: translateX(-50%); }
   .object-figure { width: var(--mobile-shape-width); height: var(--mobile-shape-height); }
   .object-figure .shape { transform: rotate(var(--mobile-rotation)); }
-  .object-label { width: calc(100% + .25rem); min-height: 64px; margin-top: .3rem; padding: .35rem .1rem .2rem; }
-  .object-label b { font-size: .63rem; }
-  .object-label small { font-size: .56rem; }
-  .object-action { font-size: .53rem; }
+  .object-label { width: max-content; max-width: 44vw; min-height: 0; margin-top: .28rem; padding: .32rem .08rem .16rem; }
+  .object-title-row { width: 100%; white-space: nowrap; }
+  .object-title-row b { min-width: 0; overflow: hidden; font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-object-arrow { display: inline; flex: 0 0 auto; color: var(--lichen); font-size: .66rem; font-weight: 700; }
+  .object-project, .object-action { display: none; }
   .object-link[href]:hover, .object-link[href]:focus-visible { transform: translateX(-50%) translateY(-6px) scale(1.02); }
   .object-lead { grid-template-columns: 1fr; }
   .lead-object { min-height: 320px; }

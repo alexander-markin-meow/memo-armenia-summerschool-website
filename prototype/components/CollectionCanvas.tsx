@@ -66,7 +66,10 @@ export function CollectionCanvas({
           >
             <span className="object-figure"><Shape name={entry.shape} /></span>
             <span className="object-label">
-              <b>{text(entry.objectName, locale)}</b>
+              <span className="object-title-row">
+                <b>{text(entry.objectName, locale)}</b>
+                <span className="mobile-object-arrow" aria-hidden="true">↗</span>
+              </span>
               <small className="object-project">{text(entry.project.title, locale)}</small>
               <span className="object-action">{text(ui.openProject, locale)} <span aria-hidden="true">↗</span></span>
             </span>
