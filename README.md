@@ -6,8 +6,8 @@ The site implementation is in [`prototype/`](prototype/). The scope and technica
 
 The prototype uses fictional sample content and should not be treated as an archive of real objects, people, dates, or projects.
 
-The active site uses the full Vinext build on OpenAI Sites. The earlier GitHub Pages deployment is retired; its client-only source remains in `prototype/github-pages/` as implementation history and is not an active public target.
+The active site uses the client-only, hash-routed build in `prototype/github-pages/` and is published from the repository's `gh-pages` branch.
 
-Production: https://lori-found-memo.alex-markin.chatgpt.site/
+Production: https://alexander-markin-meow.github.io/memo-armenia-summerschool-website/
 
 From `prototype/`, run `npm run validate` to test routing and content invariants, type-check, lint, and build the supported source variants.
