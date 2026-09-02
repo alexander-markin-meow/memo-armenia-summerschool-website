@@ -1,4 +1,4 @@
-The prototype is a small, public, trilingual digital museum with three working views: a responsive grid of placeholder objects, object-first project pages, and a separate summer-school research/process record. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
+The prototype is a small, public, trilingual digital museum with three working views: a seeded non-hierarchical collage of placeholder objects, object-first project pages, and a separate summer-school research/process record. It uses thirty fictional object/project pairs and a generated cut-out atlas, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
@@ -7,7 +7,7 @@ The prototype is a small, public, trilingual digital museum with three working v
 Build a convincing but deliberately limited prototype that answers five questions:
 
 1. Does object-first navigation make the participant projects feel discoverable?
-2. Does a clear grid make the collection understandable and accessible to visitors who are less confident with websites?
+2. Can a quirky randomized collage remain legible, accessible, and easy to browse at every width?
 3. Can a separate research record connect projects, interviews, ideas, concepts, experiments, and trials without becoming a duplicate catalogue?
 4. Does one content structure support the collection, project pages, research page, and three languages?
 5. Can Alex replace placeholder material with real objects and projects without redesigning the site?
@@ -18,17 +18,18 @@ The prototype and its source repository are public for review. Project-owned hos
 
 ### Visual collection (`/:lang`)
 
-- A light and warm responsive grid containing all thirty irregular placeholder objects. It uses several columns on desktop and two columns on narrow screens.
-- Objects are CSS shapes rather than photographs, with varied forms and colours.
-- Grid order and object sizes are stable; there is no randomized placement behavior.
-- Each item has consistent spacing and a dedicated card area, keeping labels and touch targets clear.
-- Each object is a semantic link with a useful accessible label and visible focus state.
-- Pointer hover or keyboard focus strengthens the item without rearranging the grid.
+- A light and warm seeded collage containing thirty irregular placeholder object cut-outs.
+- The order, scale, rotation, mirroring, and continuous two-dimensional position reshuffle on each visit while remaining reproducible at each measured width.
+- Roomy layouts use a collision-aware even-plane solver with controlled peripheral image overlap; narrow layouts use a compact single stream and keep every link footprint separate.
+- Each item has a protected link area. Fine-pointer layouts show the animated object alone; narrow and non-hover layouts add only a plain object title and ↗.
+- Each object is a real link with a visible focus state and a short accessible label.
+- Pointer hover or keyboard focus lifts and straightens the active cut-out without rearranging the page; touch visitors receive an explicit resting affordance without a capsule or frame.
 - Selecting an object opens its project page directly.
+- A compact corner menu contains the language switcher. A concise opening frame introduces the collection once before the dense object plane.
 
 ### Project page (`/:lang/projects/:slug`)
 
-- A persistent “Back to collection” control returns to the collection grid.
+- A persistent “Back to collection” control returns to the collage.
 - The found object appears first with object name, place, approximate date, short context, and object type.
 - The participant project follows with a title, pseudonymous author, medium, short introduction, and one of two representative media layouts:
   - a three-item placeholder gallery; or
@@ -70,7 +71,7 @@ This stack keeps the prototype inexpensive and portable. It can later move to an
 ```text
 prototype/
   app/                 routes, pages, metadata, global design system
-  components/          navigation, object shapes, collection grid, project and research views
+  components/          navigation, object cut-outs, collection collage, project and research views
   lib/                  typed records, translations, and route helpers
   public/               social preview and public assets
 ```
@@ -108,16 +109,16 @@ The `sensitivity` field is included now so real material cannot accidentally be 
 
 ## 4. Collection layout baseline
 
-The active collection is a simple responsive grid. Every object occupies one predictable card with a shape, object name, and project title. The layout is deliberately stable while a future placement direction is reconsidered separately.
+The active collection uses the deterministic seeded dense-plane solver documented in [COLLAGE_ALGORITHM.md](COLLAGE_ALGORITHM.md). Every object occupies one protected semantic link rectangle while its visual cut-out may extend and overlap at the edges on roomy screens. The plane samples continuous positions, rejects collisions and close duplicate silhouettes, and penalizes alignment bands and clusters. Its density estimate is derived from measured content width rather than device names; constrained widths become taller and never drop objects.
 
 ## 5. Visual system
 
 - **Palette:** parchment background, charcoal text, muted clay, mineral green, oxidized blue, and rust accents.
 - **Typography:** a readable variable sans-serif that supports Latin, Armenian, and Cyrillic; one locally served family to avoid script mismatch and third-party font tracking.
-- **Objects:** irregular CSS shapes with subtle inner texture, soft contact shadows, and varied colours. They are placeholders, not attempts to imitate archaeological artefacts.
+- **Objects:** editorial-style fictional raster cut-outs with soft contact shadows and varied material textures. They are placeholders, not authenticated artefacts.
 - **Grain:** a large high-resolution animated texture applied as a low-opacity fixed top layer with `pointer-events: none`; reduced motion disables the animation.
 - **Motion:** short fades and gentle object lift only. `prefers-reduced-motion` removes movement.
-- **Spacing:** generous reading width on project pages, a regular collection rhythm, and a structured but non-catalogue research record.
+- **Spacing:** generous reading width on project pages, varied but protected spacing in the collection collage, and a structured but non-catalogue research record.
 
 ## 6. Language and editorial approach
 
@@ -150,8 +151,8 @@ For the prototype, all interface and fictional content will be translated into E
 
 ### Phase 2 — Complete visitor flow (2–3 days)
 
-- Finish the thirty placeholder entries and responsive collection grid.
-- Build the reusable object-first project page, gallery, deferred video, and return-to-grid behavior.
+- Finish the thirty placeholder entries and responsive collection collage.
+- Build the reusable object-first project page, gallery, deferred video, and return-to-collage behavior.
 - Add the separate research/process record and refine navigation across all three page types.
 
 ### Phase 3 — Three languages and care rules (1–2 days)
@@ -163,7 +164,7 @@ For the prototype, all interface and fictional content will be translated into E
 ### Phase 4 — Verification and handoff (1–2 days)
 
 - Test the primary flow on current Chrome, Safari, and Firefox, plus representative phone and desktop widths.
-- Run automated checks for routes, grid links, keyboard navigation, and missing translations.
+- Run automated checks for routes, collage links, keyboard navigation, and missing translations.
 - Run an accessibility audit and fix blocking issues.
 - Write a short content replacement guide and deploy the agreed prototype.
 
@@ -171,7 +172,7 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 ## 9. Verification plan
 
-- **Unit tests:** content completeness, research routes, locale coverage, stable grid links, and route behavior.
+- **Unit tests:** content completeness, research routes, locale coverage, seeded collage constraints, links, and route behavior.
 - **Interaction tests (React Testing Library):** object links, keyboard focus, language switcher, and return-to-collection behavior.
 - **End-to-end smoke tests (Playwright):** collection → project → collection, direct localized URLs, and not-found routes.
 - **Automated accessibility:** axe on the collection, one gallery project, and one video project.
@@ -182,9 +183,9 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 The prototype is ready for review when:
 
-- thirty fictional objects appear in a responsive grid;
+- thirty fictional objects appear in a responsive seeded collage;
 - every object opens the correct object-first project page;
-- returning to the collection returns to the grid;
+- returning to the collection returns to the collage;
 - a separate research/process page is reachable in all three languages;
 - all visitor-facing prototype text exists in English, Armenian, and Russian;
 - phone, keyboard, reduced-motion, and 200% zoom flows remain usable;
@@ -202,4 +203,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional CSS-shape entries, collection, project, and research routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional generated cut-out entries, collection, project, and research routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.

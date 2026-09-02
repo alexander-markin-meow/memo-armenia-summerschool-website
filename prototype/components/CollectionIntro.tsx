@@ -7,7 +7,10 @@ export function CollectionIntro({ locale }: { locale: Locale }) {
         <p className="eyebrow">{text(ui.siteTitle, locale)}</p>
         <h1 id="collection-intro-title">{text(ui.introTitle, locale)}</h1>
         <p>{text(ui.introText, locale)}</p>
-        <small>{text(ui.prototype, locale)}</small>
+        <p className="collection-instruction" id="collage-instruction">
+          <span aria-hidden="true">↓</span>
+          {text(ui.chooseObject, locale)}
+        </p>
       </div>
     </section>
   );

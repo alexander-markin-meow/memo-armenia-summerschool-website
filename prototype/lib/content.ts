@@ -105,6 +105,11 @@ export const ui = {
     'Քարտեզը հետագայում կարող է դառնալ այս նյութով անցնելու մեկ այլ ուղի։ Այն միտումնավոր դուրս է այս նախատիպային թարմացման շրջանակից։',
     'Позже карта может стать ещё одним маршрутом по этим материалам. В это обновление прототипа она намеренно не входит.',
   ),
+  chooseObject: l(
+    'Choose an object to open its project.',
+    'Ընտրեք առարկան՝ դրա նախագիծը բացելու համար։',
+    'Выберите предмет, чтобы открыть его проект.',
+  ),
   about: l('About', 'Մասին', 'О проекте'),
   aboutText: l(
     'A public digital museum concept based on the “Person in History” summer school in Lori, Armenia. This prototype uses fictional material while its content model and care principles are developed.',
@@ -241,7 +246,7 @@ const entrySources: MuseumEntrySource[] = [
   },
   {
     slug: 'green-glazed-tile-shard',
-    shape: 'paper',
+    shape: 'tile',
     objectName: l('Green glazed tile shard', 'Կանաչ ջնարակապատ սալիկի բեկոր', 'Фрагмент зелёной глазурованной плитки'),
     location: l('Tumanyan, Lori', 'Թումանյան, Լոռի', 'Туманян, Лори'),
     approximateDate: l('c. 1980s — prototype date', 'մոտ 1980-ականներ — նախատիպային ամսաթիվ', 'ок. 1980-х — дата прототипа'),
@@ -439,7 +444,7 @@ const entrySources: MuseumEntrySource[] = [
   },
   {
     slug: 'dried-apple-slice',
-    shape: 'shard',
+    shape: 'ring',
     objectName: l('Dried apple slice', 'Չորացրած խնձորի շերտ', 'Сушёная долька яблока'),
     location: l('Pambak, Lori', 'Փամբակ, Լոռի', 'Памбак, Лори'),
     approximateDate: l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),
@@ -460,7 +465,7 @@ const entrySources: MuseumEntrySource[] = [
     },
   },
   fictionalEntry(
-    'weathered-matchbook', 'paper',
+    'weathered-matchbook', 'button',
     l('Weathered matchbook', 'Մաշված լուցկու տուփ', 'Потёртый коробок спичек'),
     l('Sarchapet, Lori', 'Սարչապետ, Լոռի', 'Сарчапет, Лори'),
     l('c. 1990s — prototype date', 'մոտ 1990-ականներ — նախատիպային ամսաթիվ', 'ок. 1990-х — дата прототипа'),
@@ -532,7 +537,7 @@ const entrySources: MuseumEntrySource[] = [
     l('A fictional miniature about fruit, shade, and the small measures of a day.', 'Հորինված մանրապատում՝ մրգի, ստվերի և օրվա փոքր չափումների մասին։', 'Вымышленная миниатюра о фруктах, тени и малых мерах дня.'),
   ),
   fictionalEntry(
-    'chalk-line-sample', 'paper',
+    'chalk-line-sample', 'leaf',
     l('Chalk line sample', 'Կավճե գծի նմուշ', 'Образец меловой линии'),
     l('Saramej, Lori', 'Սարամեջ, Լոռի', 'Сарамедж, Лори'),
     l('Undated — prototype object', 'Ամսաթվագրված չէ — նախատիպային առարկա', 'Без даты — объект прототипа'),
@@ -595,7 +600,7 @@ const entrySources: MuseumEntrySource[] = [
     l('A fictional film of glints, backs of objects, and deliberately missed portraits.', 'Հորինված ֆիլմ՝ փայլերի, առարկաների թիկունքների և միտումնավոր բաց թողնված դիմանկարների մասին։', 'Вымышленный фильм о бликах, оборотах предметов и намеренно пропущенных портретах.'),
   ),
   fictionalEntry(
-    'folded-note', 'paper',
+    'folded-note', 'metal',
     l('Folded note', 'Ծալված գրություն', 'Сложенная записка'),
     l('Katnaghbyur, Lori', 'Կաթնաղբյուր, Լոռի', 'Катнахбюр, Лори'),
     l('c. 2020s — prototype date', 'մոտ 2020-ականներ — նախատիպային ամսաթիվ', 'ок. 2020-х — дата прототипа'),

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { CSSProperties, ReactNode } from 'react';
 import { GrainLayer } from '@/components/GrainLayer';
 import './globals.css';
 
@@ -19,10 +20,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body style={{ '--object-atlas-url': "url('/object-atlas.png')" } as CSSProperties}>
         <GrainLayer />
         {children}
       </body>

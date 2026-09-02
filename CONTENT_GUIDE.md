@@ -19,7 +19,7 @@ Confirm and record:
 Edit `prototype/lib/content.ts`. Every entry needs:
 
 - a stable lowercase slug;
-- one of the six supported shape placeholders, or later a reviewed cut-out image;
+- one of the supported placeholder cut-out profiles, or later a reviewed object image;
 - object name, location, date wording, and context in all three languages;
 - project title, participant display name, medium, and introduction in all three languages;
 - meaningful alt text for every future content image.
