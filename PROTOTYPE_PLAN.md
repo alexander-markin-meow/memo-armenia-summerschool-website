@@ -61,7 +61,7 @@ The prototype and its source repository are public for review. Project-owned hos
 - **Content:** typed local TypeScript data files, one record per object/project pair. No database, CMS, user accounts, or server runtime in the prototype.
 - **Internationalization:** a small typed local translation layer. Interface strings and project content use the same three-language shape, with English as the explicit development fallback.
 - **Package manager/runtime:** npm with a committed lockfile; current Node LTS, recorded in `.nvmrc` and `package.json`.
-- **Deployment:** an OpenAI Sites production build plus a static GitHub Pages preview, sourced from the public GitHub repository. The production branch is `main`.
+- **Deployment:** an OpenAI Sites production build sourced from the public GitHub repository. The production branch is `main`; the former GitHub Pages preview is retired.
 - **Code quality:** ESLint, Prettier, strict TypeScript, and accessible semantic HTML.
 
 This stack keeps the prototype inexpensive and portable. It can later move to another static host without changing the content model. A CMS can be added after the editorial workflow is known rather than guessed now.
@@ -203,4 +203,4 @@ The prototype is ready for review when:
 
 ## 12. Approval point
 
-The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional generated cut-out entries, collection, project, and research routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional generated cut-out entries, collection, project, and research routes in three languages, and the configured OpenAI Sites deployment. Real content and social destinations remain review points rather than blockers for the prototype.
