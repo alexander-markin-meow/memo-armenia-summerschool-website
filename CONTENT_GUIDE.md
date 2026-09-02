@@ -24,8 +24,6 @@ Edit `prototype/lib/content.ts`. Every entry needs:
 - project title, participant display name, medium, and introduction in all three languages;
 - meaningful alt text for every future content image.
 
-The exported entry also carries collage metadata: project path, intrinsic dimensions, visible-alpha bounds, hit padding, localized label and alt text, and optional visual weight. Update those values when a CSS placeholder is replaced by a reviewed cut-out image.
-
 Keep URL identifiers in English-like stable IDs; never generate filters or links from translated labels.
 
 ## Review sequence

@@ -5,19 +5,7 @@ export type ShapeName = 'button' | 'stone' | 'metal' | 'leaf' | 'tile' | 'spool'
 export type Medium = 'text' | 'photo' | 'video' | 'mixed';
 export type Sensitivity = 'public' | 'review-required';
 
-type VisibleBounds = { top: number; right: number; bottom: number; left: number };
-
-export type CollageMetadata = {
-  projectPath: string;
-  dimensions: { width: number; height: number };
-  visibleBounds: VisibleBounds;
-  hitPadding: number;
-  label: LocalizedText;
-  altText: LocalizedText;
-  visualWeight?: number;
-};
-
-type MuseumEntrySource = {
+export type MuseumEntry = {
   slug: string;
   shape: ShapeName;
   objectName: LocalizedText;
@@ -30,10 +18,10 @@ type MuseumEntrySource = {
     medium: Medium;
     introduction: LocalizedText;
   };
-  sensitivity?: Sensitivity;
+  sensitivity: Sensitivity;
 };
 
-export type MuseumEntry = Omit<MuseumEntrySource, 'sensitivity'> & { sensitivity: Sensitivity; collage: CollageMetadata };
+type MuseumEntrySource = Omit<MuseumEntry, 'sensitivity'> & { sensitivity?: Sensitivity };
 
 const l = (en: string, hy: string, ru: string): LocalizedText => ({ en, hy, ru });
 
@@ -58,36 +46,9 @@ const fictionalEntry = (
   project: { title, participant, medium, introduction },
 });
 
-const shapeProfiles: Record<ShapeName, Pick<CollageMetadata, 'dimensions' | 'visibleBounds' | 'hitPadding' | 'visualWeight'>> = {
-  button: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 2, right: 2, bottom: 2, left: 2 }, hitPadding: 18, visualWeight: 1 },
-  stone: { dimensions: { width: 168, height: 108 }, visibleBounds: { top: 8, right: 3, bottom: 7, left: 3 }, hitPadding: 16, visualWeight: 1.08 },
-  metal: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 1, right: 0, bottom: 0, left: 3 }, hitPadding: 16, visualWeight: 1.05 },
-  leaf: { dimensions: { width: 128, height: 166 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 0.94 },
-  tile: { dimensions: { width: 158, height: 136 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 1 }, hitPadding: 16, visualWeight: 1.04 },
-  spool: { dimensions: { width: 128, height: 166 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 0.96 },
-  bead: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 1, right: 1, bottom: 1, left: 1 }, hitPadding: 18, visualWeight: 1 },
-  paper: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 16, visualWeight: 1.02 },
-  ribbon: { dimensions: { width: 168, height: 96 }, visibleBounds: { top: 3, right: 1, bottom: 3, left: 1 }, hitPadding: 18, visualWeight: 0.98 },
-  ring: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 1 },
-  shard: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 16, visualWeight: 1.06 },
-};
-
-function withCollageMetadata(entry: MuseumEntrySource): MuseumEntry {
-  return {
-    ...entry,
-    sensitivity: entry.sensitivity ?? 'public',
-    collage: {
-      projectPath: `/projects/${entry.slug}`,
-      ...shapeProfiles[entry.shape],
-      label: entry.project.title,
-      altText: entry.objectName,
-    },
-  };
-}
-
 export const ui = {
   siteTitle: l('Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum'),
-  collection: l('Collage', 'Կոլաժ', 'Коллаж'),
+  collection: l('Collection', 'Հավաքածու', 'Коллекция'),
   language: l('Language', 'Լեզու', 'Язык'),
   skipToContent: l('Skip to content', 'Անցնել հիմնական բովանդակությանը', 'Перейти к основному содержанию'),
   prototype: l('Fictional prototype content', 'Հորինված նախատիպային բովանդակություն', 'Вымышленный прототипный контент'),
@@ -102,12 +63,6 @@ export const ui = {
     'Թվային հավաքածու, որը կապում է տեղական բեկորները Լոռիում «մարդը պատմության մեջ» ամառային դպրոցի մասնակիցների նախագծերի հետ։',
     'Цифровая коллекция, соединяющая местные фрагменты с проектами участников летней школы «человек в истории» в Лори, Армения.',
   ),
-  collageInstruction: l(
-    'Choose an object to open its project.',
-    'Ընտրեք առարկա՝ դրա նախագիծը բացելու համար։',
-    'Выберите предмет, чтобы открыть его проект.',
-  ),
-  openProject: l('Open project', 'Բացել նախագիծը', 'Открыть проект'),
   research: l('Research', 'Հետազոտություն', 'Исследование'),
   researchTitle: l('The summer school, in progress.', 'Ամառային դպրոցը՝ ընթացքի մեջ։', 'Летняя школа в процессе.'),
   researchIntro: l(
@@ -117,9 +72,9 @@ export const ui = {
   ),
   researchProjects: l('Project paths', 'Նախագծերի ուղիներ', 'Траектории проектов'),
   researchProjectsText: l(
-    'Found objects opened several possible routes into stories. These links use fictional projects to test how the research record can lead back into the collage.',
-    'Գտնված առարկաները պատմությունների մի քանի հնարավոր ուղիներ բացեցին։ Այս հղումները օգտագործում են հորինված նախագծեր՝ ստուգելու համար, թե ինչպես կարող է հետազոտական գրառումը վերադառնալ կոլաժ։',
-    'Найденные предметы открыли несколько возможных путей к историям. Эти ссылки ведут к вымышленным проектам и проверяют, как исследовательская запись может возвращать в коллаж.',
+    'Found objects opened several possible routes into stories. These links use fictional projects to test how the research record can lead back into the collection.',
+    'Գտնված առարկաները պատմությունների մի քանի հնարավոր ուղիներ բացեցին։ Այս հղումները օգտագործում են հորինված նախագծեր՝ ստուգելու համար, թե ինչպես կարող է հետազոտական գրառումը վերադառնալ հավաքածու։',
+    'Найденные предметы открыли несколько возможных путей к историям. Эти ссылки ведут к вымышленным проектам и проверяют, как исследовательская запись может возвращать в коллекцию.',
   ),
   researchInterviews: l('Interviews', 'Հարցազրույցներ', 'Интервью'),
   researchInterviewsText: l(
@@ -650,7 +605,7 @@ const entrySources: MuseumEntrySource[] = [
   ),
 ];
 
-export const entries: MuseumEntry[] = entrySources.map(withCollageMetadata);
+export const entries: MuseumEntry[] = entrySources.map((entry) => ({ ...entry, sensitivity: entry.sensitivity ?? 'public' }));
 
 export const isLocale = (value: string): value is Locale => locales.includes(value as Locale);
 export const text = (value: LocalizedText, locale: Locale) => value[locale] || value.en;

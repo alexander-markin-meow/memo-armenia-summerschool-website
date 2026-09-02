@@ -1,10 +1,10 @@
 import { StrictMode, useEffect, useState, type ComponentProps } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CollectionCanvas } from '@/components/CollectionCanvas';
 import { CollectionIntro } from '@/components/CollectionIntro';
 import { GrainLayer } from '@/components/GrainLayer';
 import { ProjectArticle } from '@/components/ProjectArticle';
 import { ResearchResults } from '@/components/ResearchResults';
+import { Shape } from '@/components/Shape';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeaderBase } from '@/components/SiteHeaderBase';
 import { SkipLink } from '@/components/SkipLink';
@@ -37,7 +37,23 @@ function Collection({ route }: { route: Extract<HashRoute, { kind: 'collection' 
       <main className="collection-shell" id="main" lang={route.locale} tabIndex={-1}>
         <Header route={route} />
         <CollectionIntro locale={route.locale} />
-        <CollectionCanvas entries={entries} locale={route.locale} LinkComponent={HashLink} projectHref={(entry) => `#/${route.locale}${entry.collage.projectPath}`} />
+        <section id="objects" className="object-grid" aria-label={text(ui.collection, route.locale)}>
+          {entries.map((entry) => (
+            <a
+              className="object-card"
+              href={`#/${route.locale}/projects/${entry.slug}`}
+              key={entry.slug}
+              data-testid="museum-object"
+              aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}
+            >
+              <span className="object-figure"><Shape name={entry.shape} /></span>
+              <span className="object-label">
+                <b>{text(entry.objectName, route.locale)}</b>
+                <small className="object-project">{text(entry.project.title, route.locale)}</small>
+              </span>
+            </a>
+          ))}
+        </section>
       </main>
       <SiteFooter locale={route.locale} />
     </>
