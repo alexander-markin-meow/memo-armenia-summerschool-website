@@ -51,6 +51,7 @@ export function CollectionCanvas({
           '--mobile-shape-width': `${Math.round(placement.width * placement.mobile.scale)}px`,
           '--mobile-shape-height': `${Math.round(placement.height * placement.mobile.scale)}px`,
           '--hit-padding': `${placement.hitPadding}px`,
+          '--mobile-hit-padding': '12px',
           '--object-order': placement.order,
         } as CSSProperties;
         return (

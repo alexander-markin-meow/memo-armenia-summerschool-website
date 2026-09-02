@@ -117,11 +117,9 @@ main[tabindex="-1"]:focus { outline: none; }
   margin-top: .45rem;
   padding: .42rem .38rem .32rem;
   border-top: 1px solid rgb(111 103 93 / 45%);
-  background: rgb(238 231 219 / 76%);
   text-align: center;
   line-height: 1.2;
   overflow-wrap: anywhere;
-  backdrop-filter: blur(2px);
 }
 .object-label b { font-size: .68rem; font-weight: 650; letter-spacing: .015em; }
 .object-label small { margin-top: .22rem; color: var(--muted); font-size: .61rem; }
@@ -220,10 +218,10 @@ main[tabindex="-1"]:focus { outline: none; }
   .collection-shell { padding-bottom: 4rem; }
   .collection-intro { min-height: min(38rem, 72svh); padding: 3rem 1rem 2.5rem; }
   .object-canvas { height: var(--mobile-canvas-height); margin-inline: .25rem; }
-  .object-link { left: var(--mobile-x); top: var(--mobile-y); width: max(48px, calc(var(--mobile-shape-width) + var(--hit-padding) + var(--hit-padding))); transform: translateX(-50%); }
+  .object-link { left: var(--mobile-x); top: var(--mobile-y); width: max(48px, calc(var(--mobile-shape-width) + var(--mobile-hit-padding) + var(--mobile-hit-padding))); padding: var(--mobile-hit-padding) var(--mobile-hit-padding) .25rem; transform: translateX(-50%); }
   .object-figure { width: var(--mobile-shape-width); height: var(--mobile-shape-height); }
   .object-figure .shape { transform: rotate(var(--mobile-rotation)); }
-  .object-label { width: calc(100% + .25rem); min-height: 68px; padding-inline: .16rem; background: rgb(238 231 219 / 88%); }
+  .object-label { width: calc(100% + .25rem); min-height: 64px; margin-top: .3rem; padding: .35rem .1rem .2rem; }
   .object-label b { font-size: .63rem; }
   .object-label small { font-size: .56rem; }
   .object-action { font-size: .53rem; }

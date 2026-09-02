@@ -25,9 +25,10 @@ export type Rect = { x: number; y: number; width: number; height: number };
 const DESKTOP_WIDTH = 1200;
 const MOBILE_WIDTH = 360;
 const DESKTOP_STEP = 190;
-const MOBILE_STEP = 236;
+const MOBILE_STEP = 202;
 const LABEL_HEIGHT = 68;
 const CENTRAL_TARGET = 48;
+const MOBILE_HIT_PADDING = 12;
 
 function mulberry32(seed: number) {
   return () => {
@@ -82,7 +83,7 @@ export function visibleRect(item: CollageItem, placement: CollagePlacement, vari
 export function hitRect(item: CollageItem, placement: CollagePlacement, variant: CollageVariant, viewportWidth = variant === 'desktop' ? DESKTOP_WIDTH : MOBILE_WIDTH) {
   const position = placement[variant];
   const shape = itemRect(item, position, viewportWidth, false);
-  const padding = item.collage.hitPadding;
+  const padding = variant === 'mobile' ? MOBILE_HIT_PADDING : item.collage.hitPadding;
   return {
     x: shape.x - padding,
     y: shape.y - padding,
@@ -111,7 +112,7 @@ export function createCollageLayout(seed: number, items: CollageItem[]): Collage
   const bands: CollageItem[][] = [];
   for (let index = 0; index < ordered.length;) {
     const remaining = ordered.length - index;
-    const count = remaining === 1 || (remaining > 2 && random() < 0.24) ? 1 : 2;
+    const count = remaining === 1 || (remaining > 2 && random() < 0.12) ? 1 : 2;
     bands.push(ordered.slice(index, index + count));
     index += count;
   }
@@ -125,9 +126,9 @@ export function createCollageLayout(seed: number, items: CollageItem[]): Collage
       const desktopX = paired
         ? (slot === 0 ? 20 + random() * 17 : 63 + random() * 17)
         : 24 + random() * 52;
-      const mobileX = paired ? (slot === 0 ? 22.5 : 77.5) : 27 + random() * 46;
+      const mobileX = paired ? (slot === 0 ? 24 : 76) : 26 + random() * 48;
       const desktopScale = clamp((0.86 + random() * 0.34) * weight, 0.8, 1.24);
-      const mobileScale = clamp((0.64 + random() * 0.07) * weight, 0.61, 0.72);
+      const mobileScale = clamp((0.53 + random() * 0.06) * weight, 0.51, 0.59);
 
       const placement: CollagePlacement = {
         id: item.id,
@@ -144,7 +145,7 @@ export function createCollageLayout(seed: number, items: CollageItem[]): Collage
         },
         mobile: {
           xPercent: Math.round(mobileX * 100) / 100,
-          top: 38 + band * MOBILE_STEP + Math.round(random() * 6),
+          top: 30 + band * MOBILE_STEP + Math.round(random() * 3),
           scale: Math.round(mobileScale * 1000) / 1000,
           rotation: Math.round((random() * 14 - 7) * 10) / 10,
         },
