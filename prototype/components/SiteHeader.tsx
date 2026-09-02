@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { AnchorLink } from './AnchorLink';
 import { SiteHeaderBase } from './SiteHeaderBase';
 import type { Locale } from '@/lib/content';
 
@@ -10,7 +10,7 @@ export function SiteHeader({ locale, view, pathSuffix = '' }: { locale: Locale; 
       collectionHref={`/${locale}`}
       researchHref={`/${locale}/research`}
       localizedHref={(item) => `/${item}${pathSuffix}`}
-      LinkComponent={Link}
+      LinkComponent={AnchorLink}
     />
   );
 }

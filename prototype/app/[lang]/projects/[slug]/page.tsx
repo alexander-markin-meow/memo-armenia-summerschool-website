@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { AnchorLink } from '@/components/AnchorLink';
 import { LocaleSync } from '@/components/LocaleSync';
 import { ProjectArticle } from '@/components/ProjectArticle';
 import { SkipLink } from '@/components/SkipLink';
@@ -37,13 +37,13 @@ export default async function ProjectPage({ params }: Props) {
       <LocaleSync locale={lang} />
       <SiteHeader locale={lang} view="project" pathSuffix={`/projects/${slug}`} />
       <div className="project-controls">
-        <Link className="back-link" href={`/${lang}`}>← {text(ui.backCollection, lang)}</Link>
+        <AnchorLink className="back-link" href={`/${lang}`}>← {text(ui.backCollection, lang)}</AnchorLink>
       </div>
       <p className="prototype-badge project-notice">{text(ui.prototype, lang)}</p>
       <ProjectArticle
         entry={entry}
         locale={lang}
-        LinkComponent={Link}
+        LinkComponent={AnchorLink}
         projectHref={(projectSlug) => `/${lang}/projects/${projectSlug}`}
       />
     </main>

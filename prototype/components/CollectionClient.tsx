@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { AnchorLink } from './AnchorLink';
 import { CollectionCanvas } from './CollectionCanvas';
 import { CollectionIntro } from './CollectionIntro';
 import type { Locale, MuseumEntry } from '@/lib/content';
@@ -9,7 +9,7 @@ export function CollectionClient({ entries, locale }: { entries: MuseumEntry[]; 
   return (
     <>
       <CollectionIntro locale={locale} />
-      <CollectionCanvas entries={entries} locale={locale} LinkComponent={Link} projectHref={(entry) => `/${locale}${entry.collage.projectPath}`} />
+      <CollectionCanvas entries={entries} locale={locale} LinkComponent={AnchorLink} projectHref={(entry) => `/${locale}${entry.collage.projectPath}`} />
     </>
   );
 }

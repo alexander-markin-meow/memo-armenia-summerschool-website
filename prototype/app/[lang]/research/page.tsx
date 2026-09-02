@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { AnchorLink } from '@/components/AnchorLink';
 import { LocaleSync } from '@/components/LocaleSync';
 import { ResearchResults } from '@/components/ResearchResults';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -24,7 +24,7 @@ export default async function ResearchPage({ params }: Props) {
     <main className="research-page" id="main" lang={lang} tabIndex={-1}>
       <LocaleSync locale={lang} />
       <SiteHeader locale={lang} view="research" pathSuffix="/research" />
-      <ResearchResults locale={lang} LinkComponent={Link} projectHref={(slug) => `/${lang}/projects/${slug}`} />
+      <ResearchResults locale={lang} LinkComponent={AnchorLink} projectHref={(slug) => `/${lang}/projects/${slug}`} />
     </main>
     <SiteFooter locale={lang} />
   </>;
