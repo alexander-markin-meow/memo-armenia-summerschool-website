@@ -24,6 +24,8 @@ Edit `prototype/lib/content.ts`. Every entry needs:
 - project title, participant display name, medium, and introduction in all three languages;
 - meaningful alt text for every future content image.
 
+The exported entry also carries collage metadata: project path, intrinsic dimensions, visible-alpha bounds, hit padding, localized label and alt text, and optional visual weight. Update those values when a CSS placeholder is replaced by a reviewed cut-out image.
+
 Keep URL identifiers in English-like stable IDs; never generate filters or links from translated labels.
 
 ## Review sequence
@@ -35,3 +37,7 @@ Keep URL identifiers in English-like stable IDs; never generate filters or links
 5. Approve the entry for publication, then merge it to `main`.
 
 Never commit consent forms, private contact details, unpublished interviews, API keys, or unredacted source files to this repository.
+
+## Research/process page
+
+The research page is a separate editorial record, not a second catalogue. Keep its sections in `prototype/lib/content.ts` and its presentation in `prototype/components/ResearchResults.tsx`. It may connect projects, interviews, ideas, concepts, experiments, and trials, but every real extract still needs the same consent, attribution, translation, and sensitivity review as a project entry. Unfinished or unapproved material should remain a clearly labelled prototype placeholder.

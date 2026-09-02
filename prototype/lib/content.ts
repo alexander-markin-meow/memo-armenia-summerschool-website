@@ -3,8 +3,21 @@ export type Locale = (typeof locales)[number];
 export type LocalizedText = Record<Locale, string>;
 export type ShapeName = 'button' | 'stone' | 'metal' | 'leaf' | 'tile' | 'spool' | 'bead' | 'paper' | 'ribbon' | 'ring' | 'shard';
 export type Medium = 'text' | 'photo' | 'video' | 'mixed';
+export type Sensitivity = 'public' | 'review-required';
 
-export type MuseumEntry = {
+type VisibleBounds = { top: number; right: number; bottom: number; left: number };
+
+export type CollageMetadata = {
+  projectPath: string;
+  dimensions: { width: number; height: number };
+  visibleBounds: VisibleBounds;
+  hitPadding: number;
+  label: LocalizedText;
+  altText: LocalizedText;
+  visualWeight?: number;
+};
+
+type MuseumEntrySource = {
   slug: string;
   shape: ShapeName;
   objectName: LocalizedText;
@@ -17,7 +30,10 @@ export type MuseumEntry = {
     medium: Medium;
     introduction: LocalizedText;
   };
+  sensitivity?: Sensitivity;
 };
+
+export type MuseumEntry = Omit<MuseumEntrySource, 'sensitivity'> & { sensitivity: Sensitivity; collage: CollageMetadata };
 
 const l = (en: string, hy: string, ru: string): LocalizedText => ({ en, hy, ru });
 
@@ -32,7 +48,7 @@ const fictionalEntry = (
   participant: LocalizedText,
   medium: Medium,
   introduction: LocalizedText,
-): MuseumEntry => ({
+): MuseumEntrySource => ({
   slug,
   shape,
   objectName,
@@ -42,9 +58,36 @@ const fictionalEntry = (
   project: { title, participant, medium, introduction },
 });
 
+const shapeProfiles: Record<ShapeName, Pick<CollageMetadata, 'dimensions' | 'visibleBounds' | 'hitPadding' | 'visualWeight'>> = {
+  button: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 2, right: 2, bottom: 2, left: 2 }, hitPadding: 18, visualWeight: 1 },
+  stone: { dimensions: { width: 168, height: 108 }, visibleBounds: { top: 8, right: 3, bottom: 7, left: 3 }, hitPadding: 16, visualWeight: 1.08 },
+  metal: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 1, right: 0, bottom: 0, left: 3 }, hitPadding: 16, visualWeight: 1.05 },
+  leaf: { dimensions: { width: 128, height: 166 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 0.94 },
+  tile: { dimensions: { width: 158, height: 136 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 1 }, hitPadding: 16, visualWeight: 1.04 },
+  spool: { dimensions: { width: 128, height: 166 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 0.96 },
+  bead: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 1, right: 1, bottom: 1, left: 1 }, hitPadding: 18, visualWeight: 1 },
+  paper: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 16, visualWeight: 1.02 },
+  ribbon: { dimensions: { width: 168, height: 96 }, visibleBounds: { top: 3, right: 1, bottom: 3, left: 1 }, hitPadding: 18, visualWeight: 0.98 },
+  ring: { dimensions: { width: 140, height: 140 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 18, visualWeight: 1 },
+  shard: { dimensions: { width: 168, height: 132 }, visibleBounds: { top: 0, right: 0, bottom: 0, left: 0 }, hitPadding: 16, visualWeight: 1.06 },
+};
+
+function withCollageMetadata(entry: MuseumEntrySource): MuseumEntry {
+  return {
+    ...entry,
+    sensitivity: entry.sensitivity ?? 'public',
+    collage: {
+      projectPath: `/projects/${entry.slug}`,
+      ...shapeProfiles[entry.shape],
+      label: entry.project.title,
+      altText: entry.objectName,
+    },
+  };
+}
+
 export const ui = {
   siteTitle: l('Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum', 'Lost and Found: Pokr Ayrum'),
-  collection: l('Collection', 'Հավաքածու', 'Коллекция'),
+  collection: l('Collage', 'Կոլաժ', 'Коллаж'),
   language: l('Language', 'Լեզու', 'Язык'),
   skipToContent: l('Skip to content', 'Անցնել հիմնական բովանդակությանը', 'Перейти к основному содержанию'),
   prototype: l('Fictional prototype content', 'Հորինված նախատիպային բովանդակություն', 'Вымышленный прототипный контент'),
@@ -58,6 +101,54 @@ export const ui = {
     'A digital collection connecting local fragments to participant projects from the “Person in History” summer school in Lori, Armenia.',
     'Թվային հավաքածու, որը կապում է տեղական բեկորները Լոռիում «մարդը պատմության մեջ» ամառային դպրոցի մասնակիցների նախագծերի հետ։',
     'Цифровая коллекция, соединяющая местные фрагменты с проектами участников летней школы «человек в истории» в Лори, Армения.',
+  ),
+  collageInstruction: l(
+    'Choose an object to open its project.',
+    'Ընտրեք առարկա՝ դրա նախագիծը բացելու համար։',
+    'Выберите предмет, чтобы открыть его проект.',
+  ),
+  openProject: l('Open project', 'Բացել նախագիծը', 'Открыть проект'),
+  research: l('Research', 'Հետազոտություն', 'Исследование'),
+  researchTitle: l('The summer school, in progress.', 'Ամառային դպրոցը՝ ընթացքի մեջ։', 'Летняя школа в процессе.'),
+  researchIntro: l(
+    'A working record of how projects developed: interviews, shared questions, experiments, and trials. This page tests an editorial structure; it is not a catalogue or a finished archive.',
+    'Նախագծերի զարգացման աշխատանքային գրառում՝ հարցազրույցներ, ընդհանուր հարցեր, փորձարկումներ և փորձեր։ Այս էջը ստուգում է խմբագրական կառուցվածքը և ոչ կատալոգ է, ոչ էլ ավարտված արխիվ։',
+    'Рабочая запись о том, как развивались проекты: интервью, общие вопросы, эксперименты и пробы. Эта страница проверяет редакционную структуру; это не каталог и не готовый архив.',
+  ),
+  researchProjects: l('Project paths', 'Նախագծերի ուղիներ', 'Траектории проектов'),
+  researchProjectsText: l(
+    'Found objects opened several possible routes into stories. These links use fictional projects to test how the research record can lead back into the collage.',
+    'Գտնված առարկաները պատմությունների մի քանի հնարավոր ուղիներ բացեցին։ Այս հղումները օգտագործում են հորինված նախագծեր՝ ստուգելու համար, թե ինչպես կարող է հետազոտական գրառումը վերադառնալ կոլաժ։',
+    'Найденные предметы открыли несколько возможных путей к историям. Эти ссылки ведут к вымышленным проектам и проверяют, как исследовательская запись может возвращать в коллаж.',
+  ),
+  researchInterviews: l('Interviews', 'Հարցազրույցներ', 'Интервью'),
+  researchInterviewsText: l(
+    'Testimony is treated as a relationship, not raw material: record context, consent, edit decisions, translation status, and what must remain private before publishing an extract.',
+    'Վկայությունը դիտվում է որպես հարաբերություն, ոչ թե հումք․ հատված հրապարակելուց առաջ գրանցվում են համատեքստը, համաձայնությունը, մոնտաժի որոշումները, թարգմանության վիճակը և այն, ինչ պետք է մնա գաղտնի։',
+    'Свидетельство рассматривается как отношение, а не сырьё: до публикации фрагмента фиксируются контекст, согласие, монтажные решения, статус перевода и то, что должно остаться закрытым.',
+  ),
+  researchConcepts: l('Questions and concepts', 'Հարցեր և հասկացություններ', 'Вопросы и понятия'),
+  researchConceptsText: l(
+    'How is a home lost or remade? What can an everyday object remember? How do movement, work, family, and local tradition alter one another?',
+    'Ինչպե՞ս է տունը կորչում կամ վերակերտվում։ Ի՞նչ կարող է հիշել առօրյա առարկան։ Ինչպե՞ս են շարժումը, աշխատանքը, ընտանիքը և տեղական ավանդույթը փոխում միմյանց։',
+    'Как дом теряется или создаётся заново? Что способен помнить повседневный предмет? Как движение, труд, семья и местная традиция меняют друг друга?',
+  ),
+  researchExperiments: l('Experiments and trials', 'Փորձարկումներ և փորձեր', 'Эксперименты и пробы'),
+  researchExperimentsText: l(
+    'Field recordings, object rubbings, image sequences, fragments of voice, walks, and abandoned structures became provisional ways to test an idea before choosing a final form.',
+    'Դաշտային ձայնագրությունները, առարկաների արտատպումները, պատկերների շարքերը, ձայնի հատվածները, քայլարշավները և լքված կառույցները դարձան գաղափարը վերջնական ձև ընտրելուց առաջ փորձելու ժամանակավոր եղանակներ։',
+    'Полевые записи, отпечатки предметов, последовательности изображений, фрагменты голоса, прогулки и заброшенные строения стали временными способами проверить идею до выбора окончательной формы.',
+  ),
+  researchProcess: l('Process notes', 'Գործընթացի գրառումներ', 'Заметки о процессе'),
+  researchProcessText: l(
+    'Backstage material belongs here separately from the finished works: false starts, conversations, sketches, editing choices, and questions that remained unresolved.',
+    'Կուլիսային նյութն այստեղ ներկայացվում է ավարտված աշխատանքներից առանձին՝ անհաջող սկիզբներ, զրույցներ, ուրվագծեր, մոնտաժի ընտրություններ և չլուծված հարցեր։',
+    'Материалы о процессе находятся здесь отдельно от законченных работ: неудачные начала, разговоры, наброски, монтажные решения и вопросы без окончательного ответа.',
+  ),
+  researchMapLater: l(
+    'A map may become another route through this material later. It is intentionally outside this prototype update.',
+    'Քարտեզը հետագայում կարող է դառնալ այս նյութով անցնելու մեկ այլ ուղի։ Այն միտումնավոր դուրս է այս նախատիպային թարմացման շրջանակից։',
+    'Позже карта может стать ещё одним маршрутом по этим материалам. В это обновление прототипа она намеренно не входит.',
   ),
   about: l('About', 'Մասին', 'О проекте'),
   aboutText: l(
@@ -104,7 +195,7 @@ export const ui = {
   notFound: l('This project was not found.', 'Այս նախագիծը չի գտնվել։', 'Этот проект не найден.'),
 };
 
-export const entries: MuseumEntry[] = [
+const entrySources: MuseumEntrySource[] = [
   {
     slug: 'blue-coat-button',
     shape: 'bead',
@@ -558,6 +649,8 @@ export const entries: MuseumEntry[] = [
     l('A fictional short text about messages that change before they arrive.', 'Հորինված կարճ տեքստ՝ հաղորդագրությունների մասին, որոնք փոխվում են մինչ հասնելը։', 'Вымышленный короткий текст о сообщениях, которые меняются до прибытия.'),
   ),
 ];
+
+export const entries: MuseumEntry[] = entrySources.map(withCollageMetadata);
 
 export const isLocale = (value: string): value is Locale => locales.includes(value as Locale);
 export const text = (value: LocalizedText, locale: Locale) => value[locale] || value.en;

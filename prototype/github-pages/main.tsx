@@ -1,9 +1,10 @@
-import { StrictMode, useEffect, useState, type ReactNode } from 'react';
+import { StrictMode, useEffect, useState, type ComponentProps } from 'react';
 import { createRoot } from 'react-dom/client';
+import { CollectionCanvas } from '@/components/CollectionCanvas';
 import { CollectionIntro } from '@/components/CollectionIntro';
 import { GrainLayer } from '@/components/GrainLayer';
 import { ProjectArticle } from '@/components/ProjectArticle';
-import { Shape } from '@/components/Shape';
+import { ResearchResults } from '@/components/ResearchResults';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeaderBase } from '@/components/SiteHeaderBase';
 import { SkipLink } from '@/components/SkipLink';
@@ -12,17 +13,18 @@ import { entries, text, ui, type Locale } from '@/lib/content';
 import { localizedHashRoute, parseHashRoute, type HashRoute } from '@/lib/github-pages-routing';
 import './pages.css';
 
-function HashLink({ href, children, ...props }: { href: string; children: ReactNode; className?: string; lang?: string; 'aria-current'?: 'page' | 'true'; 'aria-label'?: string }) {
+function HashLink({ href, children, ...props }: ComponentProps<'a'> & { href: string }) {
   return <a href={href} {...props}>{children}</a>;
 }
 
 function Header({ route }: { route: HashRoute }) {
-  const view = route.kind === 'collection' ? 'collection' : 'project';
+  const view = route.kind === 'collection' ? 'collection' : route.kind === 'research' ? 'research' : 'project';
   return (
     <SiteHeaderBase
       locale={route.locale}
       view={view}
       collectionHref={`#/${route.locale}`}
+      researchHref={`#/${route.locale}/research`}
       localizedHref={(locale) => localizedHashRoute(route, locale)}
       LinkComponent={HashLink}
     />
@@ -35,26 +37,18 @@ function Collection({ route }: { route: Extract<HashRoute, { kind: 'collection' 
       <main className="collection-shell" id="main" lang={route.locale} tabIndex={-1}>
         <Header route={route} />
         <CollectionIntro locale={route.locale} />
-        <section id="objects" className="object-grid" aria-label={text(ui.collection, route.locale)}>
-          {entries.map((entry) => (
-            <a
-              className="object-card"
-              href={`#/${route.locale}/projects/${entry.slug}`}
-              key={entry.slug}
-              aria-label={`${text(entry.objectName, route.locale)} — ${text(entry.project.title, route.locale)}`}
-            >
-              <span className="object-figure"><Shape name={entry.shape} /></span>
-              <span className="object-label">
-                <b>{text(entry.objectName, route.locale)}</b>
-                <small className="object-project">{text(entry.project.title, route.locale)}</small>
-              </span>
-            </a>
-          ))}
-        </section>
+        <CollectionCanvas entries={entries} locale={route.locale} LinkComponent={HashLink} projectHref={(entry) => `#/${route.locale}${entry.collage.projectPath}`} />
       </main>
       <SiteFooter locale={route.locale} />
     </>
   );
+}
+
+function Research({ route }: { route: Extract<HashRoute, { kind: 'research' }> }) {
+  return <><main className="research-page" id="main" lang={route.locale} tabIndex={-1}>
+    <Header route={route} />
+    <ResearchResults locale={route.locale} LinkComponent={HashLink} projectHref={(slug) => `#/${route.locale}/projects/${slug}`} />
+  </main><SiteFooter locale={route.locale} /></>;
 }
 
 function Project({ route }: { route: Extract<HashRoute, { kind: 'project' }> }) {
@@ -82,13 +76,15 @@ function App() {
     rememberLocale(route.locale);
     const routeTitle = route.kind === 'collection'
       ? text(ui.collection, route.locale)
+      : route.kind === 'research'
+        ? text(ui.research, route.locale)
       : route.kind === 'project'
         ? entries.find((entry) => entry.slug === route.slug)?.project.title[route.locale] || text(ui.notFound, route.locale)
         : text(ui.notFound, route.locale);
     document.title = `${text(ui.siteTitle, route.locale)} — ${routeTitle}`;
     if (route.kind !== 'collection') scrollTo(0, 0);
   }, [route]);
-  return <><SkipLink locale={route.locale} />{route.kind === 'collection' ? <Collection route={route} /> : route.kind === 'project' ? <Project route={route} /> : <NotFound locale={route.locale} />}</>;
+  return <><SkipLink locale={route.locale} />{route.kind === 'collection' ? <Collection route={route} /> : route.kind === 'research' ? <Research route={route} /> : route.kind === 'project' ? <Project route={route} /> : <NotFound locale={route.locale} />}</>;
 }
 
 createRoot(document.getElementById('root')!).render(<StrictMode><GrainLayer /><App /></StrictMode>);

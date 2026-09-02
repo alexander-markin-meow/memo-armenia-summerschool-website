@@ -2,6 +2,7 @@ import { isLocale, type Locale } from './content.ts';
 
 export type HashRoute =
   | { kind: 'collection'; locale: Locale }
+  | { kind: 'research'; locale: Locale }
   | { kind: 'project'; locale: Locale; slug: string }
   | { kind: 'not-found'; locale: Locale };
 
@@ -14,6 +15,7 @@ export function parseHashRoute(hash: string): HashRoute {
   const locale = isLocale(segments[0]) ? segments[0] : 'en';
   if (!isLocale(segments[0])) return { kind: 'not-found', locale };
   if (segments.length === 1) return { kind: 'collection', locale };
+  if (segments.length === 2 && segments[1] === 'research') return { kind: 'research', locale };
   if (segments.length === 3 && segments[1] === 'projects' && segments[2]) {
     return { kind: 'project', locale, slug: segments[2] };
   }
@@ -22,5 +24,6 @@ export function parseHashRoute(hash: string): HashRoute {
 
 export function localizedHashRoute(route: HashRoute, locale: Locale) {
   if (route.kind === 'project') return `#/${locale}/projects/${route.slug}`;
+  if (route.kind === 'research') return `#/${locale}/research`;
   return `#/${locale}`;
 }

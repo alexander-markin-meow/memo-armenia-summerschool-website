@@ -1,30 +1,31 @@
-The prototype is a small, public, trilingual digital museum with two working views: a warm grid list of placeholder objects and an object-first project page. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
+The prototype is a small, public, trilingual digital museum with three working views: a seeded field of placeholder objects, object-first project pages, and a separate summer-school research/process record. It uses thirty fictional object/project pairs made from simple CSS shapes, demonstrates the complete visitor flow on phone and desktop, and keeps the content easy to replace later with real photographs, text, galleries, and video.
 
 # Prototype build plan
 
 ## 1. Prototype goal
 
-Build a convincing but deliberately limited prototype that answers four questions:
+Build a convincing but deliberately limited prototype that answers five questions:
 
 1. Does object-first navigation make the participant projects feel discoverable?
-2. Does a clear grid list make the collection easy to browse and the participant projects easy to discover?
-3. Does one content structure support the visual collection, project pages, and three languages?
-4. Can Alex replace placeholder material with real objects and projects without redesigning the site?
+2. Can a quirky, non-hierarchical collage remain understandable and accessible to visitors who are less confident with websites?
+3. Can a separate research record connect projects, interviews, ideas, concepts, experiments, and trials without becoming a duplicate catalogue?
+4. Does one content structure support the collage, project pages, research page, and three languages?
+5. Can Alex replace placeholder material with real objects and projects without redesigning the site?
 
-The prototype will be public on the web, while its GitHub repository remains private during development. Making the source public later is a separate launch decision.
+The prototype and its source repository are public for review. Project-owned hosting, domain, and repository arrangements remain a launch handoff decision.
 
 ## 2. What will be included
 
-### Visual collection (`/:lang`)
+### Object collage (`/:lang`)
 
-- A light and warm responsive grid containing thirty irregular placeholder objects. It uses several columns on desktop and a two-column list on narrow screens.
+- A light, warm, expanding canvas containing all thirty irregular placeholder objects in one or two-object vertical bands.
 - Objects are CSS shapes rather than photographs, with varied forms and colours.
-- The grid order and object sizes are stable. There is currently no randomized placement behaviour.
-- Each item has consistent spacing and a dedicated card area, so labels and touch targets remain clear.
-- Each object is a real link with a visible focus state and a short accessible label.
-- Pointer hover or keyboard focus reveals the object name and project title; touch devices show the object name by default.
+- A new visit seed controls order, size, rotation, and approximate position. A refresh reshuffles; ordinary resizing within a breakpoint does not.
+- Desktop allows controlled visible overlap up to roughly 20%, while protected central click zones stay exposed. Mobile retains every object and prevents hit-area overlap.
+- Each object is a semantic link with a padded target, useful accessible label, visible name, project title, and link arrow.
+- Pointer hover and keyboard focus raise the object, correct its rotation, strengthen its shadow, and never rearrange the canvas. Reduced-motion visitors get the same cue without movement.
 - Selecting an object opens its project page directly.
-- A compact corner menu contains the language switcher. There is no large hero heading.
+- A first-use instruction says “Choose an object to open its project.”
 
 ### Project page (`/:lang/projects/:slug`)
 
@@ -35,6 +36,13 @@ The prototype will be public on the web, while its GitHub repository remains pri
   - a privacy-friendly YouTube placeholder that only loads an embed after visitor action.
 - Previous/next project links allow sequential exploration without returning to the collection.
 - The page demonstrates the final reading hierarchy, but all content is clearly marked as fictional prototype copy.
+
+### Summer-school research (`/:lang/research`)
+
+- A separate, somewhat structured working record for project paths, interviews, shared questions and concepts, experiments, trials, and backstage process notes.
+- It links selectively into project pages but is not a catalogue and does not duplicate the collage.
+- Current copy is explicitly fictional/provisional. Real excerpts wait for translation, attribution, consent, and sensitivity review.
+- Map browsing remains a later possibility and is deliberately outside this update.
 
 ### Shared shell
 
@@ -53,7 +61,7 @@ The prototype will be public on the web, while its GitHub repository remains pri
 - **Content:** typed local TypeScript data files, one record per object/project pair. No database, CMS, user accounts, or server runtime in the prototype.
 - **Internationalization:** a small typed local translation layer. Interface strings and project content use the same three-language shape, with English as the explicit development fallback.
 - **Package manager/runtime:** npm with a committed lockfile; current Node LTS, recorded in `.nvmrc` and `package.json`.
-- **Deployment:** an OpenAI Sites production build on Cloudflare infrastructure, sourced from the private GitHub repository. The production branch is `main`.
+- **Deployment:** an OpenAI Sites production build plus a static GitHub Pages preview, sourced from the public GitHub repository. The production branch is `main`.
 - **Code quality:** ESLint, Prettier, strict TypeScript, and accessible semantic HTML.
 
 This stack keeps the prototype inexpensive and portable. It can later move to another static host without changing the content model. A CMS can be added after the editorial workflow is known rather than guessed now.
@@ -63,8 +71,8 @@ This stack keeps the prototype inexpensive and portable. It can later move to an
 ```text
 prototype/
   app/                 routes, pages, metadata, global design system
-  components/          navigation, object shapes, collection grid
-  lib/                  typed object/project records and translations
+  components/          navigation, object shapes, collage, project and research views
+  lib/                  typed records, translations, seeded layout and route helpers
   public/               social preview and public assets
 ```
 
@@ -94,14 +102,23 @@ type MuseumEntry = {
     youtubeId?: string
   }
   sensitivity: 'public' | 'review-required'
+  collage: {
+    projectPath: string
+    dimensions: { width: number; height: number }
+    visibleBounds: { top: number; right: number; bottom: number; left: number }
+    hitPadding: number
+    label: LocalizedText
+    altText: LocalizedText
+    visualWeight?: number
+  }
 }
 ```
 
 The `sensitivity` field is included now so real material cannot accidentally be published before consent review. Prototype records will all be fictional and marked `public`.
 
-## 4. Collection layout baseline
+## 4. Collage layout baseline
 
-The active collection is a simple responsive grid. Every object occupies one predictable card with a shape, object name, and project title. This keeps the visual hierarchy, localization, navigation, and placeholder set stable while a new placement approach is designed separately. No prior placement code or saved arrangement is retained in the application.
+The active collection is a deterministic composition generated from a random per-visit seed. Source order is shuffled, then one or two objects are assigned to each invisible vertical band. The layout stores separate desktop and mobile positions from the same seed: desktop permits limited visible overlap but protects a central 48×48 click zone; mobile uses smaller objects and separated hit rectangles. CSS switches between those two stable arrangements only at the responsive breakpoint.
 
 ## 5. Visual system
 
@@ -110,7 +127,7 @@ The active collection is a simple responsive grid. Every object occupies one pre
 - **Objects:** irregular CSS shapes with subtle inner texture, soft contact shadows, and varied colours. They are placeholders, not attempts to imitate archaeological artefacts.
 - **Grain:** a large high-resolution animated texture applied as a low-opacity fixed top layer with `pointer-events: none`; reduced motion disables the animation.
 - **Motion:** short fades and gentle object lift only. `prefers-reduced-motion` removes movement.
-- **Spacing:** generous reading width on project pages and a regular, readable rhythm in the collection grid.
+- **Spacing:** generous reading width on project pages, an irregular collage rhythm, and a structured but non-catalogue research record.
 
 ## 6. Language and editorial approach
 
@@ -127,7 +144,7 @@ For the prototype, all interface and fictional content will be translated into E
 
 - Target WCAG 2.2 AA for contrast, keyboard use, focus visibility, landmarks, headings, and labels.
 - Decorative grain and shape details are hidden from assistive technology; each object link has a meaningful localized name.
-- All functionality works without hover. Touch targets are at least 44 by 44 CSS pixels.
+- All functionality works without hover. Touch targets are at least 48 by 48 CSS pixels.
 - Project media requires alt text or a documented decorative status.
 - YouTube uses `youtube-nocookie.com` and is not loaded until the visitor chooses to play it.
 - No analytics in the first prototype. If later requested, use a consent-light, cookieless option and document it separately.
@@ -143,9 +160,9 @@ For the prototype, all interface and fictional content will be translated into E
 
 ### Phase 2 — Complete visitor flow (2–3 days)
 
-- Finish the thirty placeholder entries and responsive collection grid.
-- Build the reusable object-first project page, gallery, deferred video, and return-to-grid behavior.
-- Refine the collection and project navigation.
+- Finish the thirty placeholder entries and responsive seeded collage.
+- Build the reusable object-first project page, gallery, deferred video, and return-to-collage behavior.
+- Add the separate research/process record and refine navigation across all three page types.
 
 ### Phase 3 — Three languages and care rules (1–2 days)
 
@@ -156,7 +173,7 @@ For the prototype, all interface and fictional content will be translated into E
 ### Phase 4 — Verification and handoff (1–2 days)
 
 - Test the primary flow on current Chrome, Safari, and Firefox, plus representative phone and desktop widths.
-- Run automated checks for routes, grid links, keyboard navigation, and missing translations.
+- Run automated checks for routes, collage geometry, keyboard navigation, and missing translations.
 - Run an accessibility audit and fix blocking issues.
 - Write a short content replacement guide and deploy the agreed prototype.
 
@@ -164,7 +181,7 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 ## 9. Verification plan
 
-- **Unit tests (Vitest):** content completeness, routes, grid links, and locale fallback.
+- **Unit tests:** content completeness, research routes, locale coverage, seed repeatability, vertical-band occupancy, metadata, desktop alpha-overlap limits, exposed click zones, and mobile hit-area separation.
 - **Interaction tests (React Testing Library):** object links, keyboard focus, language switcher, and return-to-collection behavior.
 - **End-to-end smoke tests (Playwright):** collection → project → collection, direct localized URLs, and not-found routes.
 - **Automated accessibility:** axe on the collection, one gallery project, and one video project.
@@ -175,9 +192,10 @@ Expected build time: **5–9 working days**, leaving the rest of September for f
 
 The prototype is ready for review when:
 
-- thirty fictional objects appear in a responsive grid;
+- thirty fictional objects appear in a seeded, scrollable collage;
 - every object opens the correct object-first project page;
-- returning to the collection returns to the grid;
+- returning to the collage restores the current visit and approximate scroll position;
+- a separate research/process page is reachable in all three languages;
 - all visitor-facing prototype text exists in English, Armenian, and Russian;
 - phone, keyboard, reduced-motion, and 200% zoom flows remain usable;
 - fictional placeholder content is visibly distinguishable from publishable material;
@@ -188,10 +206,10 @@ The prototype is ready for review when:
 
 - Real object photographs, participant projects, final translations, and final site name/identity.
 - A CMS, editor login, database, user accounts, search, comments, or analytics.
-- Map-based browsing, a structured catalogue, advanced animated physics, or visitor-created collections.
+- Map-based browsing, a structured catalogue, ambient/resting movement, advanced animated physics, or visitor-created collections.
 - Final consent policy or legal review; the prototype only establishes a safe publication gate.
-- Public release of the source repository. The private repository can be made public later after content, secrets, licensing, and documentation are reviewed.
+- A final transfer of repository, domain, hosting, or service ownership to the project organization.
 
 ## 12. Approval point
 
-The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional CSS-shape entries, collection and project routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.
+The current redesign uses the approved **Lost and Found: Pokr Ayrum** identity, thirty fictional CSS-shape entries, collage, project, and research routes in three languages, and the configured Sites and GitHub Pages deployments. Real content and social destinations remain review points rather than blockers for the prototype.

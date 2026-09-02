@@ -24,6 +24,7 @@ test('keeps the approved thirty-entry fictional collection complete and addressa
     assertLocalized(entry.project.title, `${entry.slug}.project.title`);
     assertLocalized(entry.project.participant, `${entry.slug}.project.participant`);
     assertLocalized(entry.project.introduction, `${entry.slug}.project.introduction`);
+    assert.equal(entry.sensitivity, 'public', `${entry.slug} should be safe fictional prototype content`);
   }
 });
 

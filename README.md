@@ -1,6 +1,6 @@
 # Person in History — Pokr Ayrum digital museum prototype
 
-Prototype digital museum based on the “Person in History” summer school in the Lori region of Armenia.
+Prototype digital museum based on the “Person in History” summer school in the Lori region of Armenia. The current review build contains a seeded object collage, object-first project pages, and a separate research/process record.
 
 The site implementation is in [`prototype/`](prototype/). The scope and technical decisions live in [PROTOTYPE_PLAN.md](PROTOTYPE_PLAN.md), and the safe content-replacement process lives in [CONTENT_GUIDE.md](CONTENT_GUIDE.md).
 
@@ -12,4 +12,4 @@ Sites production: https://lori-found-memo.alex-markin.chatgpt.site/
 
 GitHub Pages preview: https://alexander-markin-meow.github.io/memo-armenia-summerschool-website/
 
-From `prototype/`, run `npm run validate` to test the collection and content invariants, type-check, lint, and build both deployment targets.
+From `prototype/`, run `npm run validate` to test the collage geometry, routing, content invariants, type-check, lint, and build both deployment targets. Refreshing the collage creates a new composition; moving between pages preserves the current visit's seed and return position.
