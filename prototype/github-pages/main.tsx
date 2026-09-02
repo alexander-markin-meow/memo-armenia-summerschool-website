@@ -87,5 +87,6 @@ function App() {
   return <><SkipLink locale={route.locale} />{route.kind === 'collection' ? <Collection route={route} /> : route.kind === 'research' ? <Research route={route} /> : route.kind === 'project' ? <Project route={route} /> : <NotFound locale={route.locale} />}</>;
 }
 
-document.documentElement.style.setProperty('--object-atlas-url', "url('./object-atlas.png')");
+const objectAtlasUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}object-atlas.png`;
+document.documentElement.style.setProperty('--object-atlas-url', `url('${objectAtlasUrl}')`);
 createRoot(document.getElementById('root')!).render(<StrictMode><GrainLayer /><App /></StrictMode>);
